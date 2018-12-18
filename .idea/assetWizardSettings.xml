@@ -22,6 +22,7 @@
                                       <entry key="foregroundImage" value="C:\Users\叶剑波\Downloads\booksource-master\chapter12\MaterialTest\app\src\main\res\drawable-xxhdpi\ic_menu.png" />
                                       <entry key="foregroundLayerName" value="ic_launcher_foreground" />
                                       <entry key="outputName" value="ic_menu" />
+                                      <entry key="previewDensity" value="HIGH" />
                                     </map>
                                   </option>
                                 </PersistentState>

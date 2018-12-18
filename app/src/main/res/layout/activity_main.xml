@@ -19,11 +19,13 @@
              app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"></android.support.v7.widget.Toolbar>
             <include layout="@layout/tab_layout"></include>
 </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:text="this is a menu"
-        android:textSize="30sp"
-        android:background="#FFF"/>
+<android.support.design.widget.NavigationView
+    android:id="@+id/nav_view"
+    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_gravity="start"
+    app:menu="@menu/nav_menu"
+    app:headerLayout="@layout/header_layout">
+
+</android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>
