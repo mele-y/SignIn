@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="280dp"
+    android:padding="10dp"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/head"
+        android:src="@mipmap/user"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        />
+    <TextView
+        android:id="@+id/user_name_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/head"
+
+        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/nick_name_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_name_show"
+
+        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/id_no_show"
+
+        android:textSize="20sp"
+        android:layout_below="@id/nick_name_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/college_show"
+        android:layout_below="@id/id_no_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/major_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/college_show"
+
+        android:textSize="20sp"/>
+
+</RelativeLayout>

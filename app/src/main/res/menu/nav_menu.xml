@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+         <item
+             android:id="@+id/nav_edit"
+             android:icon="@mipmap/edit"
+             android:title="编辑">
+         </item>
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@mipmap/exit"
+            android:title="退出">
+        </item>
+
+    </group>
+
+</menu>
