@@ -14,18 +14,19 @@
             android:label="This is login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity"
-            android:label="SignIn">
+        <activity
+            android:name=".MainActivity"
+            android:label="SignIn" />
+        <activity
+            android:name=".SignIn"
+            android:label="this is signIn" />
+        <activity android:name=".createClass" />
+        <activity android:name=".mainCourse" >
         </activity>
-
-
-        <activity android:name=".SignIn" android:label="this is signIn">
-        </activity>
+        <activity android:name=".main_Sign" android:label="签到界面"></activity>
     </application>
 
 </manifest>

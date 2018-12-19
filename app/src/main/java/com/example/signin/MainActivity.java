@@ -1,6 +1,7 @@
 package com.example.signin;
 
 import android.app.TabActivity;
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -103,7 +104,10 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;//若左上角菜单被选中打开滑动菜单
-
+            case R.id.create_item:
+                Intent intent=new Intent(this,createClass.class);
+                startActivity(intent);//跳转班课界面
+                break;
                 default:
         }
         return true;
