@@ -1,8 +1,6 @@
 package com.example.signin;
 
 import android.app.TabActivity;
-import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -73,26 +71,6 @@ public class MainActivity extends AppCompatActivity {
         college.setText("南京理工大学");
         //设置滑动菜单的显示内容
 
-        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                   switch (menuItem.getItemId())
-                   {
-                       /*case R.id.nav_edit:
-                           Intent i1=new Intent(this,editUserInfo.class);
-                           startActivity(i1);
-                           break;*/
-                       case R.id.nav_exit:
-                           Intent i2=new Intent(MainActivity.this,logIn.class);
-                           startActivity(i2);
-                           break;
-                       default:
-                   }
-                   return true;
-            }
-
-        });
-
           TabHost tabHost=(TabHost)findViewById(android.R.id.tabhost);//获取选项卡实例
         tabHost.setup();
         LayoutInflater inflater=LayoutInflater.from(this);
@@ -125,16 +103,8 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;//若左上角菜单被选中打开滑动菜单
-            case  R.id.join_item:
-                Intent intent1=new Intent(MainActivity.this,SearchClass.class);
-                startActivity(intent1);
-                break;//点击搜索班课后的跳转
-            /*case R.id.join_item:
-                Intent intent2=new Intent(MainActivity.this,createClass.class);
-                startActivity(intent2);//点击创建班课的跳转；
-                break;*/
 
-            default:
+                default:
         }
         return true;
     }
