@@ -28,5 +28,6 @@
         </activity>
         <activity android:name=".main_Sign" android:label="签到界面"></activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>
