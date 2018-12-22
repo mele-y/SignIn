@@ -3,7 +3,6 @@ package com.example.signin.utility;
 import java.io.IOException;
 
 import okhttp3.FormBody;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -16,14 +15,13 @@ import java.util.Map;
  */
 
 public class OkHttp {
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     /**
      * get method
      * @param url server address with port
      */
     public String get(String url) {
-        String result = "";
+        String result = "No response.";
         Request request = new Request.Builder().url(url).build();
         OkHttpClient client = new OkHttpClient();
         try {
@@ -41,7 +39,7 @@ public class OkHttp {
      * @param map map to send
      */
     public String post(String url, Map<String, String> map) {
-        String result = "";
+        String result = "No response.";
         FormBody.Builder build = new FormBody.Builder();
         for (Map.Entry<String, String> item : map.entrySet()) {
             build.add(item.getKey(), item.getValue());
@@ -57,6 +55,5 @@ public class OkHttp {
         }
         return result;
     }
-
 
 }
