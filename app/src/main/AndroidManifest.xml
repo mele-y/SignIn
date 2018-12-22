@@ -53,7 +53,7 @@
         <activity
             android:name=".MainActivity"
             android:label="SignIn"
-            android:theme="@style/mainTheme">
+            android:theme="@style/ToolBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -66,7 +66,8 @@
         <activity android:name=".SearchClass"></activity>
         <activity android:name=".editStudentInfo"></activity>
         <activity android:name=".SignIn2"></activity>
-
+        <activity android:name=".studentEnterClass"
+            android:theme="@style/ToolBarTheme"></activity>
         <!-- APP key, 可以在这里设置，也可以在 SDKOptions 中提供。
     如果 SDKOptions 中提供了，取 SDKOptions 中的值。 -->
         <meta-data
