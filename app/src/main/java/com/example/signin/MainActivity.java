@@ -1,6 +1,9 @@
 package com.example.signin;
 
 import android.app.TabActivity;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -71,33 +74,50 @@ public class MainActivity extends AppCompatActivity {
         college.setText("南京理工大学");
         //设置滑动菜单的显示内容
 
-          TabHost tabHost=(TabHost)findViewById(android.R.id.tabhost);//获取选项卡实例
-        tabHost.setup();
-        LayoutInflater inflater=LayoutInflater.from(this);
-        inflater.inflate(R.layout.tab1,tabHost.getTabContentView());
-        inflater.inflate(R.layout.tab2,tabHost.getTabContentView());
-        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("我加入的课程").setContent(R.id.left));
-        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("我创建的课程").setContent(R.id.right)); //设置选项卡显示的布局
 
         List<Map<String,Object>> listItem=new ArrayList<Map<String,Object>>();
         for(int i=0;i<data.length;i++)
         { Map<String,Object> map=new HashMap<String,Object>();
-        map.put("name",data[i].getName());
-        map.put("classId",data[i].getClassId());
-         listItem.add(map);
+            map.put("name",data[i].getName());
+            map.put("classId",data[i].getClassId());
+            listItem.add(map);
         }
         SimpleAdapter adapter=new SimpleAdapter(MainActivity.this,listItem,R.layout.class_item,new String[]{"name","classId"},new int[]{R.id.class_name,R.id.class_id});
-        ListView listView=(ListView)findViewById(R.id.class_view1);
+        ListView listView=(ListView)findViewById(R.id.class_view);
         listView.setAdapter(adapter);//设置ListView显示的内容
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main,menu);
-        return true;
-    }//给标题栏加载右上角菜单
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+        FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.join_class);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,SearchClass.class);
+                startActivity(intent);
+            }
+        });//点击加号跳转到搜索班课界面
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case  R.id.nav_edit:
+                        Intent intent1=new Intent(MainActivity.this,editStudentInfo.class);
+                        startActivity(intent1);
+                        break;//点击编辑跳转至编辑个人信息
+                    case R.id.nav_exit:
+                        Intent intent2=new Intent(MainActivity.this,logIn.class);
+                        startActivity(intent2);//点击退出跳转至登录页
+                        break;
+                        default:
+                }
+                return true;
+            }
+
+        });
+    }
+
+
+
+
+   public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
             case android.R.id.home:
@@ -108,4 +128,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-}
+    }

@@ -13,6 +13,12 @@
             android:name=".logIn"
             android:label="This is login"
             >
+
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="SignIn"
+            android:theme="@style/mainTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,13 +26,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:label="SignIn"
-            android:theme="@style/mainTheme"></activity>
-        <activity
             android:name=".SignIn"
             android:label="this is signIn"></activity>
         <activity android:name=".SearchClass"></activity>
+        <activity android:name=".editStudentInfo"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
