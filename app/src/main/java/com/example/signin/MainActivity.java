@@ -108,4 +108,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+    //获取edit 跳转信息界面
 }

@@ -11,8 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".logIn"
-            android:label="This is login"
-            >
+            android:label="This is login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,12 +20,20 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="SignIn"
-            android:theme="@style/mainTheme"></activity>
+            android:label="SignIn" />
+
         <activity
             android:name=".SignIn"
-            android:label="this is signIn"></activity>
+            android:label="this is signIn" >
+
+        </activity>
+        <activity android:name=".createClass" />
+        <activity android:name=".mainCourse"></activity>
+        <activity
+            android:name=".main_Sign"
+            android:label="签到界面" />
         <activity android:name=".SearchClass"></activity>
+        <activity android:name=".SignIn2" android:label="sign in"></activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
+
 </manifest>
