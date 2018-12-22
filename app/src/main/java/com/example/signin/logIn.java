@@ -56,10 +56,10 @@ public class logIn extends AppCompatActivity {
             public void run() {
                 try{
                     Map<String, String> map = new HashMap<>();
-                    map.put("phonenum", user_phone);
-                    map.put("password", password);
+                    map.put("phonenum", "18260071012");
+                    map.put("password", "12345678");
                     OkHttp okhttp = new OkHttp();
-                    String result = okhttp.post("http://98.142.138.123:12345/api/test", map);
+                    String result = okhttp.post("http://98.142.138.123:5000/login", map);
                     jsonReader reader = new jsonReader();
                     String recvMessage = reader.recvLogin(result);
                     if(recvMessage.equals("success"))
@@ -80,7 +80,7 @@ public class logIn extends AppCompatActivity {
             @Override
             public void run() {
                 //在这里进行UI操作，将结果显示到界面上
-                chromToast.showToast(logIn.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
+                chromToast.showToast(logIn.this, response, true, 0xAAFF6100, 0xAAFFFFFF);
             }
         });
     }
@@ -90,7 +90,7 @@ public class logIn extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                chromToast.showToast(logIn.this, "success", false, 0xAA00FF7F, 0xFFFFFFFF);
+                chromToast.showToast(logIn.this, "success", false, 0xAA00FF7F, 0xAAFFFFFF);
                 Intent intent=new Intent(logIn.this,MainActivity.class);
                 startActivity(intent);
             }

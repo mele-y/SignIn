@@ -9,12 +9,23 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            //设置支持的SO库架构
+            abiFilters "armeabi-v7a", "x86","arm64-v8a","x86_64"
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
     }
 }
 
@@ -31,4 +42,18 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'com.squareup.okio:okio:2.1.0'
     implementation 'com.google.code.gson:gson:2.8.5'
+    // 基础功能 (必需)
+    implementation 'com.netease.nimlib:basesdk:5.7.0'
+    // 音视频和互动白板服务需要
+    implementation 'com.netease.nimlib:nrtc:5.7.0'
+    // 音视频需要
+    implementation 'com.netease.nimlib:avchat:5.7.0'
+    // 聊天室需要
+    implementation 'com.netease.nimlib:chatroom:5.7.0'
+    // 互动白板服务需要
+    implementation 'com.netease.nimlib:rts:5.7.0'
+    // 全文检索服务需要
+    implementation 'com.netease.nimlib:lucene:5.7.0'
+    // 小米、华为、魅族、fcm 推送
+    implementation 'com.netease.nimlib:push:5.7.0'
 }
