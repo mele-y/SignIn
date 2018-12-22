@@ -30,6 +30,7 @@
             android:label="this is signIn"></activity>
         <activity android:name=".SearchClass"></activity>
         <activity android:name=".editStudentInfo"></activity>
+        <activity android:name=".SignIn2"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
