@@ -1,5 +1,11 @@
 # SignIn     
 
+## Introduction
+Software Project Management Course Project
+
+## Development
+The UI or front-end is built in Android, the web server is written in Python with Flask[[here](https://github.com/KosumosuL/SignInServer)]. 
+
 ## 配置库的目录结构     
 > "$"代表配置库根目录
 
