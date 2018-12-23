@@ -45,7 +45,7 @@ public class OkHttp {
             build.add(item.getKey(), item.getValue());
         }
         RequestBody body = build.build();
-        Request request = new Request.Builder().url(url).post(body).build();
+        Request request = new Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8").url(url).post(body).build();
         OkHttpClient client = new OkHttpClient();
         try {
             Response response = client.newCall(request).execute();

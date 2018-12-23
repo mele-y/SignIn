@@ -43,11 +43,6 @@ public class createClass extends AppCompatActivity {
                     Intent intent=new Intent(createClass.this,tea_Main.class);
                     startActivity(intent);
 
-
-
-
-
-
             }
         });
     }

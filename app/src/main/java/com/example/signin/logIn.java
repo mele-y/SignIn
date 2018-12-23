@@ -46,22 +46,22 @@ public class logIn extends AppCompatActivity {
                 user_phone=et_user_phone.getText().toString().trim();//获取手机号
                 password=et_psw.getText().toString().trim();//获取密码
 
-                sendLoginRequest();
+                sendLogInRequest();
             }
         });
     }
-    private void sendLoginRequest(){
+    private void sendLogInRequest(){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     Map<String, String> map = new HashMap<>();
-                    map.put("phonenum", "18260071012");
-                    map.put("password", "12345678");
+                    map.put("phonenum", user_phone);
+                    map.put("password", password);
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.post("http://98.142.138.123:5000/login", map);
                     jsonReader reader = new jsonReader();
-                    String recvMessage = reader.recvLogin(result);
+                    String recvMessage = reader.recvLogIn(result);
                     if(recvMessage.equals("success"))
                         goIntent();
                     else
@@ -80,7 +80,7 @@ public class logIn extends AppCompatActivity {
             @Override
             public void run() {
                 //在这里进行UI操作，将结果显示到界面上
-                chromToast.showToast(logIn.this, response, true, 0xAAFF6100, 0xAAFFFFFF);
+                chromToast.showToast(logIn.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
             }
         });
     }
@@ -90,7 +90,7 @@ public class logIn extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                chromToast.showToast(logIn.this, "success", false, 0xAA00FF7F, 0xAAFFFFFF);
+                chromToast.showToast(logIn.this, "登录成功", false, 0xAA00FF7F, 0xFFFFFFFF);
                 Intent intent=new Intent(logIn.this,MainActivity.class);
                 startActivity(intent);
             }

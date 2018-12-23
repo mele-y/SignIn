@@ -52,12 +52,16 @@ public class SignIn extends AppCompatActivity {
             //判断验证码 密码确认是否正确若正确 跳转
                 if(user_phone.isEmpty())
                     showResponse("请输入手机号码", false);
+                else if(!(user_phone.length() == 11 && isNumeric(user_phone)))
+                    showResponse("手机号码不合法", false);
                 else if(password.isEmpty())
                     showResponse("请输入密码", false);
                 else if(confirm_psw.isEmpty())
                     showResponse("请确认密码", false);
                 else if(code.isEmpty())
                     showResponse("请输入验证码", false);
+                else if(!password.equals(confirm_psw))
+                    showResponse("两次密码不一致", false);
                 else
                     checkCode(user_phone, code);
             }
@@ -68,8 +72,8 @@ public class SignIn extends AppCompatActivity {
             public void onClick(View v)
             {
                 user_phone=et_user_phone.getText().toString().trim();
-                sendMessage(user_phone);
                 //发送验证码给手机
+                sendMessage(user_phone);
             }
         }
         );
@@ -126,9 +130,9 @@ public class SignIn extends AppCompatActivity {
             public void run() {
                 //在这里进行UI操作，将结果显示到界面上
                 if(pos)
-                    chromToast.showToast(SignIn.this, response, false, 0xAA00FF7F, 0xAAFFFFFF);
+                    chromToast.showToast(SignIn.this, response, false, 0xAA00FF7F, 0xFFFFFFFF);
                 else
-                    chromToast.showToast(SignIn.this, response, true, 0xAAFF6100, 0xAAFFFFFF);
+                    chromToast.showToast(SignIn.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
             }
         });
     }
@@ -151,6 +155,8 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent=new Intent(SignIn.this,SignIn2.class);//跳转下一页主界面
+                intent.putExtra("user_phone", user_phone);
+                intent.putExtra("password", password);
                 startActivity(intent);
             }
         });

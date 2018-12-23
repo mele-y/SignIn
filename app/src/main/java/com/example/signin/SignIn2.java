@@ -11,16 +11,27 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.signin.utility.OkHttp;
+import com.example.signin.utility.chromToast;
+import com.example.signin.utility.jsonReader;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class SignIn2 extends AppCompatActivity {
-    private Button btn_register,btn_identify,btn_gender;
-    private EditText et_major,et_college,et_id_num,et_user_name;//
-    private String major,college,id_num,user_name,gender,identify;
+    private Button btn_register;
+    private EditText et_major,et_college,et_id_num,et_user_name;
+    private String major,college,id_num,user_name,gender,identity,user_phone,password;
     private RadioButton male,female,tea,stu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in_page2);
-        Toolbar toolbar1=(Toolbar)findViewById(R.id.toolbar1);
+        Intent intent = getIntent();
+        //succession
+        user_phone = intent.getStringExtra("user_phone");
+        password = intent.getStringExtra("password");
+        Toolbar toolbar1 = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar1);
         //back
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -45,7 +56,7 @@ public class SignIn2 extends AppCompatActivity {
             {
 
                 major=et_major.getText().toString().trim();
-                college=et_major.getText().toString().trim();
+                college=et_college.getText().toString().trim();
                 id_num=et_id_num.getText().toString().trim();
                 user_name=et_user_name.getText().toString().trim();
                 if(male.isChecked())
@@ -57,19 +68,72 @@ public class SignIn2 extends AppCompatActivity {
                 }
                 if(tea.isChecked())
                 {
-                    identify="tea";
+                    identity="tea";
                 }
                 else if(stu.isChecked()){
-                    identify="stu";
+                    identity="stu";
                 }
-                Toast.makeText(getApplicationContext(),"注册成功",Toast.LENGTH_LONG).show();
-                Intent intent=new Intent(SignIn2.this,logIn.class);//跳转登录主界面
-                startActivity(intent);
+
+                sendSignUpRequest();
             }
         });
 
 
     }
+
+    private void sendSignUpRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", user_phone);
+                    map.put("password", password);
+                    map.put("realname", user_name);
+                    map.put("college", college);
+                    map.put("major", major);
+                    map.put("sex", gender);
+                    map.put("ID", id_num);
+                    map.put("identity", identity);
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.post("http://98.142.138.123:5000/api/register", map);
+                    jsonReader reader = new jsonReader();
+                    String recvMessage = reader.recvSignUp(result);
+                    if(recvMessage.equals("200"))
+                        goIntent();
+                    else
+                        showResponse(recvMessage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    //跳转页面
+    private void goIntent(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                chromToast.showToast(SignIn2.this, "注册成功", false, 0xAA00FF7F, 0xFFFFFFFF);
+                Intent intent=new Intent(SignIn2.this,logIn.class);//跳转登录主界面
+                startActivity(intent);
+            }
+        });
+    }
+
+    //Http测试用函数
+    private void showResponse(final String response){
+        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //在这里进行UI操作，将结果显示到界面上
+                chromToast.showToast(SignIn2.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
+            }
+        });
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
@@ -81,5 +145,6 @@ public class SignIn2 extends AppCompatActivity {
         }
         return true;
     }
+
 }
 

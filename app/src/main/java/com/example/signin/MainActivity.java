@@ -31,14 +31,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.example.signin.utility.OkHttp;
+import com.example.signin.utility.jsonReader;
+
 
 
 public class MainActivity extends AppCompatActivity {
-    private classInfo[] data={ new classInfo("中国近代史","001"),
-            new classInfo("软件项目管理","002"),
-            new classInfo("UML","003"),
-            new classInfo("编译原理","004")
-    };   //要显示在列表中的内容
     private DrawerLayout mDrawerLayout;  //定义滑动菜单布局
     TextView user_name;
     TextView nick_name;
@@ -75,16 +73,9 @@ public class MainActivity extends AppCompatActivity {
         //设置滑动菜单的显示内容
 
 
-        List<Map<String,Object>> listItem=new ArrayList<Map<String,Object>>();
-        for(int i=0;i<data.length;i++)
-        { Map<String,Object> map=new HashMap<String,Object>();
-            map.put("name",data[i].getName());
-            map.put("classId",data[i].getClassId());
-            listItem.add(map);
-        }
-        SimpleAdapter adapter=new SimpleAdapter(MainActivity.this,listItem,R.layout.class_item,new String[]{"name","classId"},new int[]{R.id.class_name,R.id.class_id});
-        ListView listView=(ListView)findViewById(R.id.class_view);
-        listView.setAdapter(adapter);//设置ListView显示的内容
+
+        sendViewEnrolledClassesRequest();
+
 
         FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.join_class);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -114,8 +105,38 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void sendViewEnrolledClassesRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+//                    Map<String, String> map = new HashMap<>();
+//                    map.put("user_name", user_name.getText().toString());
+//                    map.put("id_no", id_no.getText().toString());
+//                    OkHttp okhttp = new OkHttp();
+//                    String result = okhttp.post("http://98.142.138.123:5000/ViewEnrolledClasses", map);
+                    jsonReader reader = new jsonReader();
+                    List<Map<String,Object>> listItem = reader.recvSearchClass("test");
+                    fillList(listItem);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
-
+    private void fillList(final List<Map<String,Object>> listItem){
+        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //在这里进行UI操作，将结果显示到界面上
+                SimpleAdapter adapter=new SimpleAdapter(MainActivity.this,listItem,R.layout.class_item,new String[]{"name","classId"},new int[]{R.id.class_name,R.id.class_id});
+                ListView listView=(ListView)findViewById(R.id.class_view);
+                listView.setAdapter(adapter);//设置ListView显示的内容
+            }
+        });
+    }
 
    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
