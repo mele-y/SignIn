@@ -85,7 +85,6 @@ public class jsonReader {
         classes.add(new classInfo("编译原理","004"));
         Gson gson = new Gson();
         String json = gson.toJson(classes);
-        System.out.println(json);
         return json;
     }
 
