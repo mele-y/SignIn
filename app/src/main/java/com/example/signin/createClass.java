@@ -1,5 +1,6 @@
 package com.example.signin;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -30,19 +31,23 @@ public class createClass extends AppCompatActivity {
         btn_create=findViewById((R.id.btn_create));
         class_id=findViewById(R.id.class_id);
         lesson_name=findViewById(R.id.lesson_name);
-        btn_create.setOnClickListener(new View.OnClickListener()//点击注册按钮,跳转注册界面
+        btn_create.setOnClickListener(new View.OnClickListener()//点击创建班课跳转主页面 查看所有班课
         {
             @Override
             public void onClick(View v)
             {
                 id=class_id.getText().toString().trim();
                 name=lesson_name.getText().toString().trim();
-                //判断是否成功
-                if(true)
-                {
+                //if true 判断是否创建成功 
                     Toast.makeText(getApplicationContext(),"创建成功",Toast.LENGTH_LONG).show();
-                    //跳转主页面 查看所有班课  MainActivity
-                }
+                    Intent intent=new Intent(createClass.this,tea_Main.class);
+                    startActivity(intent);
+
+
+
+
+
+
             }
         });
     }
