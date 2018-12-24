@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     TextView id_no;
     TextView college;
     TextView major;
-
+    private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +74,18 @@ public class MainActivity extends AppCompatActivity {
         //设置滑动菜单的显示内容
 
 
-
+        listView=findViewById(R.id.class_view);
         sendViewEnrolledClassesRequest();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Map<String,Object>map=(Map<String, Object>)parent.getItemAtPosition(position);
+                Intent intent=new Intent(MainActivity.this,studentEnterClass.class);
+                intent.putExtra("name", map.get("name").toString());
+                intent.putExtra("classId",map.get("classId").toString());
+                startActivity(intent);
+            }
+        });
 
 
         FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.join_class);
@@ -132,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 //在这里进行UI操作，将结果显示到界面上
                 SimpleAdapter adapter=new SimpleAdapter(MainActivity.this,listItem,R.layout.class_item,new String[]{"name","classId"},new int[]{R.id.class_name,R.id.class_id});
-                ListView listView=(ListView)findViewById(R.id.class_view);
+                //ListView listView=(ListView)findViewById(R.id.class_view);
                 listView.setAdapter(adapter);//设置ListView显示的内容
             }
         });

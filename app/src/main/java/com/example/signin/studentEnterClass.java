@@ -1,5 +1,6 @@
 package com.example.signin;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -25,8 +26,11 @@ public class studentEnterClass extends AppCompatActivity {
         Toolbar stu_toolbar=(Toolbar)findViewById(R.id.stu_toolbar);//获取TOOLBAR实例
         setSupportActionBar(stu_toolbar);//把TOOLBAR设为标题栏
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("软件项目管理");
-        stu_toolbar.setSubtitle("001");
+        Intent intent=getIntent();
+        String name= (String) intent.getCharSequenceExtra("name");
+        String classId= (String) intent.getCharSequenceExtra("classId");
+        getSupportActionBar().setTitle(name);
+        stu_toolbar.setSubtitle(classId);//设置标题与副标题
 
 
         f1=new stuClassMemberFragment();
@@ -66,7 +70,18 @@ public class studentEnterClass extends AppCompatActivity {
             }
         });
     }
-    public void switchFragment(int lastfragment,int index){
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home)
+        {
+            finish();
+            return  true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void switchFragment(int lastfragment, int index){
         FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
         transaction.hide(fragments[lastfragment]);
         if(fragments[index].isAdded()==false)

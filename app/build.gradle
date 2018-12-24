@@ -56,4 +56,6 @@ dependencies {
     implementation 'com.netease.nimlib:lucene:5.7.0'
     // 小米、华为、魅族、fcm 推送
     implementation 'com.netease.nimlib:push:5.7.0'
+    //QMUI控件
+    implementation 'com.qmuiteam:qmui:1.1.3'
 }

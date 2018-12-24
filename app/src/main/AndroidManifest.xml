@@ -69,7 +69,7 @@
         <activity android:name=".SignIn2" />
         <activity
             android:name=".studentEnterClass"
-            android:theme="@style/ToolBarTheme" />
+            android:theme="@style/QMUITheme" />
         <!--
     APP key, 可以在这里设置，也可以在 SDKOptions 中提供。
     如果 SDKOptions 中提供了，取 SDKOptions 中的值。
