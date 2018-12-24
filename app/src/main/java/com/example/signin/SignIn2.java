@@ -20,8 +20,8 @@ import java.util.Map;
 
 public class SignIn2 extends AppCompatActivity {
     private Button btn_register;
-    private EditText et_major,et_college,et_id_num,et_user_name;
-    private String major,college,id_num,user_name,gender,identity,user_phone,password;
+    private EditText et_major,et_college,et_id_num,et_user_name,nickname;
+    private String major,college,id_num,user_name,gender,identity,user_phone,password,nick_name;
     private RadioButton male,female,tea,stu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,7 @@ public class SignIn2 extends AppCompatActivity {
         stu=findViewById(R.id.stu_radio);
         btn_register=findViewById(R.id.btn_register);
         et_college=findViewById(R.id.college);
+        nickname=findViewById(R.id.nick_name);
         et_id_num=findViewById(R.id.id_num);
         et_major=findViewById(R.id.major);
         et_user_name=findViewById(R.id.user_name);
@@ -54,7 +55,7 @@ public class SignIn2 extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-
+                nick_name=nickname.getText().toString().trim();
                 major=et_major.getText().toString().trim();
                 college=et_college.getText().toString().trim();
                 id_num=et_id_num.getText().toString().trim();
