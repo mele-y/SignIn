@@ -38,10 +38,11 @@ public class studentEnterClass extends AppCompatActivity {
         f3=new stuSignInFragment();
         lastfragment=0;
         fragments=new Fragment[]{f1,f2,f3};
-        getSupportFragmentManager().beginTransaction().replace(R.id.stuEnterClass_mainView,f2).show(f2);
+        getSupportFragmentManager().beginTransaction().replace(R.id.stuEnterClass_mainView,f1).commit();//设置默认碎片
         bottomNavigationView=(BottomNavigationView)findViewById(R.id.stu_bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
+            //导航栏点击事件
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()){
                     case R.id.stu_class_member: {
@@ -79,7 +80,7 @@ public class studentEnterClass extends AppCompatActivity {
             return  true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }//左上角返回按钮事件
 
     public void switchFragment(int lastfragment, int index){
         FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
@@ -89,5 +90,5 @@ public class studentEnterClass extends AppCompatActivity {
             transaction.add(R.id.stuEnterClass_mainView,fragments[index]);
         }
         transaction.show(fragments[index]).commitAllowingStateLoss();
-    }
+    }//切换不同片段布局转换
 }

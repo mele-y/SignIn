@@ -3,12 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".stuClassMemberFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="用于显示班级成员"
-        android:textSize="30sp"></TextView>
+        android:layout_height="wrap_content"
+        android:background="@color/qmui_config_color_background">
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+<com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/member_list"
+    android:orientation="vertical"
+    ></com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView>
+        </android.support.v7.widget.LinearLayoutCompat>
+    </ScrollView>
+
 </FrameLayout>
