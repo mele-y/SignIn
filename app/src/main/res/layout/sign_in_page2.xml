@@ -19,15 +19,34 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
         </android.support.v7.widget.Toolbar>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:text="姓名"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/s1"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="*"
+            android:textSize="20sp"
+            android:textColor="#c50f57"
+            />
         <EditText
             android:id="@+id/user_name"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="35dp"
             android:layout_marginRight="35dp"
-            android:layout_marginTop="80dp"
+
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             android:hint="请输入姓名"
@@ -36,13 +55,106 @@
             android:textColor="#000000"
             android:textColorHint="#a3a3a3"
             android:textSize="18sp" />
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/t"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginLeft="41dp"
+                android:text="id"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:id="@+id/p1"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:text="*"
+                android:textSize="20sp"
+                android:textColor="#c50f57"
+                />
+            <EditText
+                android:id="@+id/id_num"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="35dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:hint="请输入工号/学号"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:textColorHint="#a3a3a3"
+                android:textSize="18sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
 
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/nick"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:text="昵称:"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:id="@+id/n1"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:text=""
+                android:textSize="20sp"
+                android:textColor="#c50f57"
+                />
+            <EditText
+                android:id="@+id/nick_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+
+                android:layout_marginRight="35dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:hint="请输入昵称"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:textColorHint="#a3a3a3"
+                android:textSize="18sp" />
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/scho"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:text="学校:"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/s2"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text=""
+            android:textSize="20sp"
+            android:textColor="#c50f57"
+            />
         <EditText
             android:id="@+id/college"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="35dp"
+
             android:layout_marginRight="35dp"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
@@ -52,29 +164,27 @@
             android:textColor="#000000"
             android:textColorHint="#a3a3a3"
             android:textSize="18sp" />
+    </LinearLayout>
 
-        <EditText
-            android:id="@+id/id_num"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:hint="请输入工号/学号"
-            android:paddingLeft="8dp"
-            android:singleLine="true"
-            android:textColor="#000000"
-            android:textColorHint="#a3a3a3"
-            android:textSize="18sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
 
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/z"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:text="专业:"
+            android:textSize="20sp"
+            />
         <EditText
             android:id="@+id/major"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="35dp"
+
             android:layout_marginRight="35dp"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
@@ -85,7 +195,7 @@
             android:textColorHint="#a3a3a3"
             android:textSize="18sp" />
 
-
+    </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

@@ -19,12 +19,33 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
         </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="80dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="2dp"
+            android:text="手机号"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/n"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="*"
+            android:textSize="20sp"
+            android:textColor="#c50f57"
+            />
         <EditText
             android:id="@+id/user_phone"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="35dp"
+
             android:layout_marginTop="100dp"
             android:layout_marginRight="35dp"
             android:drawablePadding="10dp"
@@ -36,29 +57,72 @@
             android:textColorHint="#a3a3a3"
             android:textSize="18sp" />
         <!--输入框-->
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:inputType="textPassword"
-            android:hint="请设置密码"
-            android:paddingLeft="8dp"
-            android:singleLine="true"
-            android:textColor="#000000"
-            android:textColorHint="#a3a3a3"
-            android:textSize="18sp" />
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:text="密码"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:id="@+id/p"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:text="*"
+                android:textSize="20sp"
+                android:textColor="#c50f57"
+                />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="35dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:inputType="textPassword"
+                android:hint="请设置密码"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:textColorHint="#a3a3a3"
+                android:textSize="18sp" />
+            <!--输入框-->
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/t"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:text="密码"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:id="@+id/p1"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:text="*"
+                android:textSize="20sp"
+                android:textColor="#c50f57"
+                />
         <EditText
             android:id="@+id/paw_confirm"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="35dp"
+
             android:layout_marginRight="35dp"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
@@ -69,13 +133,33 @@
             android:textColor="#000000"
             android:textColorHint="#a3a3a3"
             android:textSize="18sp" />
-
+</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/co"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginLeft="2dp"
+                android:text="验证码"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:id="@+id/c"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:text="*"
+                android:textSize="20sp"
+                android:textColor="#c50f57"
+                />
         <EditText
             android:id="@+id/code"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="35dp"
+
             android:layout_marginRight="35dp"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
@@ -86,7 +170,7 @@
             android:textColor="#000000"
             android:textColorHint="#a3a3a3"
             android:textSize="18sp" />
-
+        </LinearLayout>
         <Button
             android:id="@+id/next"
             android:layout_width="fill_parent"
