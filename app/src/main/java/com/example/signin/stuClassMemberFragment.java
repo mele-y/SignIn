@@ -58,6 +58,7 @@ public class stuClassMemberFragment extends Fragment {
 
         return view;
         //使用了腾讯的QMUI，一些数据操作可能要在fragment的其他生命周期中实现
+        //数据加载至列表中也可通过适配器实现
     }
 
 }
