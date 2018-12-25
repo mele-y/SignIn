@@ -39,8 +39,10 @@ public class mainSignFra extends Fragment {
             qmuiGroupListView=view.findViewById(R.id.sign_in_list);
             qmuiGroupListView.setSeparatorStyle(QMUIGroupListView.SEPARATOR_STYLE_NORMAL);
 //显示每个日期的签到率
+
             QMUICommonListItemView msg1=qmuiGroupListView.createItemView("2018-12-20");
             msg1.setDetailText("星期四");
+             msg1.setTag(1);
             msg1.setOrientation(QMUICommonListItemView.VERTICAL);
             msg1.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
             TextView tx=new TextView(getContext());
@@ -54,11 +56,12 @@ public class mainSignFra extends Fragment {
             TextView tx2=new TextView(getContext());
             tx2.setText("80%");
             msg2.addAccessoryCustomView(tx2);
+            msg2.setTag(2);
 
             String title2="80%";//逻辑层获取信息修改title2
             QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext()).setTitle("总签到率                                                                                                  "+ title2);
-            section.addItemView(msg1,null);
-            section.addItemView(msg2,null);
+            section.addItemView(msg1,mOnClickListenerGroup);
+            section.addItemView(msg2,mOnClickListenerGroup);
             section.addTo(qmuiGroupListView);
 
             return view;
@@ -75,5 +78,27 @@ public class mainSignFra extends Fragment {
                 }
             });
         }
+
+    //统一处理选项点击事件
+
+
+
+    private View.OnClickListener mOnClickListenerGroup = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            QMUICommonListItemView viewList = (QMUICommonListItemView) view;
+            switch ((int)viewList.getTag()) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+            }
+            Toast.makeText(getActivity(),"选项：" +  viewList.getTag()+ " 点击了",Toast.LENGTH_SHORT).show();
+
+        }
+
+    };
+
     }
+
 
