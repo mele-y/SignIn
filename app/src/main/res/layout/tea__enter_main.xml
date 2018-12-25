@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".studentEnterClass">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tea_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ToolBarTheme"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+        ></android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:id="@+id/teaEnterClass_mainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"></LinearLayout>
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/tea_bottom_nav"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:menu="@menu/tea_nav_menu"></android.support.design.widget.BottomNavigationView>
+
+</LinearLayout>
