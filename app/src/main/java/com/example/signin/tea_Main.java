@@ -1,9 +1,7 @@
 package com.example.signin;
 
-import android.app.TabActivity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,18 +9,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -59,6 +54,10 @@ private  List<classInfo> classList=new ArrayList<>();
         {
             classInfo class_=classList.get(position);
             Toast.makeText(tea_Main.this,class_.getName(),Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(tea_Main.this,tea_Enter_main.class);
+            intent.putExtra("name", class_.getName().toString());
+            intent.putExtra("classId",class_.getClassId().toString());
+            startActivity(intent);
             //可以getId获得标识
         }
         });
@@ -126,7 +125,7 @@ private  List<classInfo> classList=new ArrayList<>();
         return true;
     }
     private void initClass(){
-  for(int i=0;i<1;i++)
+  for(int i=0;i<1;i++)//逻辑层可以根据获取的数据设置课程
     {
         classInfo class1=new classInfo("media","001");
         classList.add(class1);

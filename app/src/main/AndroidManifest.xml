@@ -54,11 +54,6 @@
             android:name=".MainActivity"
             android:label="SignIn"
             android:theme="@style/ToolBarTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity
@@ -69,7 +64,10 @@
         <activity android:name=".SignIn2" />
         <activity
             android:name=".studentEnterClass"
-            android:theme="@style/QMUITheme" />
+
+            android:theme="@style/QMUITheme" >
+
+        </activity>
         <!--
     APP key, 可以在这里设置，也可以在 SDKOptions 中提供。
     如果 SDKOptions 中提供了，取 SDKOptions 中的值。
@@ -122,12 +120,20 @@
 
         <activity
             android:name=".tea_Main"
-            android:label="教师界面">
-
+            android:label="教师界面"
+         >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".mainCourse"></activity>
         <activity android:name=".createClass"></activity>
         <activity android:name=".editTeaInfo"></activity>
+        <activity android:name=".tea_Enter_main"   android:theme="@style/QMUITheme">
+
+        </activity>
+
     </application>
 
 </manifest>
