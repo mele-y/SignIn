@@ -62,6 +62,8 @@ public class SignIn extends AppCompatActivity {
                     showResponse("请输入验证码", false);
                 else if(!password.equals(confirm_psw))
                     showResponse("两次密码不一致", false);
+                else if(!(password.length()>=8 && password.length()<=20))
+                    showResponse("密码长度需为8到20位", false);
                 else
                     checkCode(user_phone, code);
             }
@@ -105,12 +107,12 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void run() {
                 try{
-                    if(MobileMessageCheck.checkMsg(phone, code).equals("success")) {
-                         showResponse("校验成功", true);
+//                    if(MobileMessageCheck.checkMsg(phone, code).equals("success")) {
+//                         showResponse("校验成功", true);
                          goIntent();
-                    }
-                    else
-                        showResponse("校验失败", false);
+//                    }
+//                    else
+//                        showResponse("校验失败", false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

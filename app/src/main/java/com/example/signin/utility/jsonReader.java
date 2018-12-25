@@ -9,6 +9,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.example.signin.classInfo;
 import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,25 +27,29 @@ public class jsonReader {
      * @param jsonData JSON received from server
      */
     public String recvLogIn(String jsonData){
-        String message = "No response.";
+        String token = "";
         JsonParser parser = new JsonParser();  //创建json解析器
         try {
             JsonObject json = (JsonObject) parser.parse(jsonData);
-            message = json.get("access_token").getAsString();
+            if(json.get("access_token") == null){
+                return json.get("message").getAsString();
+            }
+            else
+                token = json.get("access_token").getAsString();
         } catch (JsonIOException e) {
             e.printStackTrace();
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
-        return message;
+        return token;
     }
 
     public String recvSignUp(String jsonData){
-        String message = "No response.";
+        String message = "";
         JsonParser parser = new JsonParser();  //创建json解析器
         try {
             JsonObject json = (JsonObject) parser.parse(jsonData);
-            message = json.get("status").getAsString();
+            message = json.get("message").getAsString();
         } catch (JsonIOException e) {
             e.printStackTrace();
         } catch (JsonSyntaxException e) {
@@ -88,4 +93,34 @@ public class jsonReader {
         return json;
     }
 
+    public List<Map<String,Object>> recvGetAllClass(String json){
+        List<Map<String,Object>> listItem=new ArrayList<Map<String,Object>>();
+        try {
+            JsonParser parser = new JsonParser();  //创建json解析器
+            JsonObject jsonObj = parser.parse(json).getAsJsonObject();
+            int status = jsonObj.get("status").getAsInt();
+            if(status == 200){
+                JsonArray jsonArray = jsonObj.get("message").getAsJsonArray();
+                Gson gson = new Gson();
+                //加强for循环遍历JsonArray
+                for (int i=0;i<jsonArray.size();++i) {
+                    JsonObject cls = jsonArray.get(i).getAsJsonObject();
+                    //使用GSON，直接转成Bean对象
+                    Map<String,Object> map=new HashMap<String,Object>();
+                    map.put("name",cls.get("classID").getAsString());
+                    map.put("classId",cls.get("classname").getAsString());
+                    System.out.println("=========================");
+                    System.out.println(cls.get("classID").getAsString());
+                    System.out.println(cls.get("classname").getAsString());
+                    System.out.println("=========================");
+                    listItem.add(map);
+                }
+            }
+        } catch (JsonIOException e) {
+            e.printStackTrace();
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+        return listItem;
+    }
 }

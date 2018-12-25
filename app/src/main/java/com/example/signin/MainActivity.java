@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     TextView college;
     TextView major;
     private ListView listView;
+    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         id_no.setText("916106840344");
         major.setText("软件工程");
         college.setText("南京理工大学");
+        Intent intent = getIntent();
+        token = intent.getStringExtra("token");
         //设置滑动菜单的显示内容
 
 
@@ -87,12 +90,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        sendGetAllClassRequest();
 
         FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.join_class);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this,SearchClass.class);
+                intent.putExtra("token", token);
                 startActivity(intent);
             }
         });//点击加号跳转到搜索班课界面
@@ -128,6 +133,26 @@ public class MainActivity extends AppCompatActivity {
 //                    String result = okhttp.post("http://98.142.138.123:5000/ViewEnrolledClasses", map);
                     jsonReader reader = new jsonReader();
                     List<Map<String,Object>> listItem = reader.recvSearchClass("test");
+                    fillList(listItem);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void sendGetAllClassRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", "18260071012");
+                    map.put("ident", "student");
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postForm2("http://98.142.138.123:12345/api/getallclass", map, token);
+                    jsonReader reader = new jsonReader();
+                    List<Map<String,Object>> listItem = reader.recvGetAllClass(result);
                     fillList(listItem);
                 } catch (Exception e) {
                     e.printStackTrace();

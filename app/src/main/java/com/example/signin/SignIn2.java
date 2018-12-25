@@ -62,24 +62,46 @@ public class SignIn2 extends AppCompatActivity {
                 user_name=et_user_name.getText().toString().trim();
                 if(male.isChecked())
                 {
-                    gender="male";
+                    gender="1";
                 }
                 else if(female.isChecked()){
-                    gender="female";
+                    gender="0";
                 }
                 if(tea.isChecked())
                 {
-                    identity="tea";
+                    identity="teacher";
                 }
                 else if(stu.isChecked()){
-                    identity="stu";
+                    identity="student";
                 }
-
-                sendSignUpRequest();
+                if(!(id_num.length()==10))
+                    showResponse("ID需为10位", false);
+                else if(gender.isEmpty())
+                    showResponse("请选择性别", false);
+                else if(user_name.isEmpty())
+                    showResponse("请输入姓名", false);
+                else if(identity.isEmpty())
+                    showResponse("请选择身份", false);
+                else
+                    sendSignUpRequest();
             }
         });
 
 
+    }
+
+    private void showResponse(final String response, final boolean pos){
+        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //在这里进行UI操作，将结果显示到界面上
+                if(pos)
+                    chromToast.showToast(SignIn2.this, response, false, 0xAA00FF7F, 0xFFFFFFFF);
+                else
+                    chromToast.showToast(SignIn2.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
+            }
+        });
     }
 
     private void sendSignUpRequest(){
@@ -90,17 +112,18 @@ public class SignIn2 extends AppCompatActivity {
                     Map<String, String> map = new HashMap<>();
                     map.put("phonenum", user_phone);
                     map.put("password", password);
-                    map.put("realname", user_name);
+                    map.put("nickname", nick_name);
                     map.put("college", college);
                     map.put("major", major);
                     map.put("sex", gender);
                     map.put("ID", id_num);
-                    map.put("identity", identity);
+                    map.put("realname", user_name);
+                    map.put("ident", identity);
                     OkHttp okhttp = new OkHttp();
-                    String result = okhttp.post("http://98.142.138.123:5000/api/register", map);
+                    String result = okhttp.postForm1("http://98.142.138.123:12345/api/register", map);
                     jsonReader reader = new jsonReader();
                     String recvMessage = reader.recvSignUp(result);
-                    if(recvMessage.equals("200"))
+                    if(recvMessage.equals("Student successfully registered!"))
                         goIntent();
                     else
                         showResponse(recvMessage);

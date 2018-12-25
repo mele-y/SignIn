@@ -14,11 +14,12 @@ import java.util.Map;
 import com.example.signin.utility.chromToast;
 import com.example.signin.utility.jsonReader;
 
+
 public class logIn extends AppCompatActivity {
     private Button btn_register;
     private Button btn_login;
     private EditText et_user_phone,et_psw;//编辑框 手机号和密码
-    private String user_phone,password;
+    private String user_phone,password, token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,13 +60,16 @@ public class logIn extends AppCompatActivity {
                     map.put("phonenum", user_phone);
                     map.put("password", password);
                     OkHttp okhttp = new OkHttp();
-                    String result = okhttp.post("http://98.142.138.123:5000/login", map);
+                    String result = okhttp.postJson("http://98.142.138.123:12345/login", map);
                     jsonReader reader = new jsonReader();
                     String recvMessage = reader.recvLogIn(result);
-                    if(recvMessage.equals("success"))
+                    if(recvMessage.length() > 50) {
+                        token = recvMessage;
                         goIntent();
-                    else
+                    }
+                    else {
                         showResponse(recvMessage);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -92,6 +96,7 @@ public class logIn extends AppCompatActivity {
             public void run() {
                 chromToast.showToast(logIn.this, "登录成功", false, 0xAA00FF7F, 0xFFFFFFFF);
                 Intent intent=new Intent(logIn.this,MainActivity.class);
+                intent.putExtra("token", token);
                 startActivity(intent);
             }
         });

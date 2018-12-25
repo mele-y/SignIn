@@ -1,5 +1,6 @@
 package com.example.signin;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -9,11 +10,13 @@ import android.widget.SimpleAdapter;
 import com.example.signin.utility.OkHttp;
 import com.example.signin.utility.jsonReader;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SearchClass extends AppCompatActivity {
     private SearchView mSearchView;
     private ListView mListView;
+    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,11 +25,14 @@ public class SearchClass extends AppCompatActivity {
         mListView = findViewById(R.id.search_class_list_view);
         mSearchView.setIconifiedByDefault(false);
         mSearchView.onActionViewExpanded();
+        Intent intent = getIntent();
+        token = intent.getStringExtra("token");
+        sendGetAllClassRequest();
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             //当搜索提交时触发该方法
             public boolean onQueryTextSubmit(String query) {
-                sendSearchClassRequest();
+//                sendSearchClassRequest();
                 return true;
             }
           //当搜索内容改变时触发该方法
@@ -49,6 +55,26 @@ public class SearchClass extends AppCompatActivity {
 //                    String result = okhttp.post("http://98.142.138.123:5000/ViewEnrolledClasses", map);
                     jsonReader reader = new jsonReader();
                     List<Map<String,Object>> listItem = reader.recvSearchClass("test");
+                    fillList(listItem);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void sendGetAllClassRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", "18260071012");
+                    map.put("ident", "student");
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postForm2("http://98.142.138.123:12345/api/getallclass", map, token);
+                    jsonReader reader = new jsonReader();
+                    List<Map<String,Object>> listItem = reader.recvGetAllClass(result);
                     fillList(listItem);
                 } catch (Exception e) {
                     e.printStackTrace();
