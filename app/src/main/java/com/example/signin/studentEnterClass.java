@@ -11,8 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 public class studentEnterClass extends AppCompatActivity {
-   private BottomNavigationView bottomNavigationView;
 
+
+
+   private BottomNavigationView bottomNavigationView;
    private stuClassMemberFragment f1;
    private stuMessageFragment f2;
     private stuSignInFragment f3;

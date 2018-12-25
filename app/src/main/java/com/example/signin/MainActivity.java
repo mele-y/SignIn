@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -38,6 +40,7 @@ import com.example.signin.utility.jsonReader;
 
 
 public class MainActivity extends AppCompatActivity {
+
     private DrawerLayout mDrawerLayout;  //定义滑动菜单布局
     TextView user_name;
     TextView nick_name;
@@ -48,11 +51,12 @@ public class MainActivity extends AppCompatActivity {
     private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);//获取TOOLBAR实例
         setSupportActionBar(toolbar);//把TOOLBAR设为标题栏
-          mDrawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);//获取滑动菜单实例
+        mDrawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);//获取滑动菜单实例
 
         NavigationView navView=(NavigationView)findViewById(R.id.nav_view);
         ActionBar actionBar=getSupportActionBar();
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         id_no=(TextView) headerView.findViewById(R.id.id_no_show);
         college=(TextView) headerView.findViewById(R.id.college_show);
         major=(TextView) headerView.findViewById(R.id.major_show);
-       user_name.setText("叶剑波");
+        user_name.setText("叶剑波");
         nick_name.setText("sai");
         id_no.setText("916106840344");
         major.setText("软件工程");
@@ -78,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         listView=findViewById(R.id.class_view);
-        sendViewEnrolledClassesRequest();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -90,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        sendGetAllClassRequest();
-
+//        sendGetAllClassRequest();
+        sendSearchClassRequest();
         FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.join_class);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,8 +102,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent=new Intent(MainActivity.this,SearchClass.class);
                 intent.putExtra("token", token);
                 startActivity(intent);
+                System.out.println("======================================================");
             }
         });//点击加号跳转到搜索班课界面
+
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -121,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void sendViewEnrolledClassesRequest(){
+    private void sendSearchClassRequest(){
         new Thread(new Runnable() {
             @Override
             public void run() {

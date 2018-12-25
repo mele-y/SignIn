@@ -27,12 +27,11 @@ public class SearchClass extends AppCompatActivity {
         mSearchView.onActionViewExpanded();
         Intent intent = getIntent();
         token = intent.getStringExtra("token");
-        sendGetAllClassRequest();
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             //当搜索提交时触发该方法
             public boolean onQueryTextSubmit(String query) {
-//                sendSearchClassRequest();
+                sendSearchClassRequest();
                 return true;
             }
           //当搜索内容改变时触发该方法
@@ -55,26 +54,6 @@ public class SearchClass extends AppCompatActivity {
 //                    String result = okhttp.post("http://98.142.138.123:5000/ViewEnrolledClasses", map);
                     jsonReader reader = new jsonReader();
                     List<Map<String,Object>> listItem = reader.recvSearchClass("test");
-                    fillList(listItem);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    private void sendGetAllClassRequest(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    Map<String, String> map = new HashMap<>();
-                    map.put("phonenum", "18260071012");
-                    map.put("ident", "student");
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postForm2("http://98.142.138.123:12345/api/getallclass", map, token);
-                    jsonReader reader = new jsonReader();
-                    List<Map<String,Object>> listItem = reader.recvGetAllClass(result);
                     fillList(listItem);
                 } catch (Exception e) {
                     e.printStackTrace();
