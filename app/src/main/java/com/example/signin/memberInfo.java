@@ -11,7 +11,7 @@ import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 public class memberInfo extends AppCompatActivity {
-     private String name,classId,pre,ab;
+     private String name,classId,pre,ab,stu_id,stu_name;
     QMUIGroupListView  day_list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +22,11 @@ public class memberInfo extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent=getIntent();
         name= (String) intent.getCharSequenceExtra("name");
-        classId= (String) intent.getCharSequenceExtra("classId");
-        getSupportActionBar().setTitle(name);
-        stu_toolbar.setSubtitle(classId);//设置标题与副标题
+        classId= (String) intent.getCharSequenceExtra("classId");//课程信息
+        stu_id=(String)intent.getCharSequenceExtra("stu_id");//学生信息
+        stu_name=(String)intent.getCharSequenceExtra("stu_name");
+        getSupportActionBar().setTitle(stu_name);
+        stu_toolbar.setSubtitle(stu_id);//设置标题与副标题
 
 
         day_list=findViewById(R.id.day_list);//获取列表
