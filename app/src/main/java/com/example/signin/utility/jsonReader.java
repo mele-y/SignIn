@@ -160,4 +160,28 @@ public class jsonReader {
         }
         return classes;
     }
+
+    public int recvGetSingleAttendance(String json, String sid){
+        int status = -1;
+        List<signinInfo> list = new ArrayList<>();
+        try {
+            JsonParser parser = new JsonParser();  //创建json解析器
+            JsonObject jsonObj = parser.parse(json).getAsJsonObject();
+            status = jsonObj.get("status").getAsInt();
+            if(status == 200){
+                JsonArray jsonArray = jsonObj.get("message").getAsJsonArray();
+                for (int i=0;i<jsonArray.size();++i) {
+                    JsonObject cls = jsonArray.get(i).getAsJsonObject();
+                    if(sid.equals(cls.get("stuID").getAsString()))
+                        list.add(new signinInfo(cls.get("time").getAsString(), cls.get("result").getAsString()));
+                }
+                singleAttendanceInfo.setAttendances(list);
+            }
+        } catch (JsonIOException e) {
+            e.printStackTrace();
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
 }

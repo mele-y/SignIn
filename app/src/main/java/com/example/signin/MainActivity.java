@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
                         classInfo class_=classes.get(position);
                         chromToast.showToast(MainActivity.this, class_.getName(), false, 0xAA00FF7F, 0xFFFFFFFF);
                         sendGetAllStudentRequest(class_.getClassId().toString());
+                        sendGetSingleAttendanceRequest(class_.getClassId().toString());
                         Intent intent=new Intent(MainActivity.this,studentEnterClass.class);
                         intent.putExtra("name", class_.getName().toString());
                         intent.putExtra("classId",class_.getClassId().toString());
@@ -193,6 +194,27 @@ public class MainActivity extends AppCompatActivity {
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
                     jsonReader reader = new jsonReader();
                     reader.recvGetAllStudent(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void sendGetSingleAttendanceRequest(final String classID){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("ident", userInfo.getIdent());
+                    map.put("classID", classID);
+                    map.put("ID", userInfo.getID());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
+                    jsonReader reader = new jsonReader();
+                    reader.recvGetSingleAttendance(result, userInfo.getID());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 import com.example.signin.utility.studentInfo;
+
 public class teaMemberFra extends Fragment {
     private List<memberClass> data = new ArrayList<>();
     QMUIGroupListView  member_list;
@@ -28,14 +29,13 @@ public class teaMemberFra extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        data = studentInfo.getStu();
         View view=inflater.inflate(R.layout.fragment_stu_class_member, container, false);
         member_list=view.findViewById(R.id.member_list);//获取列表
         member_list.setSeparatorStyle(QMUIGroupListView.SEPARATOR_STYLE_NORMAL);//设置分割线
-        data = studentInfo.getStu();
         QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext()).setTitle("成员人数："+data.size());//新建section，设置标题
         if(data.size() > 0){
             List<QMUICommonListItemView> lst = new ArrayList<>();
@@ -66,11 +66,11 @@ public class teaMemberFra extends Fragment {
                 case 1:
                     break;
             }
-         //   Toast.makeText(getActivity(),"选项：" +  viewList.getTag()+ " 点击了",Toast.LENGTH_SHORT).show();
             Intent intent=new Intent(getActivity(),memberInfo.class);
             tea_Enter_main activity=(tea_Enter_main)getActivity();//获取实例
             String name=activity.getName();
             String classId=activity.getClassId();
+            sendGetSingleAttendanceRequest(classId, data.get((int)viewList.getTag()).getStu_id());
             intent.putExtra("name", name);
             intent.putExtra("classId",classId);//传递课程参数
             intent.putExtra("stu_name",data.get((int)viewList.getTag()).getStu_name());//传递学生信息
@@ -79,5 +79,26 @@ public class teaMemberFra extends Fragment {
         }
 
     };
+
+    private void sendGetSingleAttendanceRequest(final String classID, final String sID){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("ident", userInfo.getIdent());
+                    map.put("classID", classID);
+                    map.put("ID", userInfo.getID());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
+                    jsonReader reader = new jsonReader();
+                    reader.recvGetSingleAttendance(result, sID);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
 }

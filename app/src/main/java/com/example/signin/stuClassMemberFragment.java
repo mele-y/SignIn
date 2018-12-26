@@ -30,11 +30,11 @@ public class stuClassMemberFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        data = studentInfo.getStu();
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_stu_class_member, container, false);
         member_list=view.findViewById(R.id.member_list);//获取列表
         member_list.setSeparatorStyle(QMUIGroupListView.SEPARATOR_STYLE_NORMAL);//设置分割线
-        data = studentInfo.getStu();
         QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext()).setTitle("成员人数："+data.size());//新建section，设置标题
         if(data.size() > 0){
             List<QMUICommonListItemView> lst = new ArrayList<>();

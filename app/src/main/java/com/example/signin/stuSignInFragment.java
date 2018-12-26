@@ -19,8 +19,10 @@ import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -31,12 +33,15 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.AMapLocationQualityReport;
 import com.example.signin.utility.mapUtils;
 
+import com.example.signin.utility.singleAttendanceInfo;
+import com.example.signin.utility.signinInfo;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class stuSignInFragment extends Fragment {
     private static final int CODE =233;
+    private static List<signinInfo> data = new ArrayList<>();
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
     private static String[] permissions = {"android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION", "android.permission.READ_PHONE_STATE", "android.permission.WRITE_EXTERNAL_STORAGE"};
@@ -176,13 +181,14 @@ public class stuSignInFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopLocation();
         destroyLocation();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        data = singleAttendanceInfo.getAttendances();
+        String title2 = singleAttendanceInfo.getRate();
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_stu_sign_in, container, false);
         TextView time_text=view.findViewById(R.id.time_text);
@@ -192,31 +198,27 @@ public class stuSignInFragment extends Fragment {
         int day=calendar.get(Calendar.DAY_OF_MONTH);
         time_text.setText(year+"年"+month+"月"+day+"日");
         qmuiGroupListView=view.findViewById(R.id.sign_in_msg_list);
-         qmuiGroupListView.setSeparatorStyle(QMUIGroupListView.SEPARATOR_STYLE_NORMAL);
+        qmuiGroupListView.setSeparatorStyle(QMUIGroupListView.SEPARATOR_STYLE_NORMAL);
 
-        QMUICommonListItemView msg1=qmuiGroupListView.createItemView("2018-12-20");
-        msg1.setDetailText("星期四");
-        msg1.setOrientation(QMUICommonListItemView.VERTICAL);
-        msg1.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
-        TextView tx=new TextView(getContext());
-        tx.setText("已签到");
-        msg1.addAccessoryCustomView(tx);
+        QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext()).setTitle("历史签到记录                                                                                        "+ title2);
+        if(data.size() > 0){
+            List<QMUICommonListItemView> lst = new ArrayList<>();
+            List<TextView> txl = new ArrayList<>();
+            for(int i=0;i<data.size();++i){
+                QMUICommonListItemView msg = qmuiGroupListView.createItemView(data.get(i).getTime());
+                msg.setDetailText(data.get(i).getTime());
+                msg.setOrientation(QMUICommonListItemView.VERTICAL);
+                msg.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
+                TextView tx=new TextView(getContext());
+                tx.setText(data.get(i).getAttendance());
+                txl.add(tx);
+                msg.addAccessoryCustomView(txl.get(i));
+                lst.add(msg);
+                section.addItemView(lst.get(i),null);
+            }
+        }
+        section.addTo(qmuiGroupListView);//将section加入列表
 
-        QMUICommonListItemView msg2=qmuiGroupListView.createItemView("2018-12-25");
-        msg2.setDetailText("星期二");
-        msg2.setOrientation(QMUICommonListItemView.VERTICAL);
-        msg2.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
-        TextView tx2=new TextView(getContext());
-        tx2.setText("缺勤");
-        msg2.addAccessoryCustomView(tx2);
-
-        QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext()).setTitle("历史签到记录                                                                                        "+ "50%");
-        section.addItemView(msg1,null);
-        section.addItemView(msg2,null);
-        section.addTo(qmuiGroupListView);
-
-        getPermissions(CODE, permissions);
-        initLocation();
         return view;
     }
 
@@ -238,7 +240,10 @@ public class stuSignInFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    startLocation();
+                getPermissions(CODE, permissions);
+                initLocation();
+                startLocation();
+                stopLocation();
             }
         });
     }
