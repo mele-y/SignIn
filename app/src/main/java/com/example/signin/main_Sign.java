@@ -17,7 +17,7 @@ public class main_Sign extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main__sign);//签到
+//        setContentView(R.layout.activity_main__sign);//签到
         Toolbar toolbar1=(Toolbar)findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar1);
         //back
@@ -26,17 +26,17 @@ public class main_Sign extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        Button btn_sign=findViewById(R.id.btn_sign);
-        btn_sign.setOnClickListener(new View.OnClickListener()//点击注册按钮,跳转注册界面
-        {
-            @Override
-            public void onClick(View v)
-            {
-                //计算点击次数,单数为发起签到,双数为结束签到
-                Toast.makeText(getApplicationContext(),"发起/结束签到",Toast.LENGTH_LONG).show();
-
-            }
-        });
+//        Button btn_sign=findViewById(R.id.btn_sign);
+//        btn_sign.setOnClickListener(new View.OnClickListener()//点击注册按钮,跳转注册界面
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                //计算点击次数,单数为发起签到,双数为结束签到
+//                Toast.makeText(getApplicationContext(),"发起/结束签到",Toast.LENGTH_LONG).show();
+//
+//            }
+//        });
     }
     /*  @Override
       public boolean onCreateOptionsMenu(Menu menu)

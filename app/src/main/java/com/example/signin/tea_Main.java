@@ -47,8 +47,9 @@ public class tea_Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        sendGetClassRequest();
         setContentView(R.layout.tea__main);
-       //初始化课程
+        //初始化课程
 
 
         listView=(ListView)findViewById(R.id.class_view1);
@@ -75,7 +76,6 @@ public class tea_Main extends AppCompatActivity {
         major.setText(userInfo.getMajor());
         college.setText(userInfo.getCollege());
         //设置滑动菜单的显示内容
-        sendGetClassRequest();
 
 
 
@@ -154,6 +154,7 @@ public class tea_Main extends AppCompatActivity {
                     {
                         classInfo class_=classes.get(position);
                         chromToast.showToast(tea_Main.this, class_.getName(), false, 0xAA00FF7F, 0xFFFFFFFF);
+                        sendGetAllStudentRequest(class_.getClassId().toString());
                         Intent intent=new Intent(tea_Main.this,tea_Enter_main.class);
                         intent.putExtra("name", class_.getName().toString());
                         intent.putExtra("classId",class_.getClassId().toString());
@@ -163,5 +164,25 @@ public class tea_Main extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void sendGetAllStudentRequest(final String classId){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classId);
+                    map.put("ident", userInfo.getIdent());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
+                    jsonReader reader = new jsonReader();
+                    reader.recvGetAllStudent(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

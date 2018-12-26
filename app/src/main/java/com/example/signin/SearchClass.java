@@ -31,7 +31,6 @@ public class SearchClass extends AppCompatActivity {
         mListView = findViewById(R.id.search_class_list_view);
         mSearchView.setIconifiedByDefault(false);
         mSearchView.onActionViewExpanded();
-        sendGetAllClassRequest();
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             //当搜索提交时触发该方法

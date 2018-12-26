@@ -37,6 +37,7 @@ import java.util.Set;
 import com.example.signin.utility.OkHttp;
 import com.example.signin.utility.chromToast;
 import com.example.signin.utility.jsonReader;
+import com.example.signin.utility.studentInfo;
 import com.example.signin.utility.userInfo;
 
 
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        sendGetClassRequest();
         setContentView(R.layout.activity_main);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);//获取TOOLBAR实例
         setSupportActionBar(toolbar);//把TOOLBAR设为标题栏
@@ -80,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
         //设置滑动菜单的显示内容
         listView=findViewById(R.id.class_view);
 
-        sendGetClassRequest();
         FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.join_class);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sendGetAllClassRequest();
                 Intent intent=new Intent(MainActivity.this,SearchClass.class);
                 startActivity(intent);
             }
@@ -109,6 +111,26 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+
+    private void sendGetAllClassRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("ident", userInfo.getIdent());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallclass", map);
+                    jsonReader reader = new jsonReader();
+                    reader.recvGetAllClass(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
 
     private void sendGetClassRequest(){
         new Thread(new Runnable() {
@@ -146,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     {
                         classInfo class_=classes.get(position);
                         chromToast.showToast(MainActivity.this, class_.getName(), false, 0xAA00FF7F, 0xFFFFFFFF);
+                        sendGetAllStudentRequest(class_.getClassId().toString());
                         Intent intent=new Intent(MainActivity.this,studentEnterClass.class);
                         intent.putExtra("name", class_.getName().toString());
                         intent.putExtra("classId",class_.getClassId().toString());
@@ -155,6 +178,26 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void sendGetAllStudentRequest(final String classId){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classId);
+                    map.put("ident", userInfo.getIdent());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
+                    jsonReader reader = new jsonReader();
+                    reader.recvGetAllStudent(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
    public boolean onOptionsItemSelected(MenuItem item) {

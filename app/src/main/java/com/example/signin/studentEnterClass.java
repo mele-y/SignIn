@@ -10,6 +10,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.example.signin.utility.OkHttp;
+import com.example.signin.utility.jsonReader;
+import com.example.signin.utility.userInfo;
+
+import java.util.HashMap;
+import java.util.Map;
+import com.example.signin.utility.studentInfo;
+
 public class studentEnterClass extends AppCompatActivity {
 
 
@@ -20,6 +28,7 @@ public class studentEnterClass extends AppCompatActivity {
     private stuSignInFragment f3;
    private Fragment[] fragments;
    int lastfragment;
+   private String name, classId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +38,10 @@ public class studentEnterClass extends AppCompatActivity {
         setSupportActionBar(stu_toolbar);//把TOOLBAR设为标题栏
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent=getIntent();
-        String name= (String) intent.getCharSequenceExtra("name");
-        String classId= (String) intent.getCharSequenceExtra("classId");
+        name= (String) intent.getCharSequenceExtra("name");
+        classId= (String) intent.getCharSequenceExtra("classId");
         getSupportActionBar().setTitle(name);
         stu_toolbar.setSubtitle(classId);//设置标题与副标题
-
 
         f1=new stuClassMemberFragment();
         f2=new stuMessageFragment();
@@ -93,4 +101,5 @@ public class studentEnterClass extends AppCompatActivity {
         }
         transaction.show(fragments[index]).commitAllowingStateLoss();
     }//切换不同片段布局转换
+
 }
