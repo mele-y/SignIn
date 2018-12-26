@@ -22,7 +22,7 @@ public class tea_Enter_main extends AppCompatActivity {
     private mainSignFra f3;
     private Fragment[] fragments;
     int lastfragment;
-
+    private  String name,classId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +31,8 @@ public class tea_Enter_main extends AppCompatActivity {
         setSupportActionBar(stu_toolbar);//把TOOLBAR设为标题栏
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent=getIntent();
-        String name= (String) intent.getCharSequenceExtra("name");
-        String classId= (String) intent.getCharSequenceExtra("classId");
+         name= (String) intent.getCharSequenceExtra("name");
+        classId= (String) intent.getCharSequenceExtra("classId");
         getSupportActionBar().setTitle(name);
         stu_toolbar.setSubtitle(classId);//设置标题与副标题
 
@@ -74,6 +74,14 @@ public class tea_Enter_main extends AppCompatActivity {
         });
     }
 
+    public String getName()
+    {
+        return name;
+    }
+    public  String getClassId()
+    {
+        return classId;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==android.R.id.home)

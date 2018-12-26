@@ -1,6 +1,7 @@
 package com.example.signin;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -83,7 +84,7 @@ public class mainSignFra extends Fragment {
 
 
 
-    private View.OnClickListener mOnClickListenerGroup = new View.OnClickListener() {
+    private View.OnClickListener mOnClickListenerGroup = new View.OnClickListener() {//点击事件,进入查看历史签到记录
         @Override
         public void onClick(View view) {
             QMUICommonListItemView viewList = (QMUICommonListItemView) view;
@@ -94,7 +95,9 @@ public class mainSignFra extends Fragment {
                     break;
             }
             Toast.makeText(getActivity(),"选项：" +  viewList.getTag()+ " 点击了",Toast.LENGTH_SHORT).show();
+            //Intent intent=new Intent(getActivity(),.class);//跳转页面查看缺勤人
 
+            //startActivity(intent);
         }
 
     };
