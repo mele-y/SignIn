@@ -95,9 +95,13 @@ public class mainSignFra extends Fragment {
                     break;
             }
             Toast.makeText(getActivity(),"选项：" +  viewList.getTag()+ " 点击了",Toast.LENGTH_SHORT).show();
-            //Intent intent=new Intent(getActivity(),.class);//跳转页面查看缺勤人
-
-            //startActivity(intent);
+            Intent intent=new Intent(getActivity(),absence_info.class);
+            tea_Enter_main activity=(tea_Enter_main)getActivity();//获取实例
+            String name=activity.getName();
+            String classId=activity.getClassId();
+            intent.putExtra("name", name);
+            intent.putExtra("classId",classId);//传递课程参数
+            startActivity(intent);
         }
 
     };
