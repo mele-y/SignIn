@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/notice"
+        android:title="发公告"
+        android:icon="@drawable/member"></item>
+</menu>
