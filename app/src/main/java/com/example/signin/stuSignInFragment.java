@@ -51,8 +51,7 @@ public class stuSignInFragment extends Fragment {
     private static List<signinInfo> data = new ArrayList<>();
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
-    private static String longitude = "", latitude = "", time = "";
-    private static String message = "";
+    private static String longitude = "", latitude = "", time = "", classID = "";
     private static String[] permissions = {"android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION", "android.permission.READ_PHONE_STATE", "android.permission.WRITE_EXTERNAL_STORAGE"};
     QMUIGroupListView qmuiGroupListView;
     public stuSignInFragment() {
@@ -204,6 +203,8 @@ public class stuSignInFragment extends Fragment {
         getPermissions(CODE, permissions);
         initLocation();
         startLocation();
+        Activity a = getActivity();
+        classID = ((studentEnterClass) a).getClassId();
         data = singleAttendanceInfo.getAttendances();
         String title2 = singleAttendanceInfo.getRate();
         // Inflate the layout for this fragment
@@ -239,15 +240,16 @@ public class stuSignInFragment extends Fragment {
         return view;
     }
 
-    public void getPermissions(int requestCode, @NonNull String[] permissions) {
-        ArrayList<String> list = new ArrayList<>();
-        for(int i=0;i<permissions.length;++i){
-            int status = ActivityCompat.checkSelfPermission(this.getActivity(), permissions[i]);
-            if(status == -1)
-                list.add(permissions[i]);
-        }
-        if(list.size() > 0)
-            ActivityCompat.requestPermissions(this.getActivity(), (String[])list.toArray(), requestCode);
+    public void getPermissions(int requestCode, final String[] permissions) {
+//        ArrayList<String> list = new ArrayList<>();
+//        for(int i=0;i<permissions.length;++i){
+//            int status = ActivityCompat.checkSelfPermission(this.getActivity(), permissions[i]);
+//            if(status == -1)
+//                list.add(permissions[i]);
+//        }
+//        if(list.size() > 0)
+//            ActivityCompat.requestPermissions(this.getActivity(), (String[])list.toArray(), requestCode);
+        ActivityCompat.requestPermissions(this.getActivity(), permissions, requestCode);
     }
 
     @Override
@@ -257,21 +259,12 @@ public class stuSignInFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Activity a = getActivity();
-                sendSignInRequest(((studentEnterClass) a).getClassId());
-                showResponse(message);
+                sendSignInRequest();
             }
         });
     }
 
-    private void showResponse(final String response){
-        if(response == "success")
-            chromToast.showToast(getActivity(), response, false, 0xAA00FF7F, 0xFFFFFFFF);
-        else
-            chromToast.showToast(getActivity(), response, true, 0xAAFF6100, 0xFFFFFFFF);
-    }
-
-    private void sendSignInRequest(final String classID){
+    private void sendSignInRequest(){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -287,11 +280,29 @@ public class stuSignInFragment extends Fragment {
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/startSignIn", map);
                     System.out.println(result);
                     jsonReader reader = new jsonReader();
-                    message = reader.recvStartSignIn(result);
+                    String message = reader.recvStartSignIn(result);
+                    if(message.equals("Signin successfully"))
+                        showResponse(message, true);
+                    else
+                        showResponse(message, false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).start();
+    }
+
+    private void showResponse(final String response, final boolean pos){
+        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
+        (getActivity()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //在这里进行UI操作，将结果显示到界面上
+                if(pos)
+                    chromToast.showToast(getActivity(), response, false, 0xAA00FF7F, 0xFFFFFFFF);
+                else
+                    chromToast.showToast(getActivity(), response, true, 0xAAFF6100, 0xFFFFFFFF);
+            }
+        });
     }
 }
