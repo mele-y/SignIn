@@ -47,7 +47,6 @@ public class MobileMessageCheck {
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
-
         if(code == 200) {
             return "success";
         }

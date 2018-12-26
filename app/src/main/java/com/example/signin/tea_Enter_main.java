@@ -14,6 +14,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.signin.utility.OkHttp;
+import com.example.signin.utility.jsonReader;
+import com.example.signin.utility.studentInfo;
+import com.example.signin.utility.userInfo;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class tea_Enter_main extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
@@ -35,7 +43,7 @@ public class tea_Enter_main extends AppCompatActivity {
         classId= (String) intent.getCharSequenceExtra("classId");
         getSupportActionBar().setTitle(name);
         stu_toolbar.setSubtitle(classId);//设置标题与副标题
-
+        sendGetAllStudentRequest();
         f1=new teaMemberFra();
         f2=new teaNoticeFra();
         f3=new mainSignFra();
@@ -100,5 +108,24 @@ public class tea_Enter_main extends AppCompatActivity {
             transaction.add(R.id.teaEnterClass_mainView,fragments[index]);
         }
         transaction.show(fragments[index]).commitAllowingStateLoss();
+    }
+    private void sendGetAllStudentRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", getClassId());
+                    map.put("ident", userInfo.getIdent());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
+                    jsonReader reader = new jsonReader();
+                    reader.recvGetAllStudent(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

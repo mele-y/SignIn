@@ -58,8 +58,8 @@ public class mainCourse extends AppCompatActivity {//学生留言界面
 
                 break;
             case R.id.create_sign:
-                Intent intent=new Intent(this,main_Sign.class);
-                startActivity(intent);
+//                Intent intent=new Intent(this, main_Sign.class);
+//                startActivity(intent);
                 break;
             case android.R.id.home:
                 this.finish();

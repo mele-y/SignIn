@@ -91,7 +91,7 @@ public class SignIn extends AppCompatActivity {
                         if(SendMessage.sendMsg(phone).equals("success"))
                             showResponse("发送成功", true);
                         else
-                            showResponse("操作失败", false);
+                            showResponse("发送失败", false);
                     }
                     else
                         showResponse("手机号码不合法", false);
@@ -108,7 +108,7 @@ public class SignIn extends AppCompatActivity {
             public void run() {
                 try{
 //                    if(MobileMessageCheck.checkMsg(phone, code).equals("success")) {
-//                         showResponse("校验成功", true);
+                         showResponse("校验成功", true);
                          goIntent();
 //                    }
 //                    else
@@ -142,7 +142,6 @@ public class SignIn extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
-
             case android.R.id.home:
                 this.finish();
                 return super.onOptionsItemSelected(item);

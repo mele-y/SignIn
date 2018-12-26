@@ -35,7 +35,9 @@ import java.util.Map;
 import java.util.Set;
 
 import com.example.signin.utility.OkHttp;
+import com.example.signin.utility.chromToast;
 import com.example.signin.utility.jsonReader;
+import com.example.signin.utility.userInfo;
 
 
 
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     TextView college;
     TextView major;
     private ListView listView;
-    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -71,38 +72,21 @@ public class MainActivity extends AppCompatActivity {
         id_no=(TextView) headerView.findViewById(R.id.id_no_show);
         college=(TextView) headerView.findViewById(R.id.college_show);
         major=(TextView) headerView.findViewById(R.id.major_show);
-        user_name.setText("叶剑波");
-        nick_name.setText("sai");
-        id_no.setText("916106840344");
-        major.setText("软件工程");
-        college.setText("南京理工大学");
-        Intent intent = getIntent();
-        token = intent.getStringExtra("token");
+        user_name.setText(userInfo.getRealname());
+        nick_name.setText(userInfo.getNickname());
+        id_no.setText(userInfo.getID());
+        major.setText(userInfo.getMajor());
+        college.setText(userInfo.getCollege());
         //设置滑动菜单的显示内容
-
-
         listView=findViewById(R.id.class_view);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Map<String,Object>map=(Map<String, Object>)parent.getItemAtPosition(position);
-                Intent intent=new Intent(MainActivity.this,studentEnterClass.class);
-                intent.putExtra("name", map.get("name").toString());
-                intent.putExtra("classId",map.get("classId").toString());
-                startActivity(intent);
-            }
-        });
 
-//        sendGetAllClassRequest();
-        sendSearchClassRequest();
+        sendGetClassRequest();
         FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.join_class);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this,SearchClass.class);
-                intent.putExtra("token", token);
                 startActivity(intent);
-                System.out.println("======================================================");
             }
         });//点击加号跳转到搜索班课界面
 
@@ -126,39 +110,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void sendSearchClassRequest(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-//                    Map<String, String> map = new HashMap<>();
-//                    map.put("user_name", user_name.getText().toString());
-//                    map.put("id_no", id_no.getText().toString());
-//                    OkHttp okhttp = new OkHttp();
-//                    String result = okhttp.post("http://98.142.138.123:5000/ViewEnrolledClasses", map);
-                    jsonReader reader = new jsonReader();
-                    List<Map<String,Object>> listItem = reader.recvSearchClass("test");
-                    fillList(listItem);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    private void sendGetAllClassRequest(){
+    private void sendGetClassRequest(){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     Map<String, String> map = new HashMap<>();
-                    map.put("phonenum", "18260071012");
-                    map.put("ident", "student");
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("ident", userInfo.getIdent());
+                    map.put("ID", userInfo.getID());
                     OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postForm2("http://98.142.138.123:12345/api/getallclass", map, token);
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getclass", map);
                     jsonReader reader = new jsonReader();
-                    List<Map<String,Object>> listItem = reader.recvGetAllClass(result);
-                    fillList(listItem);
+                    List<classInfo> classes = reader.recvGetClass(result);
+                    fillList(classes);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -166,15 +131,28 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void fillList(final List<Map<String,Object>> listItem){
+    private void fillList(final List<classInfo> classes){
         //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 //在这里进行UI操作，将结果显示到界面上
-                SimpleAdapter adapter=new SimpleAdapter(MainActivity.this,listItem,R.layout.class_item,new String[]{"name","classId"},new int[]{R.id.class_name,R.id.class_id});
-                //ListView listView=(ListView)findViewById(R.id.class_view);
+                classAdapter adapter = new classAdapter(MainActivity.this, R.layout.class_item, classes);
                 listView.setAdapter(adapter);//设置ListView显示的内容
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                {
+                    @Override
+                    public void  onItemClick(AdapterView<?>parent,View view,int position,long id)//获取学生点击了的课程传递参数
+                    {
+                        classInfo class_=classes.get(position);
+                        chromToast.showToast(MainActivity.this, class_.getName(), false, 0xAA00FF7F, 0xFFFFFFFF);
+                        Intent intent=new Intent(MainActivity.this,studentEnterClass.class);
+                        intent.putExtra("name", class_.getName().toString());
+                        intent.putExtra("classId",class_.getClassId().toString());
+                        startActivity(intent);
+                        //可以getId获得标识
+                    }
+                });
             }
         });
     }

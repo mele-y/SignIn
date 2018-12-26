@@ -18,6 +18,8 @@ import com.example.signin.utility.jsonReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.signin.utility.userInfo;
+
 public class SignIn2 extends AppCompatActivity {
     private Button btn_register;
     private EditText et_major,et_college,et_id_num,et_user_name,nickname;
@@ -120,7 +122,7 @@ public class SignIn2 extends AppCompatActivity {
                     map.put("realname", user_name);
                     map.put("ident", identity);
                     OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postForm1("http://98.142.138.123:12345/api/register", map);
+                    String result = okhttp.postForm("http://98.142.138.123:12345/api/register", map);
                     jsonReader reader = new jsonReader();
                     String recvMessage = reader.recvSignUp(result);
                     if(recvMessage.equals("Student successfully registered!"))
@@ -140,6 +142,7 @@ public class SignIn2 extends AppCompatActivity {
             @Override
             public void run() {
                 chromToast.showToast(SignIn2.this, "注册成功", false, 0xAA00FF7F, 0xFFFFFFFF);
+                userInfo.setPhonenum(user_phone);
                 Intent intent=new Intent(SignIn2.this,logIn.class);//跳转登录主界面
                 startActivity(intent);
             }

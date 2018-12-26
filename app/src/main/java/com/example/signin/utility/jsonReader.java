@@ -16,6 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.signin.utility.userInfo;
+import com.example.signin.utility.classesInfo;
+import com.example.signin.classInfo;
+import com.example.signin.memberClass;
+import com.example.signin.utility.studentInfo;
 /**
  * Last Update Time: 2018/12/20
  * Description: use gson to analyze json obeject
@@ -27,21 +32,38 @@ public class jsonReader {
      * @param jsonData JSON received from server
      */
     public String recvLogIn(String jsonData){
-        String token = "";
+        String message = "";
         JsonParser parser = new JsonParser();  //创建json解析器
         try {
             JsonObject json = (JsonObject) parser.parse(jsonData);
             if(json.get("access_token") == null){
-                return json.get("message").getAsString();
+                message = json.get("message").getAsString();
             }
-            else
-                token = json.get("access_token").getAsString();
+            else{
+                if(json.get("jobID").getAsString().equals("None")){
+                    userInfo.setID(json.get("stuID").getAsString());
+                    userInfo.setIdent("student");
+                    userInfo.setRealname(json.get("srealname").getAsString());
+                }
+                else{
+                    userInfo.setID(json.get("jobID").getAsString());
+                    userInfo.setIdent("teacher");
+                    userInfo.setRealname(json.get("trealname").getAsString());
+                }
+                userInfo.setToken(json.get("access_token").getAsString());
+                userInfo.setCollege(json.get("college").getAsString());
+                userInfo.setMajor(json.get("major").getAsString());
+                userInfo.setNickname(json.get("nickname").getAsString());
+                userInfo.setPassword(json.get("password").getAsString());
+                userInfo.setPhonenum(json.get("phonenum").getAsString());
+                userInfo.setSex(json.get("sex").getAsInt());
+            }
         } catch (JsonIOException e) {
             e.printStackTrace();
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
-        return token;
+        return message;
     }
 
     public String recvSignUp(String jsonData){
@@ -58,62 +80,77 @@ public class jsonReader {
         return message;
     }
 
-    public List<Map<String,Object>> recvSearchClass(String json){
-        List<Map<String,Object>> listItem=new ArrayList<Map<String,Object>>();
-        json = testSearchClass();
+    public String recvCreateClass(String jsonData){
+        String message = "";
+        JsonParser parser = new JsonParser();  //创建json解析器
+        try {
+            JsonObject json = (JsonObject) parser.parse(jsonData);
+            message = json.get("message").getAsString();
+        } catch (JsonIOException e) {
+            e.printStackTrace();
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+    public int recvGetAllStudent(String json){
+        int status = -1;
+        List<memberClass> stu = new ArrayList<>();
         try {
             JsonParser parser = new JsonParser();  //创建json解析器
-            JsonArray jsonArray = parser.parse(json).getAsJsonArray();
-            Gson gson = new Gson();
-            //加强for循环遍历JsonArray
-            for (JsonElement cls : jsonArray) {
-                //使用GSON，直接转成Bean对象
-                classInfo bean = gson.fromJson(cls, classInfo.class);
-                Map<String,Object> map=new HashMap<String,Object>();
-                map.put("name",bean.getName());
-                map.put("classId",bean.getClassId());
-                listItem.add(map);
+            JsonObject jsonObj = parser.parse(json).getAsJsonObject();
+            status = jsonObj.get("status").getAsInt();
+            if(status == 200){
+                JsonArray jsonArray = jsonObj.get("message").getAsJsonArray();
+                for (int i=0;i<jsonArray.size();++i) {
+                    JsonObject cls = jsonArray.get(i).getAsJsonObject();
+                    stu.add(new memberClass(cls.get("stuID").getAsString(), cls.get("srealname").getAsString()));
+                }
+                studentInfo.setStu(stu);
             }
         } catch (JsonIOException e) {
             e.printStackTrace();
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
-        return listItem;
+        return status;
     }
 
-    public String testSearchClass(){
-        List<classInfo> classes = new ArrayList<classInfo>();
-        classes.add(new classInfo("中国近代史","001"));
-        classes.add(new classInfo("软件项目管理","002"));
-        classes.add(new classInfo("UML","003"));
-        classes.add(new classInfo("编译原理","004"));
-        Gson gson = new Gson();
-        String json = gson.toJson(classes);
-        return json;
+    public int recvGetAllClass(String json){
+        int status = -1;
+        List<classInfo> classes = new ArrayList<>();
+        try {
+            JsonParser parser = new JsonParser();  //创建json解析器
+            JsonObject jsonObj = parser.parse(json).getAsJsonObject();
+            status = jsonObj.get("status").getAsInt();
+            if(status == 200){
+                JsonArray jsonArray = jsonObj.get("message").getAsJsonArray();
+                for (int i=0;i<jsonArray.size();++i) {
+                    JsonObject cls = jsonArray.get(i).getAsJsonObject();
+                    classes.add(new classInfo(cls.get("classname").getAsString(), cls.get("classID").getAsString()));
+                }
+                classesInfo.setClasses(classes);
+            }
+        } catch (JsonIOException e) {
+            e.printStackTrace();
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+        return status;
     }
 
-    public List<Map<String,Object>> recvGetAllClass(String json){
-        List<Map<String,Object>> listItem=new ArrayList<Map<String,Object>>();
+    public List<classInfo> recvGetClass(String json){
+        List<classInfo> classes = new ArrayList<>();
         try {
             JsonParser parser = new JsonParser();  //创建json解析器
             JsonObject jsonObj = parser.parse(json).getAsJsonObject();
             int status = jsonObj.get("status").getAsInt();
             if(status == 200){
                 JsonArray jsonArray = jsonObj.get("message").getAsJsonArray();
-                Gson gson = new Gson();
-                //加强for循环遍历JsonArray
                 for (int i=0;i<jsonArray.size();++i) {
                     JsonObject cls = jsonArray.get(i).getAsJsonObject();
-                    //使用GSON，直接转成Bean对象
-                    Map<String,Object> map=new HashMap<String,Object>();
-                    map.put("name",cls.get("classID").getAsString());
-                    map.put("classId",cls.get("classname").getAsString());
-                    System.out.println("=========================");
-                    System.out.println(cls.get("classID").getAsString());
-                    System.out.println(cls.get("classname").getAsString());
-                    System.out.println("=========================");
-                    listItem.add(map);
+                    classes.add(new classInfo(cls.get("classname").getAsString(), cls.get("classID").getAsString()));
                 }
             }
         } catch (JsonIOException e) {
@@ -121,6 +158,6 @@ public class jsonReader {
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
-        return listItem;
+        return classes;
     }
 }

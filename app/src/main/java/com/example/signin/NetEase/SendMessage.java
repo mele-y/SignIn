@@ -24,7 +24,7 @@ public class SendMessage {
     private static final String SERVER_URL = "https://api.netease.im/sms/sendcode.action";//请求的URL
     private static final String APP_KEY = "be89ce390fa787c2a765fd7bf128e8f5";//网易云分配的账号
     private static final String APP_SECRET = "3ace615d0f51";//密码
-    private static final String MOULD_ID="9534478";//模板ID
+    private static final String MOULD_ID="9504639";//模板ID
     private static final String NONCE = "123456";//随机数
     //验证码长度，范围4～10，默认为4
     private static final String CODELEN = "6";
@@ -54,7 +54,6 @@ public class SendMessage {
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
-
         if(code == 200)
             return "success";
         else

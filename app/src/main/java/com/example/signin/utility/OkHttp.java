@@ -59,7 +59,7 @@ public class OkHttp {
         return result;
     }
 
-    public String postForm1(String url, Map<String, String> map) {
+    public String postForm(String url, Map<String, String> map) {
         String result = "";
         FormBody.Builder build = new FormBody.Builder();
         for (Map.Entry<String, String> item : map.entrySet()) {
@@ -77,14 +77,14 @@ public class OkHttp {
         return result;
     }
 
-    public String postForm2(String url, Map<String, String> map, String token) {
+    public String postFormWithToken(String url, Map<String, String> map) {
         String result = "";
         FormBody.Builder build = new FormBody.Builder();
         for (Map.Entry<String, String> item : map.entrySet()) {
             build.add(item.getKey(), item.getValue());
         }
         RequestBody body = build.build();
-        Request request = new Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8").addHeader("Authorization", "jwt " + token).url(url).post(body).build();
+        Request request = new Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8").addHeader("Authorization", "jwt " + userInfo.getToken()).url(url).post(body).build();
         OkHttpClient client = new OkHttpClient();
         try {
             Response response = client.newCall(request).execute();

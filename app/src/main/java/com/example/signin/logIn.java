@@ -14,6 +14,8 @@ import java.util.Map;
 import com.example.signin.utility.chromToast;
 import com.example.signin.utility.jsonReader;
 
+import com.example.signin.utility.userInfo;
+
 
 public class logIn extends AppCompatActivity {
     private Button btn_register;
@@ -26,7 +28,9 @@ public class logIn extends AppCompatActivity {
         setContentView(R.layout.login_layout);
         btn_register=findViewById(R.id.btn_register);
         et_user_phone=findViewById(R.id.user_phone);
+        et_user_phone.setText(userInfo.getPhonenum());
         et_psw=findViewById(R.id.password);
+        et_psw.setText(userInfo.getPassword());
         btn_login=findViewById(R.id.btn_login);
         btn_register.setOnClickListener(new View.OnClickListener()//点击注册按钮,跳转注册界面
         {
@@ -46,7 +50,6 @@ public class logIn extends AppCompatActivity {
             {
                 user_phone=et_user_phone.getText().toString().trim();//获取手机号
                 password=et_psw.getText().toString().trim();//获取密码
-
                 sendLogInRequest();
             }
         });
@@ -56,6 +59,7 @@ public class logIn extends AppCompatActivity {
             @Override
             public void run() {
                 try{
+                    userInfo.setToken("");
                     Map<String, String> map = new HashMap<>();
                     map.put("phonenum", user_phone);
                     map.put("password", password);
@@ -63,8 +67,7 @@ public class logIn extends AppCompatActivity {
                     String result = okhttp.postJson("http://98.142.138.123:12345/login", map);
                     jsonReader reader = new jsonReader();
                     String recvMessage = reader.recvLogIn(result);
-                    if(recvMessage.length() > 50) {
-                        token = recvMessage;
+                    if(userInfo.getToken() != "") {
                         goIntent();
                     }
                     else {
@@ -95,9 +98,14 @@ public class logIn extends AppCompatActivity {
             @Override
             public void run() {
                 chromToast.showToast(logIn.this, "登录成功", false, 0xAA00FF7F, 0xFFFFFFFF);
-                Intent intent=new Intent(logIn.this,MainActivity.class);
-                intent.putExtra("token", token);
-                startActivity(intent);
+                if(userInfo.getIdent() == "student"){
+                    Intent intent =new Intent(logIn.this,MainActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    Intent intent=new Intent(logIn.this,tea_Main.class);
+                    startActivity(intent);
+                }
             }
         });
     }
