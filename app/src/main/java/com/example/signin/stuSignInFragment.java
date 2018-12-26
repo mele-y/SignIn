@@ -1,6 +1,7 @@
 package com.example.signin;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
@@ -15,6 +16,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.signin.utility.OkHttp;
+import com.example.signin.utility.chromToast;
+import com.example.signin.utility.jsonReader;
+import com.example.signin.utility.userInfo;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
@@ -22,7 +27,9 @@ import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -44,6 +51,8 @@ public class stuSignInFragment extends Fragment {
     private static List<signinInfo> data = new ArrayList<>();
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
+    private static String longitude = "", latitude = "", time = "";
+    private static String message = "";
     private static String[] permissions = {"android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION", "android.permission.READ_PHONE_STATE", "android.permission.WRITE_EXTERNAL_STORAGE"};
     QMUIGroupListView qmuiGroupListView;
     public stuSignInFragment() {
@@ -65,11 +74,11 @@ public class stuSignInFragment extends Fragment {
         AMapLocationClientOption mOption = new AMapLocationClientOption();
         mOption.setLocationMode(AMapLocationMode.Hight_Accuracy);//可选，设置定位模式，可选的模式有高精度、仅设备、仅网络。默认为高精度模式
         mOption.setGpsFirst(false);//可选，设置是否gps优先，只在高精度模式下有效。默认关闭
-        mOption.setHttpTimeOut(30000);//可选，设置网络请求超时时间。默认为30秒。在仅设备模式下无效
-        mOption.setInterval(2000);//可选，设置定位间隔。默认为2秒
+        mOption.setHttpTimeOut(1000);//可选，设置网络请求超时时间。默认为30秒。在仅设备模式下无效
+        mOption.setInterval(1000);//可选，设置定位间隔。默认为2秒
         mOption.setNeedAddress(true);//可选，设置是否返回逆地理地址信息。默认是true
-        mOption.setOnceLocation(true);//可选，设置是否单次定位。默认是false
-        mOption.setOnceLocationLatest(true);//可选，设置是否等待wifi刷新，默认为false.如果设置为true,会自动变为单次定位，持续定位时不要使用
+        mOption.setOnceLocation(false);//可选，设置是否单次定位。默认是false
+        mOption.setOnceLocationLatest(false);//可选，设置是否等待wifi刷新，默认为false.如果设置为true,会自动变为单次定位，持续定位时不要使用
         AMapLocationClientOption.setLocationProtocol(AMapLocationProtocol.HTTP);//可选， 设置网络请求的协议。可选HTTP或者HTTPS。默认为HTTP
         mOption.setSensorEnable(false);//可选，设置是否使用传感器。默认是false
         mOption.setWifiScan(true); //可选，设置是否开启wifi扫描。默认为true，如果设置为false会同时停止主动刷新，停止以后完全依赖于系统刷新，定位位置可能存在误差
@@ -88,7 +97,9 @@ public class stuSignInFragment extends Fragment {
                     sb.append("定位成功" + "\n");
                     sb.append("定位类型: " + location.getLocationType() + "\n");
                     sb.append("经    度    : " + location.getLongitude() + "\n");
+                    longitude = String.valueOf(location.getLongitude());
                     sb.append("纬    度    : " + location.getLatitude() + "\n");
+                    latitude = String.valueOf(location.getLatitude());
                     sb.append("精    度    : " + location.getAccuracy() + "米" + "\n");
                     sb.append("提供者      : " + location.getProvider() + "\n");
                     sb.append("速    度    : " + location.getSpeed() + "米/秒" + "\n");
@@ -105,6 +116,8 @@ public class stuSignInFragment extends Fragment {
                     sb.append("兴趣点      : " + location.getPoiName() + "\n");
                     //定位完成的时间
                     sb.append("定位时间    : " + mapUtils.formatUTC(location.getTime(), "yyyy-MM-dd HH:mm:ss") + "\n");
+                    time = mapUtils.formatUTC(location.getTime(), "yyyy-MM-dd HH:mm:ss");
+                    stopLocation();
                 } else {
                     //定位失败
                     sb.append("定位失败" + "\n");
@@ -181,12 +194,16 @@ public class stuSignInFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        stopLocation();
         destroyLocation();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getPermissions(CODE, permissions);
+        initLocation();
+        startLocation();
         data = singleAttendanceInfo.getAttendances();
         String title2 = singleAttendanceInfo.getRate();
         // Inflate the layout for this fragment
@@ -240,11 +257,41 @@ public class stuSignInFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPermissions(CODE, permissions);
-                initLocation();
-                startLocation();
-                stopLocation();
+                Activity a = getActivity();
+                sendSignInRequest(((studentEnterClass) a).getClassId());
+                showResponse(message);
             }
         });
+    }
+
+    private void showResponse(final String response){
+        if(response == "success")
+            chromToast.showToast(getActivity(), response, false, 0xAA00FF7F, 0xFFFFFFFF);
+        else
+            chromToast.showToast(getActivity(), response, true, 0xAAFF6100, 0xFFFFFFFF);
+    }
+
+    private void sendSignInRequest(final String classID){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classID);
+                    map.put("ident", userInfo.getIdent());
+                    map.put("ID", userInfo.getID());
+                    map.put("time", time);
+                    map.put("location", longitude + " " + latitude);
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/startSignIn", map);
+                    System.out.println(result);
+                    jsonReader reader = new jsonReader();
+                    message = reader.recvStartSignIn(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

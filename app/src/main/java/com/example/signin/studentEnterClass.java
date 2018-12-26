@@ -82,6 +82,15 @@ public class studentEnterClass extends AppCompatActivity {
         });
     }
 
+
+    public String getName()
+    {
+        return name;
+    }
+    public  String getClassId()
+    {
+        return classId;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==android.R.id.home)

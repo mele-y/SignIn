@@ -80,6 +80,20 @@ public class jsonReader {
         return message;
     }
 
+    public String recvStartSignIn(String jsonData){
+        String message = "";
+        JsonParser parser = new JsonParser();  //创建json解析器
+        try {
+            JsonObject json = (JsonObject) parser.parse(jsonData);
+            message = json.get("message").getAsString();
+        } catch (JsonIOException e) {
+            e.printStackTrace();
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+        return message;
+    }
+
     public String recvCreateClass(String jsonData){
         String message = "";
         JsonParser parser = new JsonParser();  //创建json解析器
