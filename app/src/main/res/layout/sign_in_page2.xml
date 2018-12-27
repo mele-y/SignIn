@@ -292,7 +292,7 @@
             android:layout_marginTop="30dp"
             android:paddingTop="5dp"
             android:textSize="18sp"
-            android:text="发送验证码"
+            android:text="注册"
             app:qmui_isRadiusAdjustBounds="true"/>
     </LinearLayout>
 </FrameLayout>
