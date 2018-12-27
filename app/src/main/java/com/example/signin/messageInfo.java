@@ -4,17 +4,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class messageInfo extends AppCompatActivity {
-    private String _title;//显示留言or公告
-    private String _context;//显示具体内容
+    private String stu_name;//
+    private String context,type;//显示具体内容
 
-    public messageInfo(String headline,String context)
+    public messageInfo(String stu_name,String context,String type)
     {
-        this._title=headline;
-        this._context=context;
+        this.stu_name=stu_name;
+        this.context=context;
+        this.type=type;
     }
 
-    public String getHeadline(){return _title;}
-    public String getContext(){return _context;}
-    public void setTitle(String headline){this._title=headline;}
-    public void setContext(String context){this._context=context;}
+    public String getStu_name(){return stu_name;}
+    public String getContext(){return context;}
+    public String getType(){return type;}
+    public void setType(String type){this.type=type;}
+    public void setStu_name(String stu_name){this.stu_name=stu_name;}
+    public void setContext(String context){this.context=context;}
 }

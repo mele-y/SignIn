@@ -2,27 +2,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.signin">
 
-    <!--用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!--用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <!--用于读取手机当前的状态-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <!--用于写入缓存数据到扩展存储卡-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <!--用于获取运营商信息，用于支持提供运营商信息相关的接口-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <!--用于访问wifi网络信息，wifi信息会用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <!--用于访问网络，网络定位需要上网-->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <!--用于申请调用A-GPS模块-->
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-    <!--用于申请获取蓝牙信息进行室内定位-->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!-- 用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 用于写入缓存数据到扩展存储卡 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 用于获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 用于访问网络，网络定位需要上网 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 用于申请调用A-GPS模块 -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!-- 用于申请获取蓝牙信息进行室内定位 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -33,7 +33,28 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".logIn"
-            android:label="This is login" >
+            android:label="This is login"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="SignIn"
+            android:theme="@style/ToolBarTheme"></activity>
+        <activity
+            android:name=".SignIn"
+            android:label="this is signIn"></activity>
+        <activity android:name=".SearchClass" />
+        <activity android:name=".editStudentInfo" />
+        <activity android:name=".SignIn2" />
+        <activity
+            android:name=".studentEnterClass"
+            android:theme="@style/QMUITheme" />
+        <activity
+            android:name=".tea_Main"
+            android:label="教师界面"></activity>
+        <activity android:name=".createClass" />
+        <activity android:name=".editTeaInfo" />
+        <activity
+            android:name=".tea_Enter_main"
+            android:theme="@style/QMUITheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,36 +62,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:label="SignIn"
-            android:theme="@style/ToolBarTheme">
-
-        </activity>
-        <activity
-            android:name=".SignIn"
-            android:label="this is signIn" >
-        </activity>
-        <activity android:name=".SearchClass" />
-        <activity android:name=".editStudentInfo" />
-        <activity android:name=".SignIn2" />
-        <activity
-            android:name=".studentEnterClass"
-            android:theme="@style/QMUITheme"></activity>
-        <activity
-            android:name=".tea_Main"
-            android:label="教师界面">
-        </activity>
-        <activity android:name=".createClass" />
-        <activity android:name=".editTeaInfo" />
-        <activity
-            android:name=".tea_Enter_main"
-            android:theme="@style/QMUITheme"></activity>
-        <activity
             android:name=".memberInfo"
             android:theme="@style/QMUITheme" />
-        <activity android:name=".absence_info" android:theme="@style/QMUITheme"></activity>
-        <service android:name="com.amap.api.location.APSService"></service>
-        <meta-data android:name="com.amap.api.v2.apikey" android:value="622795e811ff47d39898f8de0160ec3c"/>
+        <activity
+            android:name=".createNotice"
+            android:label="发公告"></activity>
+        <activity
+            android:name=".absence_info"
+            android:theme="@style/QMUITheme" />
+
+        <service android:name="com.amap.api.location.APSService" />
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="622795e811ff47d39898f8de0160ec3c" />
+
     </application>
 
 </manifest>
