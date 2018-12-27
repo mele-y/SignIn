@@ -15,23 +15,24 @@ import com.example.signin.utility.chromToast;
 import com.example.signin.utility.jsonReader;
 
 import com.example.signin.utility.userInfo;
+import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
 
 public class logIn extends AppCompatActivity {
-    private Button btn_register;
-    private Button btn_login;
+    private QMUIRoundButton btn_register, btn_login;
     private EditText et_user_phone,et_psw;//编辑框 手机号和密码
     private String user_phone,password, token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
-        btn_register=findViewById(R.id.btn_register);
+        btn_register=(QMUIRoundButton)findViewById(R.id.btn_register);
         et_user_phone=findViewById(R.id.user_phone);
         et_user_phone.setText(userInfo.getPhonenum());
         et_psw=findViewById(R.id.password);
         et_psw.setText(userInfo.getPassword());
-        btn_login=findViewById(R.id.btn_login);
+
+        btn_login=(QMUIRoundButton)findViewById(R.id.btn_login);
         btn_register.setOnClickListener(new View.OnClickListener()//点击注册按钮,跳转注册界面
         {
           @Override

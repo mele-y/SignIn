@@ -22,8 +22,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="80dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="60dp"
+        android:gravity="center_horizontal">
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
@@ -41,28 +41,28 @@
             android:textColor="#c50f57"
             />
         <EditText
-            android:id="@+id/user_phone"
+            android:id="@+id/user_phone0"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-
+            android:gravity="center"
             android:layout_marginTop="100dp"
             android:layout_marginRight="35dp"
             android:drawablePadding="10dp"
-            android:gravity="center_vertical"
             android:hint="请输入手机号"
             android:paddingLeft="8dp"
             android:singleLine="true"
             android:textColor="#000000"
             android:textColorHint="#a3a3a3"
+            android:background="@drawable/edit_background"
             android:textSize="18sp" />
         <!--输入框-->
     </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-
-            android:orientation="horizontal">
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal">
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
@@ -81,26 +81,28 @@
                 />
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/password0"
                 android:layout_width="fill_parent"
+                android:gravity="center"
                 android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="35dp"
                 android:drawablePadding="10dp"
-                android:gravity="center_vertical"
                 android:inputType="textPassword"
                 android:hint="请设置密码"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
                 android:textColor="#000000"
                 android:textColorHint="#a3a3a3"
+                android:background="@drawable/edit_background"
                 android:textSize="18sp" />
             <!--输入框-->
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal">
             <TextView
                 android:id="@+id/t"
                 android:layout_width="wrap_content"
@@ -122,13 +124,14 @@
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-
+            android:gravity="center"
             android:layout_marginRight="35dp"
             android:drawablePadding="10dp"
-            android:gravity="center_vertical"
+
             android:inputType="textPassword"
             android:hint="请再次输入密码"
             android:paddingLeft="8dp"
+            android:background="@drawable/edit_background"
             android:singleLine="true"
             android:textColor="#000000"
             android:textColorHint="#a3a3a3"
@@ -137,7 +140,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal">
             <TextView
                 android:id="@+id/co"
                 android:layout_width="wrap_content"
@@ -159,41 +163,54 @@
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-
+            android:gravity="center"
             android:layout_marginRight="35dp"
             android:drawablePadding="10dp"
-            android:gravity="center_vertical"
             android:inputType="textPassword"
             android:hint="请输入验证码"
             android:paddingLeft="8dp"
             android:singleLine="true"
             android:textColor="#000000"
             android:textColorHint="#a3a3a3"
+            android:background="@drawable/edit_background"
             android:textSize="18sp" />
         </LinearLayout>
-        <Button
-            android:id="@+id/next"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="35dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="35dp"
-            android:text="下一步"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
-            <Button
-                android:id="@+id/btn_send"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_gravity="center_horizontal"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:id="@+id/next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_marginLeft="35dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginRight="35dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_marginTop="30dp"
+                android:paddingTop="10dp"
+                android:text="下一步"
+                android:textSize="18sp"
+                app:qmui_isRadiusAdjustBounds="true"/>
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:id="@+id/btn_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_marginTop="30dp"
+                android:paddingTop="5dp"
+                android:textSize="18sp"
                 android:text="发送验证码"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
+                app:qmui_isRadiusAdjustBounds="true"/>
+        </LinearLayout>
 
 </LinearLayout>
 </LinearLayout>

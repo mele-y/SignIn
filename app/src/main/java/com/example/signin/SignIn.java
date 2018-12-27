@@ -15,9 +15,10 @@ import java.util.regex.*;
 import com.example.signin.utility.chromToast;
 import com.example.signin.NetEase.SendMessage;
 import com.example.signin.NetEase.MobileMessageCheck;
+import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
 public class SignIn extends AppCompatActivity {
-    private Button btn_next, btn_send;
+    private  QMUIRoundButton btn_next, btn_send;
     private EditText et_user_phone,et_psw,et_code,et_confirm;//编辑框 手机号和密码
     private String user_phone,password,code,confirm_psw;
     @Override
@@ -33,10 +34,10 @@ public class SignIn extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        btn_next=findViewById(R.id.next);
-        btn_send=findViewById(R.id.btn_send);
-        et_user_phone=findViewById(R.id.user_phone);
-        et_psw=findViewById(R.id.password);
+        btn_next=(QMUIRoundButton)findViewById(R.id.next);
+        btn_send=(QMUIRoundButton)findViewById(R.id.btn_send);
+        et_user_phone=findViewById(R.id.user_phone0);
+        et_psw=findViewById(R.id.password0);
         et_confirm=findViewById(R.id.paw_confirm);
         et_code=findViewById(R.id.code);
 

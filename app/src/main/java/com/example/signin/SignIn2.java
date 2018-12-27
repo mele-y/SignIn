@@ -19,9 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.example.signin.utility.userInfo;
+import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
 public class SignIn2 extends AppCompatActivity {
-    private Button btn_register;
+    private QMUIRoundButton btn_register;
     private EditText et_major,et_college,et_id_num,et_user_name,nickname;
     private String major,college,id_num,user_name,gender,identity,user_phone,password,nick_name;
     private RadioButton male,female,tea,stu;
@@ -46,7 +47,7 @@ public class SignIn2 extends AppCompatActivity {
         female=findViewById(R.id.female_radio);
         tea=findViewById(R.id.tea_radio);
         stu=findViewById(R.id.stu_radio);
-        btn_register=findViewById(R.id.btn_register);
+        btn_register=(QMUIRoundButton )findViewById(R.id.btn_register0);
         et_college=findViewById(R.id.college);
         nickname=findViewById(R.id.nick_name);
         et_id_num=findViewById(R.id.id_num);

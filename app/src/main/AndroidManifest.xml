@@ -33,18 +33,25 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".logIn"
-            android:label="This is login">
-
+            android:label="This is login"
+            android:theme="@style/QMUITheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
             android:label="SignIn"
-            android:theme="@style/ToolBarTheme" />
+           />
         <activity
             android:name=".SignIn"
-            android:label="this is signIn" />
+            android:label="this is signIn"
+            android:theme="@style/QMUITheme"/>
         <activity android:name=".SearchClass" />
-        <activity android:name=".SignIn2" />
+        <activity android:name=".SignIn2"  android:label="this is signIn" android:theme="@style/QMUITheme">
+
+        </activity>
         <activity
             android:name=".studentEnterClass"
             android:theme="@style/QMUITheme" />
@@ -55,10 +62,7 @@
         <activity
             android:name=".tea_Enter_main"
             android:theme="@style/QMUITheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".memberInfo"
