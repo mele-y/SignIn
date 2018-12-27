@@ -7,10 +7,10 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     tools:context=".createNotice"
-   >
+    >
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/create_notice_toolbar"
+        android:id="@+id/reply_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -18,7 +18,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
         ></android.support.v7.widget.Toolbar>
     <EditText
-        android:id="@+id/notice_title"
+        android:id="@+id/reply_title"
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -34,7 +34,7 @@
         android:background="@drawable/edit_background"/>
 
     <EditText
-        android:id="@+id/notice_context"
+        android:id="@+id/reply_context"
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -49,7 +49,7 @@
         android:singleLine="true"
         android:background="@drawable/edit_background"/>
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-        android:id="@+id/release"
+        android:id="@+id/reply_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -61,6 +61,6 @@
         android:layout_marginTop="30dp"
         android:paddingTop="10dp"
 
-        android:text="发送消息"
+        android:text="发送"
         app:qmui_isRadiusAdjustBounds="true"/>
 </LinearLayout>

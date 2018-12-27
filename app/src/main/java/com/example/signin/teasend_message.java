@@ -1,5 +1,6 @@
 package com.example.signin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,25 +14,26 @@ import android.widget.Toast;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
 public class teasend_message extends AppCompatActivity {
-    private EditText notice_title,notice_context;//编辑框 手机号和密码
+    private EditText reply_title,reply_context;
     private String title,context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_notice);//和发公告用得同一个layout
-        Toolbar toolbar=(Toolbar)findViewById(R.id.create_notice_toolbar);//获取TOOLBAR实例
+        setContentView(R.layout.sendmessage);
+        Toolbar toolbar=(Toolbar)findViewById(R.id.reply_toolbar);//获取TOOLBAR实例
         setSupportActionBar(toolbar);//把TOOLBAR设为标题栏
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        notice_context=findViewById(R.id.notice_context);
-        notice_title=findViewById(R.id.notice_title);
-        QMUIRoundButton btn=(QMUIRoundButton)findViewById(R.id.release);
+        reply_context=findViewById(R.id.reply_context);
+        reply_title=findViewById(R.id.reply_title);
+        QMUIRoundButton btn=(QMUIRoundButton)findViewById(R.id.reply_confirm);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//点击发布,逻辑层交接存储数据,内容存储到学生信息,title,context
-                context=notice_context.getText().toString().trim();
-                title=notice_title.getText().toString().trim();
+                context=reply_context.getText().toString().trim();
+                title=reply_title.getText().toString().trim();
                 Toast.makeText(teasend_message.this ,"发送成功",Toast.LENGTH_SHORT).show();
-                finish();//返回界面
+                Intent intent=new Intent(teasend_message.this,tea_Enter_main.class);//跳转
+                startActivity(intent);
             }
         });
     }

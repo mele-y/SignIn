@@ -94,10 +94,15 @@ public class teaNoticeFra extends Fragment {
 
             intent.putExtra("stu_name",data[(int)viewList.getTag()].getStu_name());//传递信息
             intent.putExtra("context",data[(int)viewList.getTag()].getContext());
+            intent.putExtra("title",data[(int)viewList.getTag()].getType());
             startActivity(intent);
 
 
         }
 
     };
+
+
+
+
 }

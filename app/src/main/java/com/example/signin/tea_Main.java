@@ -84,8 +84,8 @@ public class tea_Main extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_edit:
-                        Intent intent1 = new Intent(tea_Main.this, editTeaInfo.class);
-                        startActivity(intent1);
+                     //   Intent intent1 = new Intent(tea_Main.this, editTeaInfo.class);
+                      //  startActivity(intent1);
                         break;//点击编辑跳转至编辑个人信息
                     case R.id.nav_exit:
                         Intent intent2 = new Intent(tea_Main.this, logIn.class);
