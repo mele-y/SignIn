@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.signin.utility.OkHttp;
@@ -67,9 +66,8 @@ public class logIn extends AppCompatActivity {
                         showResponse("网络连接异常");
                     }
                     else{
-                        jsonReader reader = new jsonReader();
-                        String recvMessage = reader.recvLogIn(result);
-                        if(userInfo.getToken() != "") {
+                        String recvMessage = jsonReader.recvLogIn(result);
+                        if(!userInfo.getToken().equals("")) {
                             goIntent();
                         }
                         else {
@@ -101,7 +99,7 @@ public class logIn extends AppCompatActivity {
             @Override
             public void run() {
                 chromToast.showToast(logIn.this, "登录成功", false, 0xAA00FF7F, 0xFFFFFFFF);
-                if(userInfo.getIdent() == "student"){
+                if(userInfo.getIdent().equals("student")){
                     Intent intent =new Intent(logIn.this,MainActivity.class);
                     startActivity(intent);
                 }

@@ -65,12 +65,11 @@ public class createClass extends AppCompatActivity {
                     map.put("classname", name);
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/addclass", map);
-                    jsonReader reader = new jsonReader();
-                    if(reader.recvStatus(result).equals("200")){
+                    if(jsonReader.recvStatus(result).equals("200")){
                         goIntent();
                     }
                     else
-                        showResponse(reader.recvMsg(result), false);
+                        showResponse(jsonReader.recvMsg(result), false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

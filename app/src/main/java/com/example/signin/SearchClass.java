@@ -65,8 +65,7 @@ public class SearchClass extends AppCompatActivity {
                         showResponse("网络连接异常", false);
                     }
                     else{
-                        jsonReader reader = new jsonReader();
-                        reader.recvGetAllClass(result);
+                        jsonReader.recvGetAllClass(result);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

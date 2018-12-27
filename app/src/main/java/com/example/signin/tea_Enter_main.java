@@ -21,8 +21,8 @@ import com.example.signin.utility.userInfo;
 import com.example.signin.utility.allAttendanceInfo;
 import java.util.HashMap;
 import java.util.Map;
-
-
+import com.example.signin.utility.allNoticeInfo;
+import com.example.signin.utility.allMessageInfo;
 
 public class tea_Enter_main extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
@@ -42,6 +42,11 @@ public class tea_Enter_main extends AppCompatActivity {
         classId = intent.getStringExtra("classId");
         if(!studentInfo.getClassID().equals(classId))
             sendGetAllStudentRequest();
+        if(!allNoticeInfo.getClassID().equals(classId)) {
+            sendGetAllNoticeRequest();
+        }
+        if(!allMessageInfo.getClassID().equals(classId))
+            sendGetAllMessageRequest();
         if(!allAttendanceInfo.getClassID().equals(classId))
             sendGetAllAttendanceRequest();
         setContentView(R.layout.tea__enter_main);
@@ -113,6 +118,7 @@ public class tea_Enter_main extends AppCompatActivity {
                 break;
             case R.id.notice ://创建公告
                 Intent intent=new Intent(this,createNotice.class);
+                intent.putExtra("classID", classId);
                 startActivity(intent);
                 break;
             default:
@@ -142,8 +148,7 @@ public class tea_Enter_main extends AppCompatActivity {
                     map.put("ident", userInfo.getIdent());
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
-                    jsonReader reader = new jsonReader();
-                    reader.recvGetAllStudent(result, classId);
+                    jsonReader.recvGetAllStudent(result, classId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -164,8 +169,46 @@ public class tea_Enter_main extends AppCompatActivity {
                     map.put("ID", userInfo.getID());
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
-                    jsonReader reader = new jsonReader();
-                    reader.recvGetAllAttendance(result, classId);
+                    jsonReader.recvGetAllAttendance(result, classId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void sendGetAllMessageRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classId);
+                    map.put("ident", userInfo.getIdent());
+                    map.put("ID", "2333333333");
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getmessage", map);
+                    jsonReader.recvGetAllMessage(result, classId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void sendGetAllNoticeRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classId);
+                    map.put("ident", userInfo.getIdent());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getbulletin", map);
+                    jsonReader.recvGetAllNotice(result, classId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

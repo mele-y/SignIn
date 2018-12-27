@@ -54,6 +54,9 @@ public class memberInfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(memberInfo.this,teasend_message.class);
+                intent.putExtra("classID", classId);
+                intent.putExtra("stuID", stu_id);
+                intent.putExtra("ident", "teacher");
                 startActivity(intent);
             }
         });//点击发送消息,传递学生信息给下一个activity
@@ -64,7 +67,7 @@ public class memberInfo extends AppCompatActivity {
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(memberInfo.this).setTitle("总出勤率                                                                                                  " + title2);
         for (int i = 0; i < data.size(); ++i) {
             QMUICommonListItemView msg = day_list.createItemView(data.get(i).getTime());
-            msg.setDetailText(data.get(i).getAttendance());
+            msg.setDetailText(data.get(i).getAttendance().equals("1")?"出勤":"缺勤");
             section.addItemView(msg, null);
         }
         section.addTo(day_list);//将section加入列表
@@ -97,8 +100,7 @@ public class memberInfo extends AppCompatActivity {
                         showResponse("网络连接异常", false);
                     }
                     else{
-                        jsonReader reader = new jsonReader();
-                        reader.recvGetSingleAttendance(result, classId, stu_id);
+                        jsonReader.recvGetSingleAttendance(result, classId, stu_id);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

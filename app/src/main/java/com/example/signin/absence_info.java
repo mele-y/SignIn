@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class absence_info extends AppCompatActivity {
     private String name,classId,time;
-    private static List<signinInfo> data = new ArrayList<>();
+    private List<signinInfo> data = new ArrayList<>();
     QMUIGroupListView absence_list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

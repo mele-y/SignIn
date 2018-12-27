@@ -126,11 +126,10 @@ public class SignIn2 extends AppCompatActivity {
                         showResponse("网络连接异常", false);
                     }
                     else{
-                        jsonReader reader = new jsonReader();
-                        if(reader.recvStatus(result).equals("200"))
+                        if(jsonReader.recvStatus(result).equals("200"))
                             goIntent();
                         else
-                            showResponse(reader.recvMsg(result), false);
+                            showResponse(jsonReader.recvMsg(result), false);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

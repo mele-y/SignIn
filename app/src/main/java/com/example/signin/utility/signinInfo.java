@@ -6,6 +6,7 @@ public class signinInfo implements Comparable{
     private String week = "";
     private String sname = "";
     private String sid = "";
+
     public signinInfo(String time, String attendance, String week){
         this.time = time;
         this.attendance = attendance;

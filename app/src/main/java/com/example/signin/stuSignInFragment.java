@@ -47,12 +47,11 @@ import com.example.signin.utility.signinInfo;
  * A simple {@link Fragment} subclass.
  */
 public class stuSignInFragment extends Fragment {
-    private static final int CODE =233;
-    private static List<signinInfo> data = new ArrayList<>();
+    private List<signinInfo> data = new ArrayList<>();
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
-    private static String longitude = "", latitude = "", time = "", classID = "";
-    private static String[] permissions = {"android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION", "android.permission.READ_PHONE_STATE", "android.permission.WRITE_EXTERNAL_STORAGE"};
+    private String longitude = "", latitude = "", time = "", classID = "";
+    private String[] permissions = {"android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION", "android.permission.READ_PHONE_STATE", "android.permission.WRITE_EXTERNAL_STORAGE"};
     QMUIGroupListView qmuiGroupListView;
     public stuSignInFragment() {
         // Required empty public constructor
@@ -199,7 +198,7 @@ public class stuSignInFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getPermissions(CODE, permissions);
+        getPermissions(233, permissions);
         initLocation();
         startLocation();
         studentEnterClass a = (studentEnterClass) getActivity();
@@ -277,11 +276,10 @@ public class stuSignInFragment extends Fragment {
                         showResponse("网络连接异常", false);
                     }
                     else{
-                        jsonReader reader = new jsonReader();
-                        if(reader.recvStatus(result).equals("200"))
+                        if(jsonReader.recvStatus(result).equals("200"))
                             showResponse("签到成功", true);
                         else
-                            showResponse(reader.recvMsg(result), false);
+                            showResponse(jsonReader.recvMsg(result), false);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -320,8 +318,7 @@ public class stuSignInFragment extends Fragment {
                         showResponse("网络连接异常", false);
                     }
                     else{
-                        jsonReader reader = new jsonReader();
-                        reader.recvGetSingleAttendance(result, classID, userInfo.getID());
+                        jsonReader.recvGetSingleAttendance(result, classID, userInfo.getID());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

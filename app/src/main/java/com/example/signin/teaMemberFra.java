@@ -26,7 +26,7 @@ import com.example.signin.utility.studentInfo;
 
 public class teaMemberFra extends Fragment {
     private List<memberClass> data = new ArrayList<>();
-    private static String classID = "", className = "";
+    private String classID = "", className = "";
     QMUIGroupListView  member_list;
     public teaMemberFra() {
         // Required empty public constructor
@@ -65,11 +65,12 @@ public class teaMemberFra extends Fragment {
         public void onClick(View view) {
             QMUICommonListItemView viewList = (QMUICommonListItemView) view;
             Intent intent=new Intent(getActivity(),memberInfo.class);
-            sendGetSingleAttendanceRequest(data.get((int)viewList.getTag()).getStu_id());
+            int i = (int)viewList.getTag();
+            sendGetSingleAttendanceRequest(data.get(i).getStu_id());
             intent.putExtra("name", className);
             intent.putExtra("classId",classID);//传递课程参数
-            intent.putExtra("stu_name",data.get((int)viewList.getTag()).getStu_name());//传递学生信息
-            intent.putExtra("stu_id",data.get((int)viewList.getTag()).getStu_id());
+            intent.putExtra("stu_name",data.get(i).getStu_name());//传递学生信息
+            intent.putExtra("stu_id",data.get(i).getStu_id());
             startActivity(intent);
         }
 
@@ -87,8 +88,7 @@ public class teaMemberFra extends Fragment {
                     map.put("ID", userInfo.getID());
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
-                    jsonReader reader = new jsonReader();
-                    reader.recvGetSingleAttendance(result, classID, sID);
+                    jsonReader.recvGetSingleAttendance(result, classID, sID);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -111,8 +111,7 @@ public class teaMemberFra extends Fragment {
                         showResponse("网络连接异常", false);
                     }
                     else{
-                        jsonReader reader = new jsonReader();
-                        reader.recvGetAllStudent(result, classID);
+                        jsonReader.recvGetAllStudent(result, classID);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

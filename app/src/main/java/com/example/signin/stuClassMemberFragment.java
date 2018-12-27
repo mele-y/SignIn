@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class stuClassMemberFragment extends Fragment {
     private List<memberClass> data = new ArrayList<>();
-    private static String classID = "";
+    private String classID = "";
     QMUIGroupListView  member_list;
     public stuClassMemberFragment() {
         // Required empty public constructor
@@ -41,7 +41,8 @@ public class stuClassMemberFragment extends Fragment {
         classID = a.getClassId();
         if(!studentInfo.getClassID().equals(classID))
             sendGetAllStudentRequest();
-        data = studentInfo.getStu();
+        else
+            data = studentInfo.getStu();
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_stu_class_member, container, false);
         member_list=view.findViewById(R.id.member_list);//获取列表
@@ -53,7 +54,6 @@ public class stuClassMemberFragment extends Fragment {
             listItemName.setDetailText(data.get(i).getStu_id());//显示学号
             listItemName.setOrientation(QMUICommonListItemView.VERTICAL);//垂直
             listItemName.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-            listItemName.setTag(i);
             section.addItemView(listItemName,null);
         }
         section.addTo(member_list);//将section加入列表
@@ -78,8 +78,8 @@ public class stuClassMemberFragment extends Fragment {
                         showResponse("网络连接异常", false);
                     }
                     else{
-                        jsonReader reader = new jsonReader();
-                        reader.recvGetAllStudent(result, classID);
+                        jsonReader.recvGetAllStudent(result, classID);
+                        data = studentInfo.getStu();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

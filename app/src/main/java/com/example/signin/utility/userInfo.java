@@ -6,7 +6,7 @@ public class userInfo {
     private static String nickname = "";
     private static String college = "";
     private static String major = "";
-    private static int sex = -1;
+    private static String sex = "";
     private static String ID = "";
     private static String realname = "";
     private static String ident = "";
@@ -20,7 +20,7 @@ public class userInfo {
         userInfo.token = token;
     }
 
-    public static int getSex() {
+    public static String getSex() {
         return sex;
     }
 
@@ -36,7 +36,7 @@ public class userInfo {
         return ident;
     }
 
-    public static void setSex(int sex) {
+    public static void setSex(String sex) {
         userInfo.sex = sex;
     }
 

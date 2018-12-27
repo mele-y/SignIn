@@ -43,13 +43,12 @@ import com.example.signin.utility.chromToast;
 import com.example.signin.utility.allAttendanceInfo;
 
 public class mainSignFra extends Fragment {
-    private static final int CODE =233;
     private static boolean flag = false;
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
-    private static String longitude = "", latitude = "", time = "", classID = "";
-    private static String[] permissions = {"android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION", "android.permission.READ_PHONE_STATE", "android.permission.WRITE_EXTERNAL_STORAGE"};
-    private static List<signinInfo> data = new ArrayList<>();
+    private String longitude = "", latitude = "", time = "", classID = "";
+    private String[] permissions = {"android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION", "android.permission.READ_PHONE_STATE", "android.permission.WRITE_EXTERNAL_STORAGE"};
+    private List<signinInfo> data = new ArrayList<>();
     QMUIGroupListView qmuiGroupListView;
 
     public mainSignFra() {
@@ -210,7 +209,7 @@ public class mainSignFra extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            getPermissions(CODE, permissions);
+            getPermissions(233, permissions);
             initLocation();
             startLocation();
             tea_Enter_main a = (tea_Enter_main)getActivity();
@@ -297,13 +296,16 @@ public class mainSignFra extends Fragment {
                     map.put("location", longitude + " " + latitude);
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/startSignIn", map);
-                    jsonReader reader = new jsonReader();
-                    if(reader.recvStatus(result).equals("200")){
-                        showResponse("签到开始", true);
-                        flag = !flag;
+                    if(result.equals(""))
+                        showResponse("网络连接异常", false);
+                    else{
+                        if(jsonReader.recvStatus(result).equals("200")){
+                            showResponse("签到开始", true);
+                            flag = !flag;
+                        }
+                        else
+                            showResponse(jsonReader.recvMsg(result), false);
                     }
-                    else
-                        showResponse(reader.recvMsg(result), false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -323,13 +325,16 @@ public class mainSignFra extends Fragment {
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/closeSignIn", map);
                     System.out.println(result);
-                    jsonReader reader = new jsonReader();
-                    if(reader.recvMsg(result).equals("Signin successfully closed!")) {
-                        showResponse("签到结束", true);
-                        flag = !flag;
+                    if(result.equals(""))
+                        showResponse("网络连接异常", false);
+                    else{
+                        if(jsonReader.recvMsg(result).equals("Signin successfully closed!")) {
+                            showResponse("签到结束", true);
+                            flag = !flag;
+                        }
+                        else
+                            showResponse(jsonReader.recvMsg(result), false);
                     }
-                    else
-                        showResponse(reader.recvMsg(result), false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -367,8 +372,7 @@ public class mainSignFra extends Fragment {
                         showResponse("网络连接异常", false);
                     }
                     else{
-                        jsonReader reader = new jsonReader();
-                        reader.recvGetAllAttendance(result, classID);
+                        jsonReader.recvGetAllAttendance(result, classID);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

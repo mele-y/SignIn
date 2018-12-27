@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 import com.example.signin.utility.studentInfo;
 import com.example.signin.utility.singleAttendanceInfo;
+import com.example.signin.utility.allNoticeInfo;
+import com.example.signin.utility.allMessageInfo;
+
 public class studentEnterClass extends AppCompatActivity {
 
 
@@ -39,6 +42,11 @@ public class studentEnterClass extends AppCompatActivity {
         classId= (String) intent.getCharSequenceExtra("classId");
         if(!studentInfo.getClassID().equals(classId))
             sendGetAllStudentRequest();
+        if(!allNoticeInfo.getClassID().equals(classId)) {
+            sendGetAllNoticeRequest();
+        }
+        if(!allMessageInfo.getClassID().equals(classId))
+            sendGetAllMessageRequest();
         if(!(singleAttendanceInfo.getClassID().equals(classId) && singleAttendanceInfo.getStuID().equals(userInfo.getID())))
             sendGetSingleAttendanceRequest();
         setContentView(R.layout.activity_student_enter_class);
@@ -108,7 +116,7 @@ public class studentEnterClass extends AppCompatActivity {
     public void switchFragment(int lastfragment, int index){
         FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
         transaction.hide(fragments[lastfragment]);
-        if(fragments[index].isAdded()==false)
+        if(!fragments[index].isAdded())
         {
             transaction.add(R.id.stuEnterClass_mainView,fragments[index]);
         }
@@ -126,8 +134,7 @@ public class studentEnterClass extends AppCompatActivity {
                     map.put("ident", userInfo.getIdent());
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
-                    jsonReader reader = new jsonReader();
-                    reader.recvGetAllStudent(result, classId);
+                    jsonReader.recvGetAllStudent(result, classId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -147,8 +154,7 @@ public class studentEnterClass extends AppCompatActivity {
                     map.put("ID", userInfo.getID());
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
-                    jsonReader reader = new jsonReader();
-                    reader.recvGetSingleAttendance(result, classId, userInfo.getID());
+                    jsonReader.recvGetSingleAttendance(result, classId, userInfo.getID());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -156,17 +162,42 @@ public class studentEnterClass extends AppCompatActivity {
         }).start();
     }
 
-    private void showResponse(final String response, final boolean pos){
-        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
-        runOnUiThread(new Runnable() {
+    private void sendGetAllMessageRequest(){
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                //在这里进行UI操作，将结果显示到界面上
-                if(pos)
-                    chromToast.showToast(studentEnterClass.this, response, false, 0xAA00FF7F, 0xFFFFFFFF);
-                else
-                    chromToast.showToast(studentEnterClass.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classId);
+                    map.put("ident", userInfo.getIdent());
+                    map.put("ID", userInfo.getID());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getmessage", map);
+                    jsonReader.recvGetAllMessage(result, classId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        });
+        }).start();
+    }
+
+    private void sendGetAllNoticeRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classId);
+                    map.put("ident", userInfo.getIdent());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getbulletin", map);
+                    jsonReader.recvGetAllNotice(result, classId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

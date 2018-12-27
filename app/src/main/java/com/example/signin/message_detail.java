@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
 public class message_detail extends AppCompatActivity {
-private String stu_name,context,title;
+private String stu_name,content,title,classID,stuID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,15 +21,17 @@ private String stu_name,context,title;
         setSupportActionBar(toolbar);//把TOOLBAR设为标题栏
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent=getIntent();
-        title=(String)intent.getCharSequenceExtra("title");//获取学生信息
-        context=(String)intent.getCharSequenceExtra("context");//获取请加内容
-        stu_name=(String)intent.getCharSequenceExtra("stu_name");//获取请加内容
+        title=intent.getStringExtra("type").equals("1")?"请假":"留言";//获取学生信息
+        content=intent.getStringExtra("content");//获取请加内容
+        stu_name=intent.getStringExtra("stu_name");//获取请加内容
+        classID=intent.getStringExtra("classID");
+        stuID=intent.getStringExtra("stuID");
         getSupportActionBar().setTitle("学生消息");
         toolbar.setSubtitle(stu_name);//设置标题与副标题
         TextView title0=findViewById(R.id.title0);
         TextView context0=findViewById(R.id.context0);
         title0.setText(title);//逻辑层获取数据
-        context0.setText(context);
+        context0.setText(content);
         QMUIRoundButton btn=(QMUIRoundButton)findViewById(R.id.ignore);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,8 +44,10 @@ private String stu_name,context,title;
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//点击回复,逻辑层交接
-
                 Intent intent =new Intent(message_detail.this,teasend_message.class);
+                intent.putExtra("classID", classID);
+                intent.putExtra("stuID", stuID);
+                intent.putExtra("ident", "teacher");
                 startActivity(intent);
             }
         });

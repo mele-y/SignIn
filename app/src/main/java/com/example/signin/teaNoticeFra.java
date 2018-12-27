@@ -1,5 +1,6 @@
 package com.example.signin;
 import android.content.Intent;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,26 +9,44 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 
+import com.example.signin.utility.OkHttp;
+import com.example.signin.utility.chromToast;
+import com.example.signin.utility.jsonReader;
+import com.example.signin.utility.userInfo;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.example.signin.utility.allNoticeInfo;
+import com.example.signin.utility.allMessageInfo;
+
 public class teaNoticeFra extends Fragment {
     QMUIGroupListView message_list,notice_list;
-    private messageInfo[] data={
-            new messageInfo("姓名1","周五交作业吗?","留言"),
-            new messageInfo("姓名2","明天可以请假吗","请假")
-    };//学生对应留言
-    private noticeInfo[] data1={new noticeInfo("主题1","明天考试"),
-            new noticeInfo("主题2","明天不上课")
-    };// 老师对应公告
+    private List<messageInfo> messages = new ArrayList<>();
+    private List<noticeInfo> notices = new ArrayList<>();
+    private String classID = "";
     public teaNoticeFra() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        tea_Enter_main a = (tea_Enter_main)getActivity();
+        classID = a.getClassId();
+
+        if(!allMessageInfo.getClassID().equals(classID))
+            sendGetAllMessageRequest();
+        messages = allMessageInfo.getMessages();
+
+        if(!allNoticeInfo.getClassID().equals(classID))
+            sendGetAllNoticeRequest();
+        notices = allNoticeInfo.getNotices();
+
         View view=inflater.inflate(R.layout.tea_notice_frag, container, false);
         TabHost tabHost=(TabHost)view.findViewById(android.R.id.tabhost);//获取选项卡实例
         tabHost.setup();
@@ -38,41 +57,36 @@ public class teaNoticeFra extends Fragment {
 
         message_list=view.findViewById(R.id.message_list);//获取列表
         message_list.setSeparatorStyle(QMUIGroupListView.SEPARATOR_STYLE_NORMAL);//设置分割线
-
-        QMUICommonListItemView listItemName1 = message_list.createItemView(data[0].getStu_name());//新建列表项，设置标题
-        listItemName1.setDetailText(data[0].getType());//显示学号
-        listItemName1.setOrientation(QMUICommonListItemView.VERTICAL);//垂直
-        listItemName1.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        listItemName1.setTag(0);
-
-        QMUICommonListItemView listItemName2 = message_list.createItemView(data[1].getStu_name());//新建列表项，设置标题
-        listItemName2.setDetailText(data[1].getType());//设置副标题
-        listItemName2.setOrientation(QMUICommonListItemView.VERTICAL);//垂直
-        listItemName2.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);//设置右侧控件
-        listItemName2.setTag(1);
-
-        QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext()).setTitle("消息:"+data.length+"条");//新建section，设置标题
-        section.addItemView(listItemName1,mOnClickListenerGroup);
-        section.addItemView(listItemName2,mOnClickListenerGroup);//留言和请假的点击事件
+        QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext()).setTitle("消息:"+messages.size()+"条");//新建section，设置标题
+        for (int i = 0; i < messages.size(); ++i) {
+            if(messages.get(i).getSender().equals("student")){
+                QMUICommonListItemView msg = message_list.createItemView(messages.get(i).getStu_name()+"的"+(messages.get(i).getType().equals("1")?"请假":"留言"));
+                msg.setDetailText(messages.get(i).getContent());
+                msg.setOrientation(QMUICommonListItemView.VERTICAL);//垂直
+                msg.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);//设置右侧控件
+                msg.setTag(i);
+                section.addItemView(msg, mOnClickListenerGroup);
+            }
+            else{
+                QMUICommonListItemView msg = message_list.createItemView(messages.get(i).getStu_name());
+                msg.setDetailText(messages.get(i).getContent());
+                msg.setOrientation(QMUICommonListItemView.VERTICAL);//垂直
+                msg.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);//设置右侧控件
+                section.addItemView(msg, null);
+            }
+        }
         section.addTo(message_list);//将section加入列表
 
         notice_list=view.findViewById(R.id.notice_list);//获取列表
         notice_list.setSeparatorStyle(QMUIGroupListView.SEPARATOR_STYLE_NORMAL);//设置分割线
-
-        QMUICommonListItemView listItemName3 = notice_list.createItemView(data1[0].getTitle());//新建列表项，设置标题
-        listItemName3.setDetailText(data1[0].getContext());//显示学号
-        listItemName3.setOrientation(QMUICommonListItemView.VERTICAL);//垂直
-        listItemName3.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
-
-        QMUICommonListItemView listItemName4 = notice_list.createItemView(data1[1].getTitle());//新建列表项，设置标题
-        listItemName4.setDetailText(data1[1].getContext());//设置副标题
-        listItemName4.setOrientation(QMUICommonListItemView.VERTICAL);//垂直
-        listItemName4.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);//设置右侧控件
-
-
-        QMUIGroupListView.Section section1=QMUIGroupListView.newSection(getContext()).setTitle("公告:"+data1.length+"条");//新建section，设置标题
-        section1.addItemView(listItemName3,null);
-        section1.addItemView(listItemName4,null);//公告不设置点击事件
+        QMUIGroupListView.Section section1=QMUIGroupListView.newSection(getContext()).setTitle("公告:"+notices.size()+"条");//新建section，设置标题
+        for (int i = 0; i < notices.size(); ++i) {
+            QMUICommonListItemView msg = notice_list.createItemView(notices.get(i).getTime());
+            msg.setDetailText(notices.get(i).getContent());
+            msg.setOrientation(QMUICommonListItemView.VERTICAL);//垂直
+            msg.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);//设置右侧控件
+            section1.addItemView(msg, null);
+        }
         section1.addTo(notice_list);//将section加入列表
 
 
@@ -82,27 +96,78 @@ public class teaNoticeFra extends Fragment {
         @Override
         public void onClick(View view) {
             QMUICommonListItemView viewList = (QMUICommonListItemView) view;
-            switch ((int)viewList.getTag()) {
-                case 0:
-                    break;
-                case 1:
-                    break;
-            }
-            //   Toast.makeText(getActivity(),"选项：" +  viewList.getTag()+ " 点击了",Toast.LENGTH_SHORT).show();
-            Intent intent;
-            intent=new Intent(getActivity(),message_detail.class);
-
-            intent.putExtra("stu_name",data[(int)viewList.getTag()].getStu_name());//传递信息
-            intent.putExtra("context",data[(int)viewList.getTag()].getContext());
-            intent.putExtra("title",data[(int)viewList.getTag()].getType());
+            Intent intent = new Intent(getActivity(),message_detail.class);
+            intent.putExtra("classID",classID);
+            intent.putExtra("stuID",messages.get((int)viewList.getTag()).getStu_id());
+            intent.putExtra("stu_name",messages.get((int)viewList.getTag()).getStu_name());
+            intent.putExtra("type",messages.get((int)viewList.getTag()).getType());
+            intent.putExtra("content",messages.get((int)viewList.getTag()).getContent());
             startActivity(intent);
-
 
         }
 
     };
 
+    private void sendGetAllNoticeRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classID);
+                    map.put("ident", userInfo.getIdent());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getbulletin", map);
+                    if(result.equals("")){
+                        showResponse("网络连接异常", false);
+                    }
+                    else{
+                        jsonReader.recvGetAllNotice(result, classID);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
+    private void showResponse(final String response, final boolean pos){
+        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
+        (getActivity()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //在这里进行UI操作，将结果显示到界面上
+                if(pos)
+                    chromToast.showToast(getActivity(), response, false, 0xAA00FF7F, 0xFFFFFFFF);
+                else
+                    chromToast.showToast(getActivity(), response, true, 0xAAFF6100, 0xFFFFFFFF);
+            }
+        });
+    }
 
+    private void sendGetAllMessageRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classID);
+                    map.put("ident", userInfo.getIdent());
+                    map.put("ID", "2333333333");
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getmessage", map);
+                    if(result.equals(""))
+                        showResponse("网络连接异常", false);
+                    else{
+                        jsonReader.recvGetAllMessage(result, classID);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
 }

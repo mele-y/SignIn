@@ -46,13 +46,14 @@ public class singleAttendanceInfo {
 
     private static void calculate(){
         rate = "";
-        if(attendances.size() > 0){
+        int sz = attendances.size();
+        if(sz > 0){
             double nu,de;
-            nu = de = 0.0;
-            for(int i=0;i<attendances.size();++i){
-                de += 1.0;
+            nu = de = 0;
+            for(int i=0;i<sz;++i){
+                de += 1;
                 if(attendances.get(i).getAttendance().equals("1")) {
-                    nu += 1.0;
+                    nu += 1;
                 }
             }
             String r = String.valueOf(Double.valueOf(nu/de*100).intValue());

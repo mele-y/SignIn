@@ -51,7 +51,6 @@ public class tea_Main extends AppCompatActivity {
         setContentView(R.layout.tea__main);
         //初始化课程
 
-
         listView=(ListView)findViewById(R.id.class_view1);
 
         Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar3);
@@ -76,8 +75,6 @@ public class tea_Main extends AppCompatActivity {
         major.setText(userInfo.getMajor());
         college.setText(userInfo.getCollege());
         //设置滑动菜单的显示内容
-
-
 
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -133,8 +130,7 @@ public class tea_Main extends AppCompatActivity {
                         showResponse("网络连接异常", false);
                     }
                     else{
-                        jsonReader reader = new jsonReader();
-                        List<classInfo> classes = reader.recvGetClass(result);
+                        List<classInfo> classes = jsonReader.recvGetClass(result);
                         fillList(classes);
                     }
                 } catch (Exception e) {
@@ -160,6 +156,8 @@ public class tea_Main extends AppCompatActivity {
                         classInfo class_=classes.get(position);
                         chromToast.showToast(tea_Main.this, class_.getName(), false, 0xAA00FF7F, 0xFFFFFFFF);
                         sendGetAllStudentRequest(class_.getClassId().toString());
+                        sendGetAllNoticeRequest(class_.getClassId().toString());
+                        sendGetAllMessageRequest(class_.getClassId().toString());
                         sendGetAllAttendanceRequest(class_.getClassId().toString());
                         Intent intent=new Intent(tea_Main.this,tea_Enter_main.class);
                         intent.putExtra("name", class_.getName().toString());
@@ -183,8 +181,7 @@ public class tea_Main extends AppCompatActivity {
                     map.put("ident", userInfo.getIdent());
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
-                    jsonReader reader = new jsonReader();
-                    reader.recvGetAllStudent(result, classId);
+                    jsonReader.recvGetAllStudent(result, classId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -204,8 +201,26 @@ public class tea_Main extends AppCompatActivity {
                     map.put("ID", userInfo.getID());
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
-                    jsonReader reader = new jsonReader();
-                    reader.recvGetAllAttendance(result, classId);
+                    jsonReader.recvGetAllAttendance(result, classId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void sendGetAllNoticeRequest(final String classId){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classId);
+                    map.put("ident", userInfo.getIdent());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getbulletin", map);
+                    jsonReader.recvGetAllNotice(result, classId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -225,5 +240,25 @@ public class tea_Main extends AppCompatActivity {
                     chromToast.showToast(tea_Main.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
             }
         });
+    }
+
+    private void sendGetAllMessageRequest(final String classId){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classId);
+                    map.put("ident", userInfo.getIdent());
+                    map.put("ID", "2333333333");
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getmessage", map);
+                    jsonReader.recvGetAllMessage(result, classId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }
