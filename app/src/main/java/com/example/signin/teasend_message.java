@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
-public class teasend_message extends AppCompatActivity {
+public class teasend_message extends AppCompatActivity {//逻辑层判断是学生发给老师还是老师发给学生
     private EditText reply_title,reply_context;
     private String title,context;
     @Override
@@ -32,7 +32,8 @@ public class teasend_message extends AppCompatActivity {
                 context=reply_context.getText().toString().trim();
                 title=reply_title.getText().toString().trim();
                 Toast.makeText(teasend_message.this ,"发送成功",Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(teasend_message.this,tea_Enter_main.class);//跳转
+                Intent intent=new Intent(teasend_message.this,tea_Enter_main.class);//判断学生还是教师跳转
+                intent=new Intent(teasend_message.this,studentEnterClass.class);
                 startActivity(intent);
             }
         });

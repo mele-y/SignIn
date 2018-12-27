@@ -35,10 +35,6 @@
             android:name=".logIn"
             android:label="This is login"
             android:theme="@style/QMUITheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
@@ -54,7 +50,12 @@
         </activity>
         <activity
             android:name=".studentEnterClass"
-            android:theme="@style/QMUITheme" />
+            android:theme="@style/QMUITheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".tea_Main"
             android:label="教师界面" />
@@ -86,7 +87,7 @@
 
         <activity
             android:name=".teasend_message"
-            android:label="@string/title_activity_teasend_message"
+            android:label="send message"
             android:theme="@style/QMUITheme"></activity>
         <activity android:name=".message_detail"
 
