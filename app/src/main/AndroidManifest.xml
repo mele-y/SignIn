@@ -33,14 +33,20 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".logIn"
-            android:label="This is login"></activity>
+            android:label="This is login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:label="SignIn"
-            android:theme="@style/ToolBarTheme"></activity>
+            android:theme="@style/ToolBarTheme" />
         <activity
             android:name=".SignIn"
-            android:label="this is signIn"></activity>
+            android:label="this is signIn" />
         <activity android:name=".SearchClass" />
         <activity android:name=".editStudentInfo" />
         <activity android:name=".SignIn2" />
@@ -49,24 +55,23 @@
             android:theme="@style/QMUITheme" />
         <activity
             android:name=".tea_Main"
-            android:label="教师界面"></activity>
+            android:label="教师界面" />
         <activity android:name=".createClass" />
         <activity android:name=".editTeaInfo" />
         <activity
             android:name=".tea_Enter_main"
             android:theme="@style/QMUITheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".memberInfo"
-            android:theme="@style/QMUITheme" />
+            android:theme="@style/QMUITheme" >
+        </activity>
         <activity
             android:name=".createNotice"
-            android:label="发公告"></activity>
+            android:label="发公告"
+            android:theme="@style/QMUITheme"
+           />
         <activity
             android:name=".absence_info"
             android:theme="@style/QMUITheme" />
@@ -77,6 +82,10 @@
             android:name="com.amap.api.v2.apikey"
             android:value="622795e811ff47d39898f8de0160ec3c" />
 
+        <activity
+            android:name=".teasend_message"
+            android:label="@string/title_activity_teasend_message"
+            android:theme="@style/QMUITheme"></activity>
     </application>
 
 </manifest>

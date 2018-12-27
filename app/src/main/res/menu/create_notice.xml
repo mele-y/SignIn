@@ -3,5 +3,5 @@
     <item
         android:id="@+id/notice"
         android:title="发公告"
-        android:icon="@drawable/member"></item>
+    ></item>
 </menu>
