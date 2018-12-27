@@ -35,6 +35,10 @@
             android:name=".logIn"
             android:label="This is login"
             android:theme="@style/QMUITheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
@@ -51,10 +55,6 @@
         <activity
             android:name=".studentEnterClass"
             android:theme="@style/QMUITheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".tea_Main"
