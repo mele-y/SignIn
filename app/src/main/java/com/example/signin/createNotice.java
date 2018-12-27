@@ -1,3 +1,4 @@
+
 package com.example.signin;
 
 import android.os.Bundle;
@@ -29,7 +30,7 @@ public class createNotice extends AppCompatActivity {
                 context=notice_context.getText().toString().trim();
                 title=notice_title.getText().toString().trim();
                 Toast.makeText(createNotice.this ,"发布成功",Toast.LENGTH_SHORT).show();
-            }
+            finish(); }
         });
     }
     @Override
