@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         sendGetClassRequest();
+        sendGetAllClassRequest();
         setContentView(R.layout.activity_main);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);//获取TOOLBAR实例
         setSupportActionBar(toolbar);//把TOOLBAR设为标题栏
@@ -86,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendGetAllClassRequest();
                 Intent intent=new Intent(MainActivity.this,SearchClass.class);
                 startActivity(intent);
             }
@@ -96,9 +96,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
-                    case  R.id.nav_edit:
-                     //   Intent intent1=new Intent(MainActivity.this,editStudentInfo.class);
-                      //  startActivity(intent1);
+                    case R.id.nav_edit:
+                        Intent intent1=new Intent(MainActivity.this,editStudentInfo.class);
+                        startActivity(intent1);
                         break;//点击编辑跳转至编辑个人信息
                     case R.id.nav_exit:
                         Intent intent2=new Intent(MainActivity.this,logIn.class);
@@ -131,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-
     private void sendGetClassRequest(){
         new Thread(new Runnable() {
             @Override
@@ -143,9 +142,14 @@ public class MainActivity extends AppCompatActivity {
                     map.put("ID", userInfo.getID());
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getclass", map);
-                    jsonReader reader = new jsonReader();
-                    List<classInfo> classes = reader.recvGetClass(result);
-                    fillList(classes);
+                    if(result.equals("")){
+                        chromToast.showToast(MainActivity.this, "网络连接异常", true, 0xAA00FF7F, 0xFFFFFFFF);
+                    }
+                    else{
+                        jsonReader reader = new jsonReader();
+                        List<classInfo> classes = reader.recvGetClass(result);
+                        fillList(classes);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -181,19 +185,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void sendGetAllStudentRequest(final String classId){
+    private void sendGetAllStudentRequest(final String classID){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     Map<String, String> map = new HashMap<>();
                     map.put("phonenum", userInfo.getPhonenum());
-                    map.put("classID", classId);
+                    map.put("classID", classID);
                     map.put("ident", userInfo.getIdent());
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
                     jsonReader reader = new jsonReader();
-                    reader.recvGetAllStudent(result);
+                    reader.recvGetAllStudent(result, classID);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -214,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
                     jsonReader reader = new jsonReader();
-                    reader.recvGetSingleAttendance(result, userInfo.getID());
+                    reader.recvGetSingleAttendance(result, classID, userInfo.getID());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

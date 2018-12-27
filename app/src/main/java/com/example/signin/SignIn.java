@@ -50,7 +50,7 @@ public class SignIn extends AppCompatActivity {
                 password=et_psw.getText().toString().trim();
                 confirm_psw=et_confirm.getText().toString().trim();
                 code=et_code.getText().toString().trim();
-            //判断验证码 密码确认是否正确若正确 跳转
+                //判断验证码 密码确认是否正确若正确 跳转
                 if(user_phone.isEmpty())
                     showResponse("请输入手机号码", false);
                 else if(!(user_phone.length() == 11 && isNumeric(user_phone)))

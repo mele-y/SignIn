@@ -58,7 +58,6 @@ public class stuSignInFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     private void initLocation(){
         //初始化client
         locationClient = new AMapLocationClient(this.getActivity());
@@ -74,7 +73,7 @@ public class stuSignInFragment extends Fragment {
         mOption.setLocationMode(AMapLocationMode.Hight_Accuracy);//可选，设置定位模式，可选的模式有高精度、仅设备、仅网络。默认为高精度模式
         mOption.setGpsFirst(false);//可选，设置是否gps优先，只在高精度模式下有效。默认关闭
         mOption.setHttpTimeOut(1000);//可选，设置网络请求超时时间。默认为30秒。在仅设备模式下无效
-        mOption.setInterval(1000);//可选，设置定位间隔。默认为2秒
+        mOption.setInterval(500);//可选，设置定位间隔。默认为2秒
         mOption.setNeedAddress(true);//可选，设置是否返回逆地理地址信息。默认是true
         mOption.setOnceLocation(false);//可选，设置是否单次定位。默认是false
         mOption.setOnceLocationLatest(false);//可选，设置是否等待wifi刷新，默认为false.如果设置为true,会自动变为单次定位，持续定位时不要使用
@@ -115,7 +114,8 @@ public class stuSignInFragment extends Fragment {
                     sb.append("兴趣点      : " + location.getPoiName() + "\n");
                     //定位完成的时间
                     sb.append("定位时间    : " + mapUtils.formatUTC(location.getTime(), "yyyy-MM-dd HH:mm:ss") + "\n");
-                    time = mapUtils.formatUTC(location.getTime(), "yyyy-MM-dd HH:mm:ss");
+                    time = mapUtils.formatUTC(location.getTime(), "yyyy-MM-dd");
+                    showResponse("定位成功", true);
                     stopLocation();
                 } else {
                     //定位失败
@@ -189,7 +189,6 @@ public class stuSignInFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -203,8 +202,10 @@ public class stuSignInFragment extends Fragment {
         getPermissions(CODE, permissions);
         initLocation();
         startLocation();
-        Activity a = getActivity();
-        classID = ((studentEnterClass) a).getClassId();
+        studentEnterClass a = (studentEnterClass) getActivity();
+        classID = a.getClassId();
+        if(!(singleAttendanceInfo.getClassID().equals(classID) && singleAttendanceInfo.getStuID().equals(userInfo.getID())))
+            sendGetSingleAttendanceRequest();
         data = singleAttendanceInfo.getAttendances();
         String title2 = singleAttendanceInfo.getRate();
         // Inflate the layout for this fragment
@@ -219,21 +220,15 @@ public class stuSignInFragment extends Fragment {
         qmuiGroupListView.setSeparatorStyle(QMUIGroupListView.SEPARATOR_STYLE_NORMAL);
 
         QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext()).setTitle("历史签到记录                                                                                        "+ title2);
-        if(data.size() > 0){
-            List<QMUICommonListItemView> lst = new ArrayList<>();
-            List<TextView> txl = new ArrayList<>();
-            for(int i=0;i<data.size();++i){
-                QMUICommonListItemView msg = qmuiGroupListView.createItemView(data.get(i).getTime());
-                msg.setDetailText(data.get(i).getTime());
-                msg.setOrientation(QMUICommonListItemView.VERTICAL);
-                msg.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
-                TextView tx=new TextView(getContext());
-                tx.setText(data.get(i).getAttendance());
-                txl.add(tx);
-                msg.addAccessoryCustomView(txl.get(i));
-                lst.add(msg);
-                section.addItemView(lst.get(i),null);
-            }
+        for(int i=0;i<data.size();++i){
+            QMUICommonListItemView msg = qmuiGroupListView.createItemView(data.get(i).getTime());
+            msg.setDetailText(data.get(i).getWeek());
+            msg.setOrientation(QMUICommonListItemView.VERTICAL);
+            msg.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
+            TextView tx=new TextView(getContext());
+            tx.setText(data.get(i).getAttendance().equals("1")?"出勤":"缺勤");
+            msg.addAccessoryCustomView(tx);
+            section.addItemView(msg,null);
         }
         section.addTo(qmuiGroupListView);//将section加入列表
 
@@ -278,13 +273,16 @@ public class stuSignInFragment extends Fragment {
                     map.put("location", longitude + " " + latitude);
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/startSignIn", map);
-                    System.out.println(result);
-                    jsonReader reader = new jsonReader();
-                    String message = reader.recvStartSignIn(result);
-                    if(message.equals("Signin successfully"))
-                        showResponse(message, true);
-                    else
-                        showResponse(message, false);
+                    if(result.equals("")){
+                        showResponse("网络连接异常", false);
+                    }
+                    else{
+                        jsonReader reader = new jsonReader();
+                        if(reader.recvStatus(result).equals("200"))
+                            showResponse("签到成功", true);
+                        else
+                            showResponse(reader.recvMsg(result), false);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -304,5 +302,31 @@ public class stuSignInFragment extends Fragment {
                     chromToast.showToast(getActivity(), response, true, 0xAAFF6100, 0xFFFFFFFF);
             }
         });
+    }
+
+    private void sendGetSingleAttendanceRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("ident", userInfo.getIdent());
+                    map.put("classID", classID);
+                    map.put("ID", userInfo.getID());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
+                    if(result.equals("")){
+                        showResponse("网络连接异常", false);
+                    }
+                    else{
+                        jsonReader reader = new jsonReader();
+                        reader.recvGetSingleAttendance(result, classID, userInfo.getID());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

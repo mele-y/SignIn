@@ -66,12 +66,11 @@ public class createClass extends AppCompatActivity {
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/addclass", map);
                     jsonReader reader = new jsonReader();
-                    String message = reader.recvCreateClass(result);
-                    if(message.equals("Teacher successfully added!")){
+                    if(reader.recvStatus(result).equals("200")){
                         goIntent();
                     }
                     else
-                        showResponse(message, false);
+                        showResponse(reader.recvMsg(result), false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -111,7 +110,7 @@ public class createClass extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                chromToast.showToast(createClass.this, "Teacher successfully added!", false, 0xAA00FF7F, 0xFFFFFFFF);
+                chromToast.showToast(createClass.this, "创建成功", false, 0xAA00FF7F, 0xFFFFFFFF);
                 Intent intent=new Intent(createClass.this,tea_Main.class);
                 startActivity(intent);
             }

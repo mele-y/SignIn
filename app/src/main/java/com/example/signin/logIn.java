@@ -8,20 +8,17 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.signin.utility.OkHttp;
-
 import java.util.HashMap;
 import java.util.Map;
 import com.example.signin.utility.chromToast;
 import com.example.signin.utility.jsonReader;
-
 import com.example.signin.utility.userInfo;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
-
 
 public class logIn extends AppCompatActivity {
     private QMUIRoundButton btn_register, btn_login;
     private EditText et_user_phone,et_psw;//编辑框 手机号和密码
-    private String user_phone,password, token;
+    private String user_phone,password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +35,7 @@ public class logIn extends AppCompatActivity {
           @Override
             public void onClick(View v)
           {
-            Intent intent=new Intent(logIn.this,SignIn.class);
+            Intent intent = new Intent(logIn.this, SignIn.class);
             startActivity(intent);
           }
         });
@@ -66,22 +63,27 @@ public class logIn extends AppCompatActivity {
                     map.put("password", password);
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postJson("http://98.142.138.123:12345/login", map);
-                    jsonReader reader = new jsonReader();
-                    String recvMessage = reader.recvLogIn(result);
-                    if(userInfo.getToken() != "") {
-                        goIntent();
+                    if(result.equals("")){
+                        showResponse("网络连接异常");
                     }
-                    else {
-                        showResponse(recvMessage);
+                    else{
+                        jsonReader reader = new jsonReader();
+                        String recvMessage = reader.recvLogIn(result);
+                        if(userInfo.getToken() != "") {
+                            goIntent();
+                        }
+                        else {
+                            showResponse(recvMessage);
+                        }
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).start();
     }
 
-    //Http测试用函数
     private void showResponse(final String response){
         //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
         runOnUiThread(new Runnable() {

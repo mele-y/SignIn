@@ -18,6 +18,7 @@ import com.example.signin.utility.OkHttp;
 import com.example.signin.utility.jsonReader;
 import com.example.signin.utility.studentInfo;
 import com.example.signin.utility.userInfo;
+import com.example.signin.utility.allAttendanceInfo;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,20 +37,23 @@ public class tea_Enter_main extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent=getIntent();
+        name = intent.getStringExtra("name");
+        classId = intent.getStringExtra("classId");
+        if(!studentInfo.getClassID().equals(classId))
+            sendGetAllStudentRequest();
+        if(!allAttendanceInfo.getClassID().equals(classId))
+            sendGetAllAttendanceRequest();
         setContentView(R.layout.tea__enter_main);
         Toolbar stu_toolbar=(Toolbar)findViewById(R.id.tea_toolbar);//获取TOOLBAR实例
         setSupportActionBar(stu_toolbar);//把TOOLBAR设为标题栏
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Intent intent=getIntent();
-        name= (String) intent.getCharSequenceExtra("name");
-        classId= (String) intent.getCharSequenceExtra("classId");
         getSupportActionBar().setTitle(name);
         stu_toolbar.setSubtitle(classId);//设置标题与副标题
-        sendGetAllStudentRequest();
         f1=new teaMemberFra();
         f2=new teaNoticeFra();
         f3=new mainSignFra();
-        lastfragment=0;
+        lastfragment=1;
         fragments=new Fragment[]{f1,f2,f3};
         getSupportFragmentManager().beginTransaction().replace(R.id.teaEnterClass_mainView,f2).commit();//设置默认碎片
         bottomNavigationView=(BottomNavigationView)findViewById(R.id.tea_bottom_nav);
@@ -60,7 +64,6 @@ public class tea_Enter_main extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()){
                     case R.id.class_member: {
-
                         if (lastfragment != 0) {
                             switchFragment(lastfragment, 0);
                             lastfragment = 0;
@@ -120,22 +123,19 @@ public class tea_Enter_main extends AppCompatActivity {
     public void switchFragment(int lastfragment, int index){
         FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
         transaction.hide(fragments[lastfragment]);
-        if(fragments[index].isAdded()==false)
+        if(!fragments[index].isAdded())
         {
             transaction.add(R.id.teaEnterClass_mainView,fragments[index]);
         }
         transaction.show(fragments[index]).commitAllowingStateLoss();
     }
     private void sendGetAllStudentRequest(){
-
         new Thread(new Runnable() {
 
             @Override
 
             public void run() {
-
                 try{
-
                     Map<String, String> map = new HashMap<>();
                     map.put("phonenum", userInfo.getPhonenum());
                     map.put("classID", getClassId());
@@ -143,12 +143,33 @@ public class tea_Enter_main extends AppCompatActivity {
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
                     jsonReader reader = new jsonReader();
-                    reader.recvGetAllStudent(result);
+                    reader.recvGetAllStudent(result, classId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
+        }).start();
+    }
+
+    private void sendGetAllAttendanceRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classId);
+                    map.put("ident", userInfo.getIdent());
+                    map.put("ID", userInfo.getID());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
+                    jsonReader reader = new jsonReader();
+                    reader.recvGetAllAttendance(result, classId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }).start();
     }
 }

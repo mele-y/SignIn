@@ -20,6 +20,7 @@ import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 import java.util.ArrayList;
+import java.util.List;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ import com.example.signin.utility.signinInfo;
 import com.example.signin.utility.OkHttp;
 import com.example.signin.utility.jsonReader;
 import com.example.signin.utility.chromToast;
+import com.example.signin.utility.allAttendanceInfo;
 
 public class mainSignFra extends Fragment {
     private static final int CODE =233;
@@ -47,6 +49,7 @@ public class mainSignFra extends Fragment {
     private AMapLocationClientOption locationOption = null;
     private static String longitude = "", latitude = "", time = "", classID = "";
     private static String[] permissions = {"android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION", "android.permission.READ_PHONE_STATE", "android.permission.WRITE_EXTERNAL_STORAGE"};
+    private static List<signinInfo> data = new ArrayList<>();
     QMUIGroupListView qmuiGroupListView;
 
     public mainSignFra() {
@@ -68,7 +71,7 @@ public class mainSignFra extends Fragment {
         mOption.setLocationMode(AMapLocationMode.Hight_Accuracy);//可选，设置定位模式，可选的模式有高精度、仅设备、仅网络。默认为高精度模式
         mOption.setGpsFirst(false);//可选，设置是否gps优先，只在高精度模式下有效。默认关闭
         mOption.setHttpTimeOut(1000);//可选，设置网络请求超时时间。默认为30秒。在仅设备模式下无效
-        mOption.setInterval(1000);//可选，设置定位间隔。默认为2秒
+        mOption.setInterval(500);//可选，设置定位间隔。默认为2秒
         mOption.setNeedAddress(true);//可选，设置是否返回逆地理地址信息。默认是true
         mOption.setOnceLocation(false);//可选，设置是否单次定位。默认是false
         mOption.setOnceLocationLatest(false);//可选，设置是否等待wifi刷新，默认为false.如果设置为true,会自动变为单次定位，持续定位时不要使用
@@ -109,7 +112,8 @@ public class mainSignFra extends Fragment {
                     sb.append("兴趣点      : " + location.getPoiName() + "\n");
                     //定位完成的时间
                     sb.append("定位时间    : " + mapUtils.formatUTC(location.getTime(), "yyyy-MM-dd HH:mm:ss") + "\n");
-                    time = mapUtils.formatUTC(location.getTime(), "yyyy-MM-dd HH:mm:ss");
+                    time = mapUtils.formatUTC(location.getTime(), "yyyy-MM-dd");
+                    showResponse("定位成功", true);
                     stopLocation();
                 } else {
                     //定位失败
@@ -209,8 +213,11 @@ public class mainSignFra extends Fragment {
             getPermissions(CODE, permissions);
             initLocation();
             startLocation();
-            Activity a = getActivity();
-            classID = ((tea_Enter_main) a).getClassId();
+            tea_Enter_main a = (tea_Enter_main)getActivity();
+            classID = a.getClassId();
+            if(!allAttendanceInfo.getClassID().equals(classID))
+                sendGetAllAttendanceRequest();
+            data = allAttendanceInfo.getAttendanceRate();
             // Inflate the layout for this fragment
             View view=inflater.inflate(R.layout.fragment_main_sign, container, false);
             TextView time_text=view.findViewById(R.id.time_);
@@ -222,30 +229,20 @@ public class mainSignFra extends Fragment {
             qmuiGroupListView=view.findViewById(R.id.sign_in_list);
             qmuiGroupListView.setSeparatorStyle(QMUIGroupListView.SEPARATOR_STYLE_NORMAL);
 //显示每个日期的签到率
-
-            QMUICommonListItemView msg1=qmuiGroupListView.createItemView("2018-12-20");
-            msg1.setDetailText("星期四");
-             msg1.setTag(1);
-            msg1.setOrientation(QMUICommonListItemView.VERTICAL);
-            msg1.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
-            TextView tx=new TextView(getContext());
-            tx.setText("80%");
-            msg1.addAccessoryCustomView(tx);
-
-            QMUICommonListItemView msg2=qmuiGroupListView.createItemView("2018-12-25");
-            msg2.setDetailText("星期二");
-            msg2.setOrientation(QMUICommonListItemView.VERTICAL);
-            msg2.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
-            TextView tx2=new TextView(getContext());
-            tx2.setText("80%");
-            msg2.addAccessoryCustomView(tx2);
-            msg2.setTag(2);
-
-            String title2="80%";//逻辑层获取信息修改title2
+            String title2 = allAttendanceInfo.getRate();
             QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext()).setTitle("总签到率                                                                                                  "+ title2);
-            section.addItemView(msg1,mOnClickListenerGroup);
-            section.addItemView(msg2,mOnClickListenerGroup);
-            section.addTo(qmuiGroupListView);
+            for(int i=0;i<data.size();++i){
+                QMUICommonListItemView msg = qmuiGroupListView.createItemView(data.get(i).getTime());
+                msg.setDetailText(data.get(i).getWeek());
+                msg.setOrientation(QMUICommonListItemView.VERTICAL);
+                msg.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
+                TextView tx=new TextView(getContext());
+                tx.setText(data.get(i).getAttendance());
+                msg.addAccessoryCustomView(tx);
+                msg.setTag(data.get(i).getTime());
+                section.addItemView(msg,mOnClickListenerGroup);
+            }
+            section.addTo(qmuiGroupListView);//将section加入列表
 
             return view;
         }
@@ -263,32 +260,24 @@ public class mainSignFra extends Fragment {
                     else{
                         sendEndSignInRequest();
                     }
-                    flag = !flag;
                 }
             });
         }
 
     //统一处理选项点击事件
-
-
-
     private View.OnClickListener mOnClickListenerGroup = new View.OnClickListener() {//点击事件,进入查看历史签到记录
         @Override
         public void onClick(View view) {
             QMUICommonListItemView viewList = (QMUICommonListItemView) view;
-            switch ((int)viewList.getTag()) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-            }
-            Toast.makeText(getActivity(),"选项：" +  viewList.getTag()+ " 点击了",Toast.LENGTH_SHORT).show();
+            String pickTime = (String)viewList.getTag();
+            showResponse(pickTime, true);
             Intent intent=new Intent(getActivity(),absence_info.class);
             tea_Enter_main activity=(tea_Enter_main)getActivity();//获取实例
             String name=activity.getName();
             String classId=activity.getClassId();
             intent.putExtra("name", name);
             intent.putExtra("classId",classId);//传递课程参数
+            intent.putExtra("time",pickTime);
             startActivity(intent);
         }
 
@@ -308,13 +297,13 @@ public class mainSignFra extends Fragment {
                     map.put("location", longitude + " " + latitude);
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/startSignIn", map);
-                    System.out.println(result);
                     jsonReader reader = new jsonReader();
-                    String message = reader.recvStartSignIn(result);
-                    if(message.equals("Signin successfully started!"))
-                        showResponse(message, true);
+                    if(reader.recvStatus(result).equals("200")){
+                        showResponse("签到开始", true);
+                        flag = !flag;
+                    }
                     else
-                        showResponse(message, false);
+                        showResponse(reader.recvMsg(result), false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -335,11 +324,12 @@ public class mainSignFra extends Fragment {
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/closeSignIn", map);
                     System.out.println(result);
                     jsonReader reader = new jsonReader();
-                    String message = reader.recvStartSignIn(result);
-                    if(message.equals("Signin successfully closed!"))
-                        showResponse(message, true);
+                    if(reader.recvMsg(result).equals("Signin successfully closed!")) {
+                        showResponse("签到结束", true);
+                        flag = !flag;
+                    }
                     else
-                        showResponse(message, false);
+                        showResponse(reader.recvMsg(result), false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -359,6 +349,32 @@ public class mainSignFra extends Fragment {
                     chromToast.showToast(getActivity(), response, true, 0xAAFF6100, 0xFFFFFFFF);
             }
         });
+    }
+
+    private void sendGetAllAttendanceRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classID);
+                    map.put("ident", userInfo.getIdent());
+                    map.put("ID", userInfo.getID());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
+                    if(result.equals("")){
+                        showResponse("网络连接异常", false);
+                    }
+                    else{
+                        jsonReader reader = new jsonReader();
+                        reader.recvGetAllAttendance(result, classID);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     }

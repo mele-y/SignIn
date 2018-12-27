@@ -61,13 +61,32 @@ public class SearchClass extends AppCompatActivity {
                     map.put("ident", userInfo.getIdent());
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallclass", map);
-                    jsonReader reader = new jsonReader();
-                    reader.recvGetAllClass(result);
+                    if(result.equals("")){
+                        showResponse("网络连接异常", false);
+                    }
+                    else{
+                        jsonReader reader = new jsonReader();
+                        reader.recvGetAllClass(result);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).start();
+    }
+
+    private void showResponse(final String response, final boolean pos){
+        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //在这里进行UI操作，将结果显示到界面上
+                if(pos)
+                    chromToast.showToast(SearchClass.this, response, false, 0xAA00FF7F, 0xFFFFFFFF);
+                else
+                    chromToast.showToast(SearchClass.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
+            }
+        });
     }
 
     private void fillList(final List<classInfo> classes){

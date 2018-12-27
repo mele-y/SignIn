@@ -89,8 +89,6 @@ public class SignIn2 extends AppCompatActivity {
                     sendSignUpRequest();
             }
         });
-
-
     }
 
     private void showResponse(final String response, final boolean pos){
@@ -124,12 +122,16 @@ public class SignIn2 extends AppCompatActivity {
                     map.put("ident", identity);
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postForm("http://98.142.138.123:12345/api/register", map);
-                    jsonReader reader = new jsonReader();
-                    String recvMessage = reader.recvSignUp(result);
-                    if(recvMessage.equals("Student successfully registered!"))
-                        goIntent();
-                    else
-                        showResponse(recvMessage);
+                    if(result.equals("")){
+                        showResponse("网络连接异常", false);
+                    }
+                    else{
+                        jsonReader reader = new jsonReader();
+                        if(reader.recvStatus(result).equals("200"))
+                            goIntent();
+                        else
+                            showResponse(reader.recvMsg(result), false);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -142,7 +144,7 @@ public class SignIn2 extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                chromToast.showToast(SignIn2.this, "注册成功", false, 0xAA00FF7F, 0xFFFFFFFF);
+                showResponse("注册成功", true);
                 userInfo.setPhonenum(user_phone);
                 Intent intent=new Intent(SignIn2.this,logIn.class);//跳转登录主界面
                 startActivity(intent);
@@ -150,22 +152,9 @@ public class SignIn2 extends AppCompatActivity {
         });
     }
 
-    //Http测试用函数
-    private void showResponse(final String response){
-        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //在这里进行UI操作，将结果显示到界面上
-                chromToast.showToast(SignIn2.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
-            }
-        });
-    }
-
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
-
             case android.R.id.home:
                 this.finish();
                 return super.onOptionsItemSelected(item);

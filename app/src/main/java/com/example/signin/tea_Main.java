@@ -129,9 +129,14 @@ public class tea_Main extends AppCompatActivity {
                     map.put("ID", userInfo.getID());
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getclass", map);
-                    jsonReader reader = new jsonReader();
-                    List<classInfo> classes = reader.recvGetClass(result);
-                    fillList(classes);
+                    if(result.equals("")){
+                        showResponse("网络连接异常", false);
+                    }
+                    else{
+                        jsonReader reader = new jsonReader();
+                        List<classInfo> classes = reader.recvGetClass(result);
+                        fillList(classes);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -155,6 +160,7 @@ public class tea_Main extends AppCompatActivity {
                         classInfo class_=classes.get(position);
                         chromToast.showToast(tea_Main.this, class_.getName(), false, 0xAA00FF7F, 0xFFFFFFFF);
                         sendGetAllStudentRequest(class_.getClassId().toString());
+                        sendGetAllAttendanceRequest(class_.getClassId().toString());
                         Intent intent=new Intent(tea_Main.this,tea_Enter_main.class);
                         intent.putExtra("name", class_.getName().toString());
                         intent.putExtra("classId",class_.getClassId().toString());
@@ -178,11 +184,46 @@ public class tea_Main extends AppCompatActivity {
                     OkHttp okhttp = new OkHttp();
                     String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
                     jsonReader reader = new jsonReader();
-                    reader.recvGetAllStudent(result);
+                    reader.recvGetAllStudent(result, classId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).start();
+    }
+
+    private void sendGetAllAttendanceRequest(final String classId){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classId);
+                    map.put("ident", userInfo.getIdent());
+                    map.put("ID", userInfo.getID());
+                    OkHttp okhttp = new OkHttp();
+                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
+                    jsonReader reader = new jsonReader();
+                    reader.recvGetAllAttendance(result, classId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void showResponse(final String response, final boolean pos){
+        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //在这里进行UI操作，将结果显示到界面上
+                if(pos)
+                    chromToast.showToast(tea_Main.this, response, false, 0xAA00FF7F, 0xFFFFFFFF);
+                else
+                    chromToast.showToast(tea_Main.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
+            }
+        });
     }
 }
