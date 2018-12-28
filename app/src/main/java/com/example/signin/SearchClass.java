@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.example.signin.utility.classesInfo;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 public class SearchClass extends AppCompatActivity {
     private SearchView mSearchView;
@@ -113,4 +115,17 @@ public class SearchClass extends AppCompatActivity {
             }
         });
     }
+    public void showdialog(){
+         new QMUIDialog.MessageDialogBuilder(SearchClass.this).setTitle("设置标题").setMessage("确定要加入吗").addAction("取消", new QMUIDialogAction.ActionListener() {
+             @Override
+             public void onClick(QMUIDialog dialog, int index) {
+                 dialog.dismiss();
+             }
+         }).addAction("确定", new QMUIDialogAction.ActionListener() {
+             @Override
+             public void onClick(QMUIDialog dialog, int index) {
+                        //加入监听事件
+             }
+         });
+    }//显示对话框
 }

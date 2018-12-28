@@ -88,8 +88,8 @@ public class stuMessageFragment extends Fragment {    QMUIGroupListView message_
         section1.addTo(notice_list);//将section加入列表
 
         return view;
-    }
 
+}
     private void sendGetAllNoticeRequest(){
         new Thread(new Runnable() {
             @Override

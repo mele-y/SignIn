@@ -90,7 +90,6 @@
             android:label="send message"
             android:theme="@style/QMUITheme"></activity>
         <activity android:name=".message_detail"
-
             android:theme="@style/QMUITheme"
             >
 
