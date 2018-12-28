@@ -1,43 +1,28 @@
 package com.example.signin;
 
-import android.app.TabActivity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TabHost;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.example.signin.utility.OkHttp;
 import com.example.signin.utility.chromToast;
 import com.example.signin.utility.jsonReader;
-import com.example.signin.utility.studentInfo;
 import com.example.signin.utility.userInfo;
 
 
@@ -53,16 +38,15 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         sendGetClassRequest();
         sendGetAllClassRequest();
         setContentView(R.layout.activity_main);
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);//获取TOOLBAR实例
+        Toolbar toolbar=findViewById(R.id.toolbar);//获取TOOLBAR实例
         setSupportActionBar(toolbar);//把TOOLBAR设为标题栏
-        mDrawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);//获取滑动菜单实例
+        mDrawerLayout= findViewById(R.id.drawer_layout);//获取滑动菜单实例
 
-        NavigationView navView=(NavigationView)findViewById(R.id.nav_view);
+        NavigationView navView=findViewById(R.id.nav_view);
         ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null)
         {
@@ -70,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.mipmap.ic_menu);
         }//设置标题栏左上角图标
         View headerView=navView.getHeaderView(0);
-        user_name = (TextView) headerView.findViewById(R.id.user_name_show);
-        nick_name=(TextView) headerView.findViewById(R.id.nick_name_show);
-        id_no=(TextView) headerView.findViewById(R.id.id_no_show);
-        college=(TextView) headerView.findViewById(R.id.college_show);
-        major=(TextView) headerView.findViewById(R.id.major_show);
+        user_name =  headerView.findViewById(R.id.user_name_show);
+        nick_name= headerView.findViewById(R.id.nick_name_show);
+        id_no= headerView.findViewById(R.id.id_no_show);
+        college= headerView.findViewById(R.id.college_show);
+        major= headerView.findViewById(R.id.major_show);
         user_name.setText(userInfo.getRealname());
         nick_name.setText(userInfo.getNickname());
         id_no.setText(userInfo.getID());
@@ -83,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         //设置滑动菜单的显示内容
         listView=findViewById(R.id.class_view);
 
-        FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.join_class);
+        FloatingActionButton fab=findViewById(R.id.join_class);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,10 +104,8 @@ public class MainActivity extends AppCompatActivity {
                     Map<String, String> map = new HashMap<>();
                     map.put("phonenum", userInfo.getPhonenum());
                     map.put("ident", userInfo.getIdent());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallclass", map);
-                    jsonReader reader = new jsonReader();
-                    reader.recvGetAllClass(result);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getallclass", map);
+                    jsonReader.recvGetAllClass(result);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -140,10 +122,9 @@ public class MainActivity extends AppCompatActivity {
                     map.put("phonenum", userInfo.getPhonenum());
                     map.put("ident", userInfo.getIdent());
                     map.put("ID", userInfo.getID());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getclass", map);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getclass", map);
                     if(result.equals("")){
-                        chromToast.showToast(MainActivity.this, "网络连接异常", true, 0xAA00FF7F, 0xFFFFFFFF);
+                        showResponse();
                     }
                     else{
                         List<classInfo> classes = jsonReader.recvGetClass(result);
@@ -156,12 +137,19 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void fillList(final List<classInfo> classes){
-        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
+    private void showResponse(){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //在这里进行UI操作，将结果显示到界面上
+                chromToast.showToast(MainActivity.this, "网络连接异常", true, 0xAAFF6100, 0xFFFFFFFF);
+            }
+        });
+    }
+
+    private void fillList(final List<classInfo> classes){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 classAdapter adapter = new classAdapter(MainActivity.this, R.layout.class_item, classes);
                 listView.setAdapter(adapter);//设置ListView显示的内容
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -170,14 +158,13 @@ public class MainActivity extends AppCompatActivity {
                     public void  onItemClick(AdapterView<?>parent,View view,int position,long id)//获取学生点击了的课程传递参数
                     {
                         classInfo class_=classes.get(position);
-                        chromToast.showToast(MainActivity.this, class_.getName(), false, 0xAA00FF7F, 0xFFFFFFFF);
-                        sendGetAllStudentRequest(class_.getClassId().toString());
-                        sendGetAllNoticeRequest(class_.getClassId().toString());
-                        sendGetAllMessageRequest(class_.getClassId().toString());
-                        sendGetSingleAttendanceRequest(class_.getClassId().toString());
+                        sendGetAllStudentRequest(class_.getClassId());
+                        sendGetAllNoticeRequest(class_.getClassId());
+                        sendGetAllMessageRequest(class_.getClassId());
+                        sendGetSingleAttendanceRequest(class_.getClassId());
                         Intent intent=new Intent(MainActivity.this,studentEnterClass.class);
-                        intent.putExtra("name", class_.getName().toString());
-                        intent.putExtra("classId",class_.getClassId().toString());
+                        intent.putExtra("name", class_.getName());
+                        intent.putExtra("classId",class_.getClassId());
                         startActivity(intent);
                         //可以getId获得标识
                     }
@@ -195,8 +182,7 @@ public class MainActivity extends AppCompatActivity {
                     map.put("phonenum", userInfo.getPhonenum());
                     map.put("classID", classID);
                     map.put("ident", userInfo.getIdent());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
                     jsonReader.recvGetAllStudent(result, classID);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -214,8 +200,7 @@ public class MainActivity extends AppCompatActivity {
                     map.put("phonenum", userInfo.getPhonenum());
                     map.put("classID", classId);
                     map.put("ident", userInfo.getIdent());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getbulletin", map);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getbulletin", map);
                     jsonReader.recvGetAllNotice(result, classId);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -234,8 +219,7 @@ public class MainActivity extends AppCompatActivity {
                     map.put("classID", classID);
                     map.put("ident", userInfo.getIdent());
                     map.put("ID", userInfo.getID());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getmessage", map);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getmessage", map);
                     jsonReader.recvGetAllMessage(result, classID);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -254,8 +238,7 @@ public class MainActivity extends AppCompatActivity {
                     map.put("ident", userInfo.getIdent());
                     map.put("classID", classID);
                     map.put("ID", userInfo.getID());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
                     jsonReader.recvGetSingleAttendance(result, classID, userInfo.getID());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -270,9 +253,8 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;//若左上角菜单被选中打开滑动菜单
-
-                default:
+            default:
         }
         return true;
     }
-    }
+}

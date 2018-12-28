@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.signin.utility.OkHttp;
-import com.example.signin.utility.chromToast;
 import com.example.signin.utility.jsonReader;
 import com.example.signin.utility.userInfo;
 
@@ -24,12 +23,6 @@ import com.example.signin.utility.allMessageInfo;
 
 public class studentEnterClass extends AppCompatActivity {
 
-
-
-   private BottomNavigationView bottomNavigationView;
-   private stuClassMemberFragment f1;
-   private stuMessageFragment f2;
-    private stuSignInFragment f3;
    private Fragment[] fragments;
    int lastfragment;
    private String name, classId;
@@ -38,31 +31,34 @@ public class studentEnterClass extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent=getIntent();
-        name= (String) intent.getCharSequenceExtra("name");
-        classId= (String) intent.getCharSequenceExtra("classId");
+        name = intent.getStringExtra("name");
+        classId = intent.getStringExtra("classId");
         if(!studentInfo.getClassID().equals(classId))
             sendGetAllStudentRequest();
-        if(!allNoticeInfo.getClassID().equals(classId)) {
+        if(!allNoticeInfo.getClassID().equals(classId))
             sendGetAllNoticeRequest();
-        }
         if(!allMessageInfo.getClassID().equals(classId))
             sendGetAllMessageRequest();
         if(!(singleAttendanceInfo.getClassID().equals(classId) && singleAttendanceInfo.getStuID().equals(userInfo.getID())))
             sendGetSingleAttendanceRequest();
         setContentView(R.layout.activity_student_enter_class);
-        Toolbar stu_toolbar=(Toolbar)findViewById(R.id.stu_toolbar);//获取TOOLBAR实例
+        Toolbar stu_toolbar=findViewById(R.id.stu_toolbar);//获取TOOLBAR实例
         setSupportActionBar(stu_toolbar);//把TOOLBAR设为标题栏
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
         getSupportActionBar().setTitle(name);
         stu_toolbar.setSubtitle(classId);//设置标题与副标题
 
-        f1=new stuClassMemberFragment();
-        f2=new stuMessageFragment();
-        f3=new stuSignInFragment();
+        stuClassMemberFragment f1=new stuClassMemberFragment();
+        stuMessageFragment f2=new stuMessageFragment();
+        stuSignInFragment f3=new stuSignInFragment();
         lastfragment=0;
         fragments=new Fragment[]{f1,f2,f3};
         getSupportFragmentManager().beginTransaction().replace(R.id.stuEnterClass_mainView,f1).commit();//设置默认碎片
-        bottomNavigationView=(BottomNavigationView)findViewById(R.id.stu_bottom_nav);
+        BottomNavigationView bottomNavigationView=findViewById(R.id.stu_bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             //导航栏点击事件
@@ -95,22 +91,23 @@ public class studentEnterClass extends AppCompatActivity {
         });
     }
 
-    public String getName()
-    {
-        return name;
-    }
-    public  String getClassId()
-    {
-        return classId;
-    }
+    public String getName() { return name; }
+    public  String getClassId() { return classId; }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==android.R.id.home)
-        {
-            finish();
-            return  true;
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.send:
+                Intent intent = new Intent(studentEnterClass.this, teasend_message.class);
+                intent.putExtra("classID", classId);
+                intent.putExtra("stuID", userInfo.getID());
+                startActivity(intent);
+                break;
+            default:
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }//左上角返回按钮事件
 
     public void switchFragment(int lastfragment, int index){
@@ -132,8 +129,7 @@ public class studentEnterClass extends AppCompatActivity {
                     map.put("phonenum", userInfo.getPhonenum());
                     map.put("classID", classId);
                     map.put("ident", userInfo.getIdent());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
                     jsonReader.recvGetAllStudent(result, classId);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -152,8 +148,7 @@ public class studentEnterClass extends AppCompatActivity {
                     map.put("ident", userInfo.getIdent());
                     map.put("classID", classId);
                     map.put("ID", userInfo.getID());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
                     jsonReader.recvGetSingleAttendance(result, classId, userInfo.getID());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -172,8 +167,7 @@ public class studentEnterClass extends AppCompatActivity {
                     map.put("classID", classId);
                     map.put("ident", userInfo.getIdent());
                     map.put("ID", userInfo.getID());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getmessage", map);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getmessage", map);
                     jsonReader.recvGetAllMessage(result, classId);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -191,8 +185,7 @@ public class studentEnterClass extends AppCompatActivity {
                     map.put("phonenum", userInfo.getPhonenum());
                     map.put("classID", classId);
                     map.put("ident", userInfo.getIdent());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getbulletin", map);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getbulletin", map);
                     jsonReader.recvGetAllNotice(result, classId);
                 } catch (Exception e) {
                     e.printStackTrace();

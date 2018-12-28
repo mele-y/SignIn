@@ -1,13 +1,11 @@
 package com.example.signin;
 
-
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.signin.utility.OkHttp;
 import com.example.signin.utility.chromToast;
@@ -17,17 +15,14 @@ import com.example.signin.utility.userInfo;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class stuClassMemberFragment extends Fragment {
-    private List<memberClass> data = new ArrayList<>();
     private String classID = "";
     QMUIGroupListView  member_list;
     public stuClassMemberFragment() {
@@ -35,14 +30,17 @@ public class stuClassMemberFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        studentEnterClass a = (studentEnterClass) getActivity();
-        classID = a.getClassId();
+        try{
+            studentEnterClass a = (studentEnterClass) getActivity();
+            classID = a.getClassId();
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
         if(!studentInfo.getClassID().equals(classID))
             sendGetAllStudentRequest();
-        else
-            data = studentInfo.getStu();
+        List<memberClass> data = studentInfo.getStu();
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_stu_class_member, container, false);
         member_list=view.findViewById(R.id.member_list);//获取列表
@@ -72,14 +70,12 @@ public class stuClassMemberFragment extends Fragment {
                     map.put("phonenum", userInfo.getPhonenum());
                     map.put("classID", classID);
                     map.put("ident", userInfo.getIdent());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
                     if(result.equals("")){
-                        showResponse("网络连接异常", false);
+                        showResponse();
                     }
                     else{
                         jsonReader.recvGetAllStudent(result, classID);
-                        data = studentInfo.getStu();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -89,17 +85,16 @@ public class stuClassMemberFragment extends Fragment {
     }
 
 
-    private void showResponse(final String response, final boolean pos){
-        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
-        (getActivity()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //在这里进行UI操作，将结果显示到界面上
-                if(pos)
-                    chromToast.showToast(getActivity(), response, false, 0xAA00FF7F, 0xFFFFFFFF);
-                else
-                    chromToast.showToast(getActivity(), response, true, 0xAAFF6100, 0xFFFFFFFF);
-            }
-        });
+    private void showResponse(){
+        try{
+            (getActivity()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    chromToast.showToast(getActivity(), "网络连接异常", true, 0xAAFF6100, 0xFFFFFFFF);
+                }
+            });
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
     }
 }

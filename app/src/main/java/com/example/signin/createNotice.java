@@ -2,13 +2,11 @@ package com.example.signin;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.signin.utility.OkHttp;
 import com.example.signin.utility.chromToast;
@@ -33,12 +31,16 @@ public class createNotice extends AppCompatActivity {
         Intent intent = getIntent();
         classID = intent.getStringExtra("classID");
         setContentView(R.layout.activity_create_notice);
-        Toolbar toolbar=(Toolbar)findViewById(R.id.create_notice_toolbar);//获取TOOLBAR实例
+        Toolbar toolbar=findViewById(R.id.create_notice_toolbar);//获取TOOLBAR实例
         setSupportActionBar(toolbar);//把TOOLBAR设为标题栏
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
         notice_content=findViewById(R.id.notice_context);
         notice_title=findViewById(R.id.notice_title);
-        QMUIRoundButton btn=(QMUIRoundButton)findViewById(R.id.release);
+        QMUIRoundButton btn=findViewById(R.id.release);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//点击发布,逻辑层交接存储数据
@@ -71,13 +73,16 @@ public class createNotice extends AppCompatActivity {
                     map.put("title", title);
                     map.put("content", content);
                     map.put("time", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(System.currentTimeMillis()));
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/addbulletin", map);
-                    if(jsonReader.recvStatus(result).equals("200")){
-                        goIntent();
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/addbulletin", map);
+                    if(result.equals(""))
+                        showResponse("网络连接异常");
+                    else{
+                        if(jsonReader.recvStatus(result).equals("200")){
+                            goIntent();
+                        }
+                        else
+                            showResponse(jsonReader.recvMsg(result));
                     }
-                    else
-                        showResponse(jsonReader.recvMsg(result), false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -85,16 +90,11 @@ public class createNotice extends AppCompatActivity {
         }).start();
     }
 
-    private void showResponse(final String response, final boolean pos){
-        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
+    private void showResponse(final String response){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //在这里进行UI操作，将结果显示到界面上
-                if(pos)
-                    chromToast.showToast(createNotice.this, response, false, 0xAA00FF7F, 0xFFFFFFFF);
-                else
-                    chromToast.showToast(createNotice.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
+                chromToast.showToast(createNotice.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
             }
         });
     }

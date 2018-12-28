@@ -1,35 +1,22 @@
 package com.example.signin.utility;
 
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.text.ParsePosition;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.example.signin.classInfo;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 import java.util.Locale;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.example.signin.utility.userInfo;
-import com.example.signin.utility.classesInfo;
-import com.example.signin.classInfo;
 import com.example.signin.memberClass;
-import com.example.signin.utility.studentInfo;
 import com.example.signin.noticeInfo;
 import com.example.signin.messageInfo;
-import com.example.signin.utility.allMessageInfo;
 import java.util.regex.*;
 
 /**
@@ -184,7 +171,7 @@ public class jsonReader {
                 for (int i=0;i<jsonArray.size();++i) {
                     JsonObject cls = jsonArray.get(i).getAsJsonObject();
                     if(sid.equals(cls.get("stuID").getAsString())){
-                        list.add(new signinInfo(cls.get("time").getAsString(), cls.get("result").getAsString(), getWeek("2018-12-27")));
+                        list.add(new signinInfo(cls.get("time").getAsString(), cls.get("result").getAsString(), getWeek(cls.get("time").getAsString())));
                     }
                 }
                 singleAttendanceInfo.setAttendances(list);
@@ -221,7 +208,7 @@ public class jsonReader {
                 JsonArray jsonArray = jsonObj.get("message").getAsJsonArray();
                 for (int i=0;i<jsonArray.size();++i) {
                     JsonObject cls = jsonArray.get(i).getAsJsonObject();
-                    list.add(new signinInfo(cls.get("time").getAsString(), cls.get("result").getAsString(), getWeek("2018-12-27")));
+                    list.add(new signinInfo(cls.get("time").getAsString(), cls.get("result").getAsString(), getWeek(cls.get("time").getAsString())));
                     list.get(i).setSid(cls.get("stuID").getAsString());
                     for(int j=0;j<studentInfo.getStu().size();++j){
                         if(studentInfo.getStu().get(j).getStu_id().equals(list.get(i).getSid()))

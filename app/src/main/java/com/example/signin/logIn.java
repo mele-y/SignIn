@@ -15,20 +15,19 @@ import com.example.signin.utility.userInfo;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
 public class logIn extends AppCompatActivity {
-    private QMUIRoundButton btn_register, btn_login;
     private EditText et_user_phone,et_psw;//编辑框 手机号和密码
     private String user_phone,password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
-        btn_register=(QMUIRoundButton)findViewById(R.id.btn_register);
         et_user_phone=findViewById(R.id.user_phone);
         et_user_phone.setText(userInfo.getPhonenum());
         et_psw=findViewById(R.id.password);
         et_psw.setText(userInfo.getPassword());
+        QMUIRoundButton btn_login=findViewById(R.id.btn_login);
+        QMUIRoundButton btn_register=findViewById(R.id.btn_register);
 
-        btn_login=(QMUIRoundButton)findViewById(R.id.btn_login);
         btn_register.setOnClickListener(new View.OnClickListener()//点击注册按钮,跳转注册界面
         {
           @Override
@@ -60,8 +59,7 @@ public class logIn extends AppCompatActivity {
                     Map<String, String> map = new HashMap<>();
                     map.put("phonenum", user_phone);
                     map.put("password", password);
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postJson("http://98.142.138.123:12345/login", map);
+                    String result = OkHttp.postJson("http://98.142.138.123:12345/login", map);
                     if(result.equals("")){
                         showResponse("网络连接异常");
                     }
@@ -83,11 +81,9 @@ public class logIn extends AppCompatActivity {
     }
 
     private void showResponse(final String response){
-        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //在这里进行UI操作，将结果显示到界面上
                 chromToast.showToast(logIn.this, response, true, 0xAAFF6100, 0xFFFFFFFF);
             }
         });

@@ -1,15 +1,12 @@
 package com.example.signin;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.signin.utility.OkHttp;
 import com.example.signin.utility.chromToast;
@@ -26,18 +23,21 @@ import com.example.signin.utility.studentInfo;
 
 public class teaMemberFra extends Fragment {
     private List<memberClass> data = new ArrayList<>();
-    private String classID = "", className = "";
+    private String classID = "";
     QMUIGroupListView  member_list;
     public teaMemberFra() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        tea_Enter_main a = (tea_Enter_main)getActivity();
-        classID = a.getClassId();
-        className = a.getName();
+        try{
+            tea_Enter_main a = (tea_Enter_main)getActivity();
+            classID = a.getClassId();
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
         if(!studentInfo.getClassID().equals(classID))
             sendGetAllStudentRequest();
         data = studentInfo.getStu();
@@ -64,13 +64,12 @@ public class teaMemberFra extends Fragment {
         @Override
         public void onClick(View view) {
             QMUICommonListItemView viewList = (QMUICommonListItemView) view;
-            Intent intent=new Intent(getActivity(),memberInfo.class);
             int i = (int)viewList.getTag();
             sendGetSingleAttendanceRequest(data.get(i).getStu_id());
-            intent.putExtra("name", className);
-            intent.putExtra("classId",classID);//传递课程参数
-            intent.putExtra("stu_name",data.get(i).getStu_name());//传递学生信息
-            intent.putExtra("stu_id",data.get(i).getStu_id());
+            Intent intent = new Intent(getActivity(), memberInfo.class);
+            intent.putExtra("classId", classID);//传递课程参数
+            intent.putExtra("stu_name", data.get(i).getStu_name());//传递学生信息
+            intent.putExtra("stu_id", data.get(i).getStu_id());
             startActivity(intent);
         }
 
@@ -86,8 +85,7 @@ public class teaMemberFra extends Fragment {
                     map.put("ident", userInfo.getIdent());
                     map.put("classID", classID);
                     map.put("ID", userInfo.getID());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getSignIn", map);
                     jsonReader.recvGetSingleAttendance(result, classID, sID);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -105,13 +103,14 @@ public class teaMemberFra extends Fragment {
                     map.put("phonenum", userInfo.getPhonenum());
                     map.put("classID", classID);
                     map.put("ident", userInfo.getIdent());
-                    OkHttp okhttp = new OkHttp();
-                    String result = okhttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getallstudent", map);
                     if(result.equals("")){
-                        showResponse("网络连接异常", false);
+                        showResponse("网络连接异常");
                     }
                     else{
-                        jsonReader.recvGetAllStudent(result, classID);
+                        String recvMessage = jsonReader.recvGetAllStudent(result, classID);
+                        if(!recvMessage.equals("200"))
+                            showResponse(jsonReader.recvMsg(result));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -120,18 +119,17 @@ public class teaMemberFra extends Fragment {
         }).start();
     }
 
-    private void showResponse(final String response, final boolean pos){
-        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
-        (getActivity()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //在这里进行UI操作，将结果显示到界面上
-                if(pos)
-                    chromToast.showToast(getActivity(), response, false, 0xAA00FF7F, 0xFFFFFFFF);
-                else
+    private void showResponse(final String response){
+        try{
+            (getActivity()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
                     chromToast.showToast(getActivity(), response, true, 0xAAFF6100, 0xFFFFFFFF);
-            }
-        });
+                }
+            });
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
 }

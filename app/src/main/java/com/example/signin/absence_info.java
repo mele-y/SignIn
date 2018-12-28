@@ -12,24 +12,25 @@ import com.example.signin.utility.allAttendanceInfo;
 import com.example.signin.utility.signinInfo;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class absence_info extends AppCompatActivity {
-    private String name,classId,time;
-    private List<signinInfo> data = new ArrayList<>();
     QMUIGroupListView absence_list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        data = allAttendanceInfo.getAttendances();
+        List<signinInfo> data = allAttendanceInfo.getAttendances();
         setContentView(R.layout.activity_absence_info);
-        Toolbar stu_toolbar=(Toolbar)findViewById(R.id.absence_toolbar);//获取TOOLBAR实例
+        Toolbar stu_toolbar=findViewById(R.id.absence_toolbar);//获取TOOLBAR实例
         setSupportActionBar(stu_toolbar);//把TOOLBAR设为标题栏
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
         Intent intent=getIntent();
-        name = (String) intent.getStringExtra("name");
-        classId = (String) intent.getStringExtra("classId");//课程信息
-        time = (String) intent.getStringExtra("time");
+        String name = intent.getStringExtra("name");
+        String classId = intent.getStringExtra("classId");//课程信息
+        String time = intent.getStringExtra("time");
         getSupportActionBar().setTitle(name);
         stu_toolbar.setSubtitle(classId);//设置标题与副标题
 
