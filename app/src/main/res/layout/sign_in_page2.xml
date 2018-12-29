@@ -299,7 +299,7 @@
             android:paddingTop="5dp"
             android:textSize="18sp"
             android:drawableLeft="@drawable/register"
-            android:text="注册"
+            android:text="@string/btnRegister"
             app:qmui_isRadiusAdjustBounds="true"/>
     </LinearLayout>
 </FrameLayout>

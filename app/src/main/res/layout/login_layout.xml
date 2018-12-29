@@ -56,7 +56,7 @@
             android:layout_weight="1"
             android:id="@+id/btn_login"
             android:background="@drawable/btn_select"
-            android:text="@string/btnLogin" />
+            android:text="@string/btnLogin"/>
 
         <Button
             android:layout_width="150dp"
@@ -65,7 +65,7 @@
             android:layout_weight="1"
             android:layout_marginTop="30dp"
             android:background="@drawable/btn_select"
-            android:text="@string/btnRegister" />
+            android:text="@string/btnRegister"/>
     </LinearLayout>
 
 </RelativeLayout>
