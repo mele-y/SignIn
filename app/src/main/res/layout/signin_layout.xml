@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/loginbg"
+    android:background="@drawable/f1"
     android:orientation="vertical">
     <!--标题栏-->
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -196,6 +196,7 @@
                 android:paddingRight="16dp"
                 android:layout_marginTop="30dp"
                 android:paddingTop="10dp"
+                android:drawableLeft="@drawable/next"
                 android:text="下一步"
                 android:textSize="18sp"
                 app:qmui_isRadiusAdjustBounds="true"/>
@@ -211,6 +212,7 @@
                 android:paddingRight="16dp"
                 android:layout_marginTop="30dp"
                 android:paddingTop="5dp"
+                android:drawableLeft="@drawable/send"
                 android:textSize="18sp"
                 android:text="发送验证码"
                 app:qmui_isRadiusAdjustBounds="true"/>
