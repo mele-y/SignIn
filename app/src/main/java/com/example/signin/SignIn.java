@@ -6,26 +6,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.Toast;
 import java.util.regex.*;
 
 import com.example.signin.utility.chromToast;
 import com.example.signin.NetEase.SendMessage;
-import com.example.signin.NetEase.MobileMessageCheck;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
 public class SignIn extends AppCompatActivity {
-    private  QMUIRoundButton btn_next, btn_send;
     private EditText et_user_phone,et_psw,et_code,et_confirm;//编辑框 手机号和密码
     private String user_phone,password,code,confirm_psw;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin_layout);
-        Toolbar toolbar1=(Toolbar)findViewById(R.id.toolbar1);
+        Toolbar toolbar1=findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar1);
         //back
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -34,8 +29,8 @@ public class SignIn extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        btn_next=(QMUIRoundButton)findViewById(R.id.next);
-        btn_send=(QMUIRoundButton)findViewById(R.id.btn_send);
+        QMUIRoundButton btn_next=findViewById(R.id.next);
+        QMUIRoundButton btn_send=findViewById(R.id.btn_send);
         et_user_phone=findViewById(R.id.user_phone0);
         et_psw=findViewById(R.id.password0);
         et_confirm=findViewById(R.id.paw_confirm);
@@ -50,7 +45,7 @@ public class SignIn extends AppCompatActivity {
                 password=et_psw.getText().toString().trim();
                 confirm_psw=et_confirm.getText().toString().trim();
                 code=et_code.getText().toString().trim();
-            //判断验证码 密码确认是否正确若正确 跳转
+                //判断验证码 密码确认是否正确若正确 跳转
                 if(user_phone.isEmpty())
                     showResponse("请输入手机号码", false);
                 else if(!(user_phone.length() == 11 && isNumeric(user_phone)))
@@ -121,17 +116,16 @@ public class SignIn extends AppCompatActivity {
         }).start();
     }
 
+    //正则匹配
     public static boolean isNumeric(String str){
         Pattern pattern = Pattern.compile("[0-9]*");
         return pattern.matcher(str).matches();
     }
 
     private void showResponse(final String response, final boolean pos){
-        //Android不允许在子线程中进行UI操作，需通过此方法将线程切换到主线程，再更新UI元素
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //在这里进行UI操作，将结果显示到界面上
                 if(pos)
                     chromToast.showToast(SignIn.this, response, false, 0xAA00FF7F, 0xFFFFFFFF);
                 else

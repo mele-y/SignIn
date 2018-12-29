@@ -4,8 +4,6 @@ import com.example.signin.classInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 public class classesInfo {
     private static List<classInfo> classes = new ArrayList<>();

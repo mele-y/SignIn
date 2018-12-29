@@ -8,41 +8,47 @@ import android.view.MenuItem;
 
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
+import com.example.signin.utility.allAttendanceInfo;
+import com.example.signin.utility.signinInfo;
+
+import java.util.List;
 
 public class absence_info extends AppCompatActivity {
-    private String name,classId,stu_id,stu_name;
     QMUIGroupListView absence_list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        List<signinInfo> data = allAttendanceInfo.getAttendances();
         setContentView(R.layout.activity_absence_info);
-        Toolbar stu_toolbar=(Toolbar)findViewById(R.id.absence_toolbar);//获取TOOLBAR实例
+        Toolbar stu_toolbar=findViewById(R.id.absence_toolbar);//获取TOOLBAR实例
         setSupportActionBar(stu_toolbar);//把TOOLBAR设为标题栏
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
         Intent intent=getIntent();
-        name= (String) intent.getCharSequenceExtra("name");
-        classId= (String) intent.getCharSequenceExtra("classId");//课程信息
+        String name = intent.getStringExtra("name");
+        String classId = intent.getStringExtra("classId");//课程信息
+        String time = intent.getStringExtra("time");
         getSupportActionBar().setTitle(name);
         stu_toolbar.setSubtitle(classId);//设置标题与副标题
 
-
         absence_list=findViewById(R.id.absence_list);//获取列表
         absence_list.setSeparatorStyle(QMUIGroupListView.SEPARATOR_STYLE_NORMAL);
-        stu_id="001";stu_name="学生1";
-        QMUICommonListItemView msg1=absence_list.createItemView(stu_name);
-        msg1.setDetailText(stu_id);
-
-        stu_id="002";stu_name="学生2";
-        QMUICommonListItemView msg2=absence_list.createItemView(stu_name);
-        msg2.setDetailText(stu_id);
-
-
-        String title2="2";//逻辑层获取信息修改title2
-        QMUIGroupListView.Section section=QMUIGroupListView.newSection(absence_info.this).setTitle("缺勤人数                                                                                                  "+ title2);
-        section.addItemView(msg1,null);
-        section.addItemView(msg2,null);
+        int tot = 0;
+        QMUIGroupListView.Section section=QMUIGroupListView.newSection(absence_info.this);
+        for(int i=0;i<data.size();++i){
+            if(data.get(i).getTime().equals(time) && data.get(i).getAttendance().equals("0")){
+                QMUICommonListItemView msg = absence_list.createItemView(data.get(i).getSname());
+                msg.setDetailText(data.get(i).getSid());
+                section.addItemView(msg,null);
+                tot += 1;
+            }
+        }
+        String title2 = String.valueOf(tot);//逻辑层获取信息修改title2
+        section.setTitle("缺勤人数                                                                                                  "+ title2);
         section.addTo(absence_list);
-
 
     }
     @Override

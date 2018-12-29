@@ -1,17 +1,37 @@
 package com.example.signin;
-import android.support.v7.app.AppCompatActivity;
-public class noticeInfo {
-    private String title;//
-    private String context;//显示具体内容
 
-    public noticeInfo(String title,String context)
+public class noticeInfo implements Comparable{
+    private String title, content, time;
+
+    public noticeInfo(String title,String content,String time)
     {
-        this.title=title;
-        this.context=context;
+        this.title = title;
+        this.content = content;
+        this.time = time;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public String getTitle(){return title;}
-    public String getContext(){return context;}
     public void setTitle(String title){this.title=title;}
-    public void setContext(String context){this.context=context;}
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        noticeInfo s = (noticeInfo) o;
+        return s.time.compareTo(this.time);
+    }
 }
