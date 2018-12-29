@@ -26,8 +26,8 @@ public class logIn extends AppCompatActivity {
         et_user_phone.setText(userInfo.getPhonenum());
         et_psw=findViewById(R.id.password);
         et_psw.setText(userInfo.getPassword());
-        QMUIRoundButton btn_login=( QMUIRoundButton)findViewById(R.id.btn_login);
-        QMUIRoundButton btn_register=( QMUIRoundButton)findViewById(R.id.btn_register);
+       Button btn_login=findViewById(R.id.btn_login);
+       Button btn_register=findViewById(R.id.btn_register);
 
         btn_register.setOnClickListener(new View.OnClickListener()//点击注册按钮,跳转注册界面
         {

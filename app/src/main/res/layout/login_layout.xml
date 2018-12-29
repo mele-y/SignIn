@@ -49,24 +49,23 @@
         android:layout_below="@id/password"
         android:gravity="center_horizontal"
         >
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-            android:layout_width="100dp"
+        <Button
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:drawableLeft="@drawable/login"
             android:id="@+id/btn_login"
-            android:text="@string/btnLogin"/>
+            android:background="@drawable/btn_select"
+            android:text="@string/btnLogin" />
 
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-            android:layout_width="100dp"
+        <Button
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:id="@+id/btn_register"
             android:layout_weight="1"
             android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:drawableLeft="@drawable/register"
-            android:text="@string/btnRegister"/>
+            android:background="@drawable/btn_select"
+            android:text="@string/btnRegister" />
+
     </LinearLayout>
 
 </RelativeLayout>
