@@ -104,8 +104,7 @@ public class createClass extends AppCompatActivity {
             @Override
             public void run() {
                 chromToast.showToast(createClass.this, "创建成功", false, 0xAA00FF7F, 0xFFFFFFFF);
-                Intent intent=new Intent(createClass.this,tea_Main.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

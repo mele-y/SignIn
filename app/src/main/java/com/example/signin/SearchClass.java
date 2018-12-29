@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.signin.utility.OkHttp;
 import com.example.signin.utility.chromToast;
@@ -18,12 +17,9 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import com.example.signin.utility.classesInfo;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 public class SearchClass extends AppCompatActivity {
     private ListView mListView;
-    QMUIDialog qmuiDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

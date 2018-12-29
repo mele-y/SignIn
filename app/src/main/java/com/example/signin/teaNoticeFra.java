@@ -1,6 +1,7 @@
 package com.example.signin;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -47,7 +48,7 @@ public class teaNoticeFra extends Fragment {
         if(!allMessageInfo.getClassID().equals(classID))
             sendGetAllMessageRequest();
 
-        if(!allNoticeInfo.getClassID().equals(classID))
+//        if(!allNoticeInfo.getClassID().equals(classID))
             sendGetAllNoticeRequest();
 
         View view = inflater.inflate(R.layout.tea_notice_frag, container, false);
@@ -178,5 +179,4 @@ public class teaNoticeFra extends Fragment {
             }
         }).start();
     }
-
 }
