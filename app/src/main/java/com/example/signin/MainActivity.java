@@ -24,7 +24,7 @@ import com.example.signin.utility.OkHttp;
 import com.example.signin.utility.chromToast;
 import com.example.signin.utility.jsonReader;
 import com.example.signin.utility.userInfo;
-
+import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListSectionHeaderFooterView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     TextView college;
     TextView major;
     private ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar=findViewById(R.id.toolbar);//获取TOOLBAR实例
         setSupportActionBar(toolbar);//把TOOLBAR设为标题栏
         mDrawerLayout= findViewById(R.id.drawer_layout);//获取滑动菜单实例
-
         NavigationView navView=findViewById(R.id.nav_view);
         ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null)

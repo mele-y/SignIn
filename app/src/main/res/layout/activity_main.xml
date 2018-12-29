@@ -15,13 +15,15 @@
            android:background="@color/colorPrimary"
            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
              app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"></android.support.v7.widget.Toolbar>
-
     <ListView
+        android:layout_margin="10dp"
         android:id="@+id/class_view"
         android:layout_below="@id/toolbar"
-        style="@style/Widget.AppCompat.ListView.Menu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:divider="#ffffff"
+        android:dividerHeight="@dimen/qmui_group_list_section_header_footer_padding_vertical"
+        ></ListView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/join_class"
