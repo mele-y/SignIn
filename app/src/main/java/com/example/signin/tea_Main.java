@@ -39,7 +39,6 @@ public class tea_Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        sendGetClassRequest();
 
         setContentView(R.layout.tea__main);
         //初始化课程
@@ -138,8 +137,8 @@ public class tea_Main extends AppCompatActivity {
                     public void  onItemClick(AdapterView<?>parent,View view,int position,long id)//获取学生点击了的课程传递参数
                     {
                         classInfo class_=classes.get(position);
-                        sendGetAllStudentRequest(class_.getClassId());
                         sendGetAllNoticeRequest(class_.getClassId());
+                        sendGetAllStudentRequest(class_.getClassId());
                         sendGetAllMessageRequest(class_.getClassId());
                         sendGetAllAttendanceRequest(class_.getClassId());
                         Intent intent=new Intent(tea_Main.this, tea_Enter_main.class);
@@ -233,5 +232,11 @@ public class tea_Main extends AppCompatActivity {
                 chromToast.showToast(tea_Main.this, "网络连接异常", true, 0xAAFF6100, 0xFFFFFFFF);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sendGetClassRequest();
     }
 }

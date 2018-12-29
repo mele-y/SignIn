@@ -105,6 +105,7 @@ public class teasend_message extends AppCompatActivity {//逻辑层判断是学�
             @Override
             public void run() {
                 showResponse("发送成功", true);
+                allMessageInfo.setClassID("");
                 sendGetAllMessageRequest();
                 if(userInfo.getIdent().equals("teacher")){
                     Intent intent = new Intent(teasend_message.this,tea_Enter_main.class);//判断学生还是教师跳转

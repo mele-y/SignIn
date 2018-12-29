@@ -104,6 +104,7 @@ public class createNotice extends AppCompatActivity {
             @Override
             public void run() {
                 chromToast.showToast(createNotice.this, "创建成功", false, 0xAA00FF7F, 0xFFFFFFFF);
+                allNoticeInfo.setClassID("");
                 sendGetAllNoticeRequest();
                 finish();
             }
@@ -127,4 +128,5 @@ public class createNotice extends AppCompatActivity {
             }
         }).start();
     }
+
 }

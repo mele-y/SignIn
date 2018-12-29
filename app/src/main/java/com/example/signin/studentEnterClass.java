@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.signin.utility.OkHttp;
@@ -33,14 +34,6 @@ public class studentEnterClass extends AppCompatActivity {
         Intent intent=getIntent();
         name = intent.getStringExtra("name");
         classId = intent.getStringExtra("classId");
-        if(!studentInfo.getClassID().equals(classId))
-            sendGetAllStudentRequest();
-        if(!allNoticeInfo.getClassID().equals(classId))
-            sendGetAllNoticeRequest();
-        if(!allMessageInfo.getClassID().equals(classId))
-            sendGetAllMessageRequest();
-        if(!(singleAttendanceInfo.getClassID().equals(classId) && singleAttendanceInfo.getStuID().equals(userInfo.getID())))
-            sendGetSingleAttendanceRequest();
         setContentView(R.layout.activity_student_enter_class);
         Toolbar stu_toolbar=findViewById(R.id.stu_toolbar);//获取TOOLBAR实例
         setSupportActionBar(stu_toolbar);//把TOOLBAR设为标题栏
@@ -93,6 +86,11 @@ public class studentEnterClass extends AppCompatActivity {
 
     public String getName() { return name; }
     public  String getClassId() { return classId; }
+      @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.send_message,menu);
+        return true;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -192,5 +190,18 @@ public class studentEnterClass extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!studentInfo.getClassID().equals(classId))
+            sendGetAllStudentRequest();
+        if(!allNoticeInfo.getClassID().equals(classId))
+            sendGetAllNoticeRequest();
+        if(!allMessageInfo.getClassID().equals(classId))
+            sendGetAllMessageRequest();
+        if(!(singleAttendanceInfo.getClassID().equals(classId) && singleAttendanceInfo.getStuID().equals(userInfo.getID())))
+            sendGetSingleAttendanceRequest();
     }
 }

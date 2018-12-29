@@ -147,6 +147,12 @@ public class stuMessageFragment extends Fragment {
             }
         }).start();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //刷新页面
+    }
 }
 
 

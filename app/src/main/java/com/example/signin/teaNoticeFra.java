@@ -1,6 +1,7 @@
 package com.example.signin;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 import com.example.signin.utility.allNoticeInfo;
 import com.example.signin.utility.allMessageInfo;
+import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 
 public class teaNoticeFra extends Fragment {
     QMUIGroupListView message_list, notice_list;
@@ -107,7 +109,7 @@ public class teaNoticeFra extends Fragment {
             intent.putExtra("stu_name", messages.get(idx).getStu_name());
             intent.putExtra("type", messages.get(idx).getType());
             intent.putExtra("content", messages.get(idx).getContent());
-            startActivity(intent);
+            startActivityForResult(intent, 233);
         }
 
     };
@@ -179,4 +181,9 @@ public class teaNoticeFra extends Fragment {
         }).start();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //刷新页面
+    }
 }

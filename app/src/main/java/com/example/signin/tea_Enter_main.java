@@ -1,6 +1,7 @@
 package com.example.signin;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -30,14 +31,6 @@ public class tea_Enter_main extends AppCompatActivity {
         Intent intent=getIntent();
         name = intent.getStringExtra("name");
         classId = intent.getStringExtra("classId");
-        if(!studentInfo.getClassID().equals(classId))
-            sendGetAllStudentRequest();
-        if(!allNoticeInfo.getClassID().equals(classId))
-            sendGetAllNoticeRequest();
-        if(!allMessageInfo.getClassID().equals(classId))
-            sendGetAllMessageRequest();
-        if(!allAttendanceInfo.getClassID().equals(classId))
-            sendGetAllAttendanceRequest();
         setContentView(R.layout.tea__enter_main);
         Toolbar stu_toolbar=findViewById(R.id.tea_toolbar);//获取TOOLBAR实例
         setSupportActionBar(stu_toolbar);//把TOOLBAR设为标题栏
@@ -199,5 +192,18 @@ public class tea_Enter_main extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!studentInfo.getClassID().equals(classId))
+            sendGetAllStudentRequest();
+        if(!allNoticeInfo.getClassID().equals(classId))
+            sendGetAllNoticeRequest();
+        if(!allMessageInfo.getClassID().equals(classId))
+            sendGetAllMessageRequest();
+        if(!allAttendanceInfo.getClassID().equals(classId))
+            sendGetAllAttendanceRequest();
     }
 }
