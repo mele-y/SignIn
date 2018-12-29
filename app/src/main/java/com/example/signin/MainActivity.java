@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sendGetClassRequest();
         sendGetAllClassRequest();
         setContentView(R.layout.activity_main);
         Toolbar toolbar=findViewById(R.id.toolbar);//获取TOOLBAR实例

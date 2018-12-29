@@ -39,7 +39,6 @@ public class tea_Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        sendGetClassRequest();
 
         setContentView(R.layout.tea__main);
         //初始化课程

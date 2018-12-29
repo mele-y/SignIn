@@ -24,6 +24,7 @@ import java.util.Map;
 
 import com.example.signin.utility.allNoticeInfo;
 import com.example.signin.utility.allMessageInfo;
+import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 
 public class teaNoticeFra extends Fragment {
     QMUIGroupListView message_list, notice_list;
@@ -48,7 +49,7 @@ public class teaNoticeFra extends Fragment {
         if(!allMessageInfo.getClassID().equals(classID))
             sendGetAllMessageRequest();
 
-//        if(!allNoticeInfo.getClassID().equals(classID))
+        if(!allNoticeInfo.getClassID().equals(classID))
             sendGetAllNoticeRequest();
 
         View view = inflater.inflate(R.layout.tea_notice_frag, container, false);
@@ -108,7 +109,7 @@ public class teaNoticeFra extends Fragment {
             intent.putExtra("stu_name", messages.get(idx).getStu_name());
             intent.putExtra("type", messages.get(idx).getType());
             intent.putExtra("content", messages.get(idx).getContent());
-            startActivity(intent);
+            startActivityForResult(intent, 233);
         }
 
     };
@@ -178,5 +179,11 @@ public class teaNoticeFra extends Fragment {
                 }
             }
         }).start();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //刷新页面
     }
 }
