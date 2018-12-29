@@ -114,7 +114,7 @@ public class SearchClass extends AppCompatActivity {
     }
     public void showdialog(final String classID, final String className){
         AlertDialog.Builder dialog=new AlertDialog.Builder(SearchClass.this);
-        dialog.setTitle(classID);
+        dialog.setTitle(className);
         dialog.setMessage("要加入该课程吗");
         dialog.setCancelable(false);
         dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -126,14 +126,14 @@ public class SearchClass extends AppCompatActivity {
         dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                sendJoinClassRequest(classID);
+                sendJoinClassRequest(classID, className);
                 dialog.dismiss();
             }
         });
         dialog.show();
     }//显示对话框
 
-    private void sendJoinClassRequest(final String classID){
+    private void sendJoinClassRequest(final String classID, final String className){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -143,7 +143,8 @@ public class SearchClass extends AppCompatActivity {
                     map.put("ident", userInfo.getIdent());
                     map.put("ID", userInfo.getID());
                     map.put("classID", classID);
-                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/joinclass", map);
+                    map.put("classname", className);
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/addclass", map);
                     if(result.equals(""))
                         showResponse("网络连接异常", false);
                     else{
