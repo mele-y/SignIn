@@ -1,85 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--登录界面-->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/loginbg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <include layout="@layout/main_title_bar"></include>
-    <!--输入框-->
+    >
     <EditText
         android:id="@+id/user_phone"
-        android:layout_marginTop="120dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="请输入手机号"
-        android:gravity="center"
-        android:textSize="18sp"
+        android:layout_marginTop="140dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:background="@drawable/edit_background"/>
-
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/edit_text"
+        android:drawableLeft="@drawable/phone"
+        android:drawablePadding="10dp"
+        android:ems="10"
+        android:hint="@string/etName">
+        <requestFocus />
+    </EditText>
 
     <EditText
         android:id="@+id/password"
-        android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="请输入密码"
-        android:inputType="textPassword"
-        android:gravity="center"
-        android:textSize="18sp"
         android:layout_marginLeft="50dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="50dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:background="@drawable/edit_background"/>
-    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_phone"
+        android:background="@android:drawable/edit_text"
+        android:gravity="center"
+        android:drawableLeft="@drawable/lock"
+        android:ems="10"
+        android:drawablePadding="10dp"
+        android:hint="@string/etPass"
+        android:inputType="textPassword">
+
+        <requestFocus />
+    </EditText>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/password"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+        >
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:id="@+id/btn_login"
-            android:layout_width="wrap_content"
+            android:background="@drawable/btn_select"
+            android:text="@string/btnLogin" />
+
+        <Button
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:layout_marginTop="30dp"
-            android:paddingTop="10dp"
-            android:textSize="18sp"
-            android:text="登录"
-            app:qmui_isRadiusAdjustBounds="true"/>
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
             android:id="@+id/btn_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:layout_weight="1"
             android:layout_marginTop="30dp"
-            android:paddingTop="5dp"
-            android:textSize="18sp"
-            android:text="还未注册？"
-            app:qmui_isRadiusAdjustBounds="true"/>
-    </LinearLayout>
+            android:background="@drawable/btn_select"
+            android:text="@string/btnRegister" />
     </LinearLayout>
 
-
-
+</RelativeLayout>
