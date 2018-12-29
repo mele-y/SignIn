@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/loginbg"
     android:orientation="vertical">
     <!--标题栏-->
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -49,9 +50,10 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginRight="35dp"
             android:gravity="center"
-            android:background="@drawable/edit_background"
             android:drawablePadding="10dp"
             android:hint="请输入姓名"
+            android:background="@android:drawable/edit_text"
+            android:drawableLeft="@drawable/name"
             android:paddingLeft="8dp"
             android:singleLine="true"
             android:textColor="#000000"
@@ -87,8 +89,10 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="35dp"
                 android:drawablePadding="10dp"
+                android:background="@android:drawable/edit_text"
+                android:drawableLeft="@drawable/id"
                 android:hint="请输入工号/学号"
-                android:background="@drawable/edit_background"
+
                 android:paddingLeft="8dp"
                 android:singleLine="true"
                 android:textColor="#000000"
@@ -121,10 +125,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="center"
-                android:background="@drawable/edit_background"
                 android:layout_marginRight="35dp"
                 android:drawablePadding="10dp"
-
+                android:background="@android:drawable/edit_text"
+                android:drawableLeft="@drawable/nickname"
                 android:hint="请输入昵称"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
@@ -159,10 +163,10 @@
             android:layout_height="40dp"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/edit_background"
             android:layout_marginRight="35dp"
             android:drawablePadding="10dp"
-
+            android:background="@android:drawable/edit_text"
+            android:drawableLeft="@drawable/school"
             android:hint="请输入学校"
             android:paddingLeft="8dp"
             android:singleLine="true"
@@ -189,7 +193,8 @@
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/edit_background"
+            android:background="@android:drawable/edit_text"
+            android:drawableLeft="@drawable/major"
             android:layout_marginRight="35dp"
             android:drawablePadding="10dp"
             android:gravity="center"
@@ -213,8 +218,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="35dp"
-
                 android:textSize="24sp"
+                android:drawableLeft="@drawable/identity"
                 android:text="身份：" />
             <RadioGroup
                 android:id="@+id/identify"
@@ -253,6 +258,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="35dp"
                 android:textSize="24sp"
+                android:drawableLeft="@drawable/xingbie"
                 android:text="性别：" />
             <RadioGroup
                 android:id="@+id/gender"
@@ -292,6 +298,7 @@
             android:layout_marginTop="30dp"
             android:paddingTop="5dp"
             android:textSize="18sp"
+            android:drawableLeft="@drawable/register"
             android:text="注册"
             app:qmui_isRadiusAdjustBounds="true"/>
     </LinearLayout>
