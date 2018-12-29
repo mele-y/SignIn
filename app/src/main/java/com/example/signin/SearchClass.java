@@ -1,11 +1,14 @@
 package com.example.signin;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.signin.utility.OkHttp;
 import com.example.signin.utility.chromToast;
@@ -20,6 +23,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 public class SearchClass extends AppCompatActivity {
     private ListView mListView;
+    QMUIDialog qmuiDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +32,7 @@ public class SearchClass extends AppCompatActivity {
         mListView = findViewById(R.id.search_class_list_view);
         mSearchView.setIconifiedByDefault(false);
         mSearchView.onActionViewExpanded();
+
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             //当搜索提交时触发该方法
@@ -46,6 +51,7 @@ public class SearchClass extends AppCompatActivity {
                 return false;
             }
         });
+
     }
 
     private void sendGetAllClassRequest(){
@@ -83,36 +89,48 @@ public class SearchClass extends AppCompatActivity {
     }
 
     private void fillList(final List<classInfo> classes){
-        runOnUiThread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                classAdapter adapter = new classAdapter(SearchClass.this, R.layout.class_item, classes);
-                mListView.setAdapter(adapter);//设置ListView显示的内容
-                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                {
+                mListView.post(new Runnable() {
                     @Override
-                    public void  onItemClick(AdapterView<?>parent, View view, int position, long id)//获取学生点击了的课程传递参数
-                    {
-                        classInfo class_=classes.get(position);
-                        showdialog(class_.getClassId(), class_.getName());
+                    public void run() {
+                            classAdapter adapter = new classAdapter(SearchClass.this, R.layout.class_item, classes);
+                            mListView.setAdapter(adapter);//设置ListView显示的内容
+                            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                      classInfo class_=classes.get(position);
+                                    showdialog(class_.getClassId(), class_.getName());
+                                }
+                            });
                     }
                 });
+
             }
-        });
+        }).start();
+
+
     }
     public void showdialog(final String classID, final String className){
-         new QMUIDialog.MessageDialogBuilder(SearchClass.this).setTitle(className).setMessage("确定要加入该课程吗？").addAction("取消", new QMUIDialogAction.ActionListener() {
-             @Override
-             public void onClick(QMUIDialog dialog, int index) {
-                 dialog.dismiss();
-             }
-         }).addAction("确定", new QMUIDialogAction.ActionListener() {
-             @Override
-             public void onClick(QMUIDialog dialog, int index) {
-                 sendJoinClassRequest(classID);
-                 dialog.dismiss();
-             }
-         }).show();
+        AlertDialog.Builder dialog=new AlertDialog.Builder(SearchClass.this);
+        dialog.setTitle(classID);
+        dialog.setMessage("要加入该课程吗");
+        dialog.setCancelable(false);
+        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sendJoinClassRequest(classID);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }//显示对话框
 
     private void sendJoinClassRequest(final String classID){
