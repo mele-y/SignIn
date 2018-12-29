@@ -37,7 +37,7 @@
         android:drawablePadding="10dp"
         android:hint="@string/etPass"
         android:inputType="textPassword">
-        <requestFocus />
+       
     </EditText>
 
     <LinearLayout
