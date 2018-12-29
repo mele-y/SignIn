@@ -93,6 +93,11 @@ public class studentEnterClass extends AppCompatActivity {
 
     public String getName() { return name; }
     public  String getClassId() { return classId; }
+      @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.send_message,menu);
+        return true;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
