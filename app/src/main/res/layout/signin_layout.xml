@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/loginbg"
     android:orientation="vertical">
     <!--标题栏-->
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -43,7 +44,9 @@
         <EditText
             android:id="@+id/user_phone0"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:background="@android:drawable/edit_text"
+            android:drawableLeft="@drawable/phone"
+            android:layout_height="45dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:layout_marginTop="100dp"
@@ -54,7 +57,6 @@
             android:singleLine="true"
             android:textColor="#000000"
             android:textColorHint="#a3a3a3"
-            android:background="@drawable/edit_background"
             android:textSize="18sp" />
         <!--输入框-->
     </LinearLayout>
@@ -83,18 +85,19 @@
             <EditText
                 android:id="@+id/password0"
                 android:layout_width="fill_parent"
-                android:gravity="center"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="35dp"
                 android:drawablePadding="10dp"
                 android:inputType="textPassword"
+                android:background="@android:drawable/edit_text"
+                android:gravity="center"
+                android:drawableLeft="@drawable/lock"
                 android:hint="请设置密码"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
                 android:textColor="#000000"
                 android:textColorHint="#a3a3a3"
-                android:background="@drawable/edit_background"
                 android:textSize="18sp" />
             <!--输入框-->
         </LinearLayout>
@@ -122,16 +125,16 @@
         <EditText
             android:id="@+id/paw_confirm"
             android:layout_width="fill_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_horizontal"
-            android:gravity="center"
             android:layout_marginRight="35dp"
             android:drawablePadding="10dp"
-
+            android:background="@android:drawable/edit_text"
+            android:gravity="center"
+            android:drawableLeft="@drawable/lock"
             android:inputType="textPassword"
             android:hint="请再次输入密码"
             android:paddingLeft="8dp"
-            android:background="@drawable/edit_background"
             android:singleLine="true"
             android:textColor="#000000"
             android:textColorHint="#a3a3a3"
@@ -161,18 +164,19 @@
         <EditText
             android:id="@+id/code"
             android:layout_width="fill_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_horizontal"
-            android:gravity="center"
             android:layout_marginRight="35dp"
             android:drawablePadding="10dp"
             android:inputType="textPassword"
             android:hint="请输入验证码"
+            android:background="@android:drawable/edit_text"
+            android:gravity="center"
+            android:drawableLeft="@drawable/code"
             android:paddingLeft="8dp"
             android:singleLine="true"
             android:textColor="#000000"
             android:textColorHint="#a3a3a3"
-            android:background="@drawable/edit_background"
             android:textSize="18sp" />
         </LinearLayout>
         <LinearLayout
