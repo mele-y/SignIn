@@ -40,10 +40,10 @@ public class teaMemberFra extends Fragment {
         }
         if(!studentInfo.getClassID().equals(classID))
             sendGetAllStudentRequest();
-        data = studentInfo.getStu();
         View view=inflater.inflate(R.layout.fragment_stu_class_member, container, false);
         member_list=view.findViewById(R.id.member_list);//获取列表
         member_list.setSeparatorStyle(QMUIGroupListView.SEPARATOR_STYLE_NORMAL);//设置分割线
+        data = studentInfo.getStu();
         QMUIGroupListView.Section section=QMUIGroupListView.newSection(getContext()).setTitle("成员人数："+data.size());//新建section，设置标题
         for(int i=0;i<data.size();++i){
             QMUICommonListItemView listItemName = member_list.createItemView(data.get(i).getStu_name());//新建列表项，设置标题
@@ -109,8 +109,11 @@ public class teaMemberFra extends Fragment {
                     }
                     else{
                         String recvMessage = jsonReader.recvGetAllStudent(result, classID);
-                        if(!recvMessage.equals("200"))
+                        if(!recvMessage.equals("200")){
                             showResponse(jsonReader.recvMsg(result));
+                            data = studentInfo.getStu();
+                        }
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

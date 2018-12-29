@@ -104,10 +104,27 @@ public class createNotice extends AppCompatActivity {
             @Override
             public void run() {
                 chromToast.showToast(createNotice.this, "创建成功", false, 0xAA00FF7F, 0xFFFFFFFF);
-                allNoticeInfo.setClassID("");
+                sendGetAllNoticeRequest();
                 finish();
             }
         });
     }
 
+    private void sendGetAllNoticeRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classID);
+                    map.put("ident", userInfo.getIdent());
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getbulletin", map);
+                    jsonReader.recvGetAllNotice(result, classID);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 }

@@ -105,7 +105,7 @@ public class teasend_message extends AppCompatActivity {//逻辑层判断是学�
             @Override
             public void run() {
                 showResponse("发送成功", true);
-                allMessageInfo.setClassID("");
+                sendGetAllMessageRequest();
                 if(userInfo.getIdent().equals("teacher")){
                     Intent intent = new Intent(teasend_message.this,tea_Enter_main.class);//判断学生还是教师跳转
                     startActivity(intent);
@@ -115,6 +115,25 @@ public class teasend_message extends AppCompatActivity {//逻辑层判断是学�
                 }
             }
         });
+    }
+
+    private void sendGetAllMessageRequest(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> map = new HashMap<>();
+                    map.put("phonenum", userInfo.getPhonenum());
+                    map.put("classID", classID);
+                    map.put("ident", userInfo.getIdent());
+                    map.put("ID", userInfo.getID());
+                    String result = OkHttp.postFormWithToken("http://98.142.138.123:12345/api/getmessage", map);
+                    jsonReader.recvGetAllMessage(result, classID);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }
 
