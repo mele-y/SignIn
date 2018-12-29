@@ -112,7 +112,7 @@ public class SearchClass extends AppCompatActivity {
                  sendJoinClassRequest(classID);
                  dialog.dismiss();
              }
-         });
+         }).show();
     }//显示对话框
 
     private void sendJoinClassRequest(final String classID){

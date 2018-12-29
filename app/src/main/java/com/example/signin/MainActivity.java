@@ -80,10 +80,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
-                    case R.id.nav_edit:
-//                        Intent intent1=new Intent(MainActivity.this,editStudentInfo.class);
-//                        startActivity(intent1);
-                        break;//点击编辑跳转至编辑个人信息
+
                     case R.id.nav_exit:
                         Intent intent2=new Intent(MainActivity.this,logIn.class);
                         startActivity(intent2);//点击退出跳转至登录页
