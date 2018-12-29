@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +36,7 @@ public class tea_Main extends AppCompatActivity {
     TextView college;
     TextView major;
     private ListView listView;
+    private LayoutInflater inflater;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -43,6 +45,9 @@ public class tea_Main extends AppCompatActivity {
         setContentView(R.layout.tea__main);
         //初始化课程
         listView=findViewById(R.id.class_view1);
+        inflater = LayoutInflater.from(this);
+        View headView=inflater.inflate(R.layout.list_title2,null);
+        listView.addHeaderView(headView);
         Toolbar toolbar1 = findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar1);
         mDrawerLayout = findViewById(R.id.drawer_layout);//获取滑动菜单实例

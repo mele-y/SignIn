@@ -16,7 +16,7 @@
            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
              app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"></android.support.v7.widget.Toolbar>
     <ListView
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:id="@+id/class_view"
         android:layout_below="@id/toolbar"
         android:layout_width="match_parent"

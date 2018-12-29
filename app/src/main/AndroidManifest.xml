@@ -26,14 +26,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_foreground"
         android:label="签了老弟？"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".logIn"
-            android:label="This is login"
+            android:label="签了老弟？"
             android:theme="@style/QMUITheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

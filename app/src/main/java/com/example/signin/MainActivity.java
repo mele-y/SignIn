@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     TextView college;
     TextView major;
     private ListView listView;
-
+    private LayoutInflater inflater;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +66,9 @@ public class MainActivity extends AppCompatActivity {
         college.setText(userInfo.getCollege());
         //设置滑动菜单的显示内容
         listView=findViewById(R.id.class_view);
-
+        inflater = LayoutInflater.from(this);
+         View headView=inflater.inflate(R.layout.list_title,null);
+        listView.addHeaderView(headView);
         FloatingActionButton fab=findViewById(R.id.join_class);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
