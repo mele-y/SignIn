@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/btn_shape"   android:state_pressed="false"></item>  //按钮未按下去的效果
+    <item android:drawable="@drawable/btn_shape_after" android:state_pressed="true"></item>  //按钮按下去的效果
+</selector>
