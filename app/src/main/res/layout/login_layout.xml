@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/loginbg"
-    android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -20,7 +19,6 @@
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="@string/etName">
-
         <requestFocus />
     </EditText>
 
