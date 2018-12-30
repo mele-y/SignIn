@@ -21,7 +21,6 @@
         android:hint="@string/etName">
         <requestFocus />
     </EditText>
-
     <EditText
         android:id="@+id/password"
         android:layout_marginLeft="50dp"
@@ -63,7 +62,7 @@
             android:layout_marginTop="30dp"
             android:paddingTop="5dp"
             android:textSize="18sp"
-            android:text="登陆"
+            android:text="登录"
             app:qmui_isRadiusAdjustBounds="true"/>
 
         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
