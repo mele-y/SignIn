@@ -102,6 +102,7 @@ public class studentEnterClass extends AppCompatActivity {
                 intent.putExtra("classID", classId);
                 intent.putExtra("stuID", userInfo.getID());
                 startActivity(intent);
+                finish();
                 break;
             default:
         }

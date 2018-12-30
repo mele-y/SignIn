@@ -93,9 +93,9 @@ public class SignIn2 extends AppCompatActivity {
                     Map<String, String> map = new HashMap<>();
                     map.put("phonenum", user_phone);
                     map.put("password", password);
-                    map.put("nickname", nick_name);
-                    map.put("college", college);
-                    map.put("major", major);
+                    map.put("nickname", nick_name.equals("")?"none":nick_name);
+                    map.put("college", college.equals("")?"none":college);
+                    map.put("major", major.equals("")?"none":major);
                     map.put("sex", gender);
                     map.put("ID", id_num);
                     map.put("realname", user_name);

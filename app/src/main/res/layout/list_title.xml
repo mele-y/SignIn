@@ -5,7 +5,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listtitle"
+        android:id="@+id/list_title"
         android:text="我加入的班课"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -316,7 +316,7 @@ public class mainSignFra extends Fragment {
                     if(result.equals(""))
                         showResponse("网络连接异常", false);
                     else{
-                        if(jsonReader.recvMsg(result).equals("Signin successfully closed!")) {
+                        if(jsonReader.recvStatus(result).equals("200")) {
                             showResponse("签到结束", true);
                             flag = !flag;
                         }
