@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/message_notice"
         android:title="消息"
-        android:icon="@drawable/message"></item>
+        android:icon="@mipmap/message"></item>
     <item
         android:id="@+id/class_member"
         android:title="成员"
-        android:icon="@drawable/member"></item>
+        android:icon="@mipmap/member"></item>
     <item android:id="@+id/create_sign"
         android:title="发起签到"
-        android:icon="@drawable/star"></item>
+        android:icon="@mipmap/star"></item>
 
 </menu>

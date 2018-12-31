@@ -25,5 +25,4 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         app:menu="@menu/stu_nav_menu"></android.support.design.widget.BottomNavigationView>
-
 </LinearLayout>

@@ -3,13 +3,13 @@
     <item
         android:id="@+id/stu_class_member"
         android:title="成员"
-        android:icon="@drawable/member"></item>
+        android:icon="@mipmap/member"></item>
     <item android:id="@+id/stu_message"
         android:title="消息"
-        android:icon="@drawable/message"></item>
+        android:icon="@mipmap/message"></item>
     <item android:id="@+id/stu_sign_in"
         android:title="签到"
-        android:icon="@drawable/star"
+        android:icon="@mipmap/star"
         android:checked="true"></item>
 
 </menu>
