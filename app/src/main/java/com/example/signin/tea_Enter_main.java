@@ -102,7 +102,6 @@ public class tea_Enter_main extends AppCompatActivity {
                 Intent intent=new Intent(this,createNotice.class);
                 intent.putExtra("classID", classId);
                 startActivity(intent);
-                finish();
                 break;
             default:
                 break;

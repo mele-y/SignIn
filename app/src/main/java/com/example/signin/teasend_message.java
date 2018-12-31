@@ -108,10 +108,10 @@ public class teasend_message extends AppCompatActivity {//逻辑层判断是学�
                 allMessageInfo.setClassID("");
                 sendGetAllMessageRequest();
                 if(userInfo.getIdent().equals("teacher")){
-                    Intent intent = new Intent(teasend_message.this,tea_Enter_main.class);//判断学生还是教师跳转
+                    Intent intent = new Intent(teasend_message.this,tea_Main.class);//判断学生还是教师跳转
                     startActivity(intent);
                 }else{
-                    Intent intent = new Intent(teasend_message.this,studentEnterClass.class);
+                    Intent intent = new Intent(teasend_message.this,MainActivity.class);
                     startActivity(intent);
                 }
             }

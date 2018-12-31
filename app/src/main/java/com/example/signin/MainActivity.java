@@ -25,7 +25,6 @@ import com.example.signin.utility.OkHttp;
 import com.example.signin.utility.chromToast;
 import com.example.signin.utility.jsonReader;
 import com.example.signin.utility.userInfo;
-import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListSectionHeaderFooterView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_exit:
                         Intent intent2=new Intent(MainActivity.this,logIn.class);
                         startActivity(intent2);//点击退出跳转至登录页
+                        finish();
                         break;
                         default:
                 }

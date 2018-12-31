@@ -106,7 +106,8 @@ public class createNotice extends AppCompatActivity {
                 chromToast.showToast(createNotice.this, "创建成功", false, 0xAA00FF7F, 0xFFFFFFFF);
                 allNoticeInfo.setClassID("");
                 sendGetAllNoticeRequest();
-                finish();
+                Intent intent = new Intent(createNotice.this,tea_Main.class);//判断学生还是教师跳转
+                startActivity(intent);
             }
         });
     }
