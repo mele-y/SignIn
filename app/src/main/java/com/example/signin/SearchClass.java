@@ -96,7 +96,7 @@ public class SearchClass extends AppCompatActivity {
                             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                      classInfo class_=classes.get(position);
+                                      classInfo class_=classes.get((int)id);
                                     showdialog(class_.getClassId(), class_.getName());
                                 }
                             });

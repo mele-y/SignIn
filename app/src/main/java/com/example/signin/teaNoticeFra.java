@@ -24,7 +24,6 @@ import java.util.Map;
 
 import com.example.signin.utility.allNoticeInfo;
 import com.example.signin.utility.allMessageInfo;
-import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 
 public class teaNoticeFra extends Fragment {
     QMUIGroupListView message_list, notice_list;

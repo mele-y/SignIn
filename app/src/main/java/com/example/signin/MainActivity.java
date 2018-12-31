@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sendGetClassRequest();
         sendGetAllClassRequest();
         setContentView(R.layout.activity_main);
         Toolbar toolbar=findViewById(R.id.toolbar);//获取TOOLBAR实例
@@ -156,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void  onItemClick(AdapterView<?>parent,View view,int position,long id)//获取学生点击了的课程传递参数
                     {
-                        classInfo class_=classes.get(position);
+                        classInfo class_=classes.get((int)id);
                         sendGetAllStudentRequest(class_.getClassId());
                         sendGetAllNoticeRequest(class_.getClassId());
                         sendGetAllMessageRequest(class_.getClassId());

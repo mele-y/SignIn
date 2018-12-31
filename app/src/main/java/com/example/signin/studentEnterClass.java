@@ -34,6 +34,14 @@ public class studentEnterClass extends AppCompatActivity {
         Intent intent=getIntent();
         name = intent.getStringExtra("name");
         classId = intent.getStringExtra("classId");
+        if(!studentInfo.getClassID().equals(classId))
+            sendGetAllStudentRequest();
+        if(!allNoticeInfo.getClassID().equals(classId))
+            sendGetAllNoticeRequest();
+        if(!allMessageInfo.getClassID().equals(classId))
+            sendGetAllMessageRequest();
+        if(!(singleAttendanceInfo.getClassID().equals(classId) && singleAttendanceInfo.getStuID().equals(userInfo.getID())))
+            sendGetSingleAttendanceRequest();
         setContentView(R.layout.activity_student_enter_class);
         Toolbar stu_toolbar=findViewById(R.id.stu_toolbar);//获取TOOLBAR实例
         setSupportActionBar(stu_toolbar);//把TOOLBAR设为标题栏

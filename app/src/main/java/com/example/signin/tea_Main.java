@@ -36,16 +36,15 @@ public class tea_Main extends AppCompatActivity {
     TextView college;
     TextView major;
     private ListView listView;
-    private LayoutInflater inflater;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        sendGetClassRequest();
         setContentView(R.layout.tea__main);
         //初始化课程
         listView=findViewById(R.id.class_view1);
-        inflater = LayoutInflater.from(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
         View headView=inflater.inflate(R.layout.list_title2,null);
         listView.addHeaderView(headView);
         Toolbar toolbar1 = findViewById(R.id.toolbar3);
@@ -141,7 +140,7 @@ public class tea_Main extends AppCompatActivity {
                     @Override
                     public void  onItemClick(AdapterView<?>parent,View view,int position,long id)//获取学生点击了的课程传递参数
                     {
-                        classInfo class_=classes.get(position);
+                        classInfo class_=classes.get((int)id);
                         sendGetAllNoticeRequest(class_.getClassId());
                         sendGetAllStudentRequest(class_.getClassId());
                         sendGetAllMessageRequest(class_.getClassId());
