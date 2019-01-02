@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import java.util.regex.*;
 
+import com.example.signin.NetEase.MobileMessageCheck;
 import com.example.signin.utility.chromToast;
 import com.example.signin.NetEase.SendMessage;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
@@ -103,12 +104,12 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void run() {
                 try{
-//                    if(MobileMessageCheck.checkMsg(phone, code).equals("success")) {
+                    if(MobileMessageCheck.checkMsg(phone, code).equals("success")) {
                          showResponse("校验成功", true);
                          goIntent();
-//                    }
-//                    else
-//                        showResponse("校验失败", false);
+                    }
+                    else
+                        showResponse("校验失败", false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
